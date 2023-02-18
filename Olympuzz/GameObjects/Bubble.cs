@@ -15,18 +15,17 @@ namespace Olympuzz.GameObjects
 
         public Bubble(Texture2D texture) : base(texture)
         {
+
         }
 
         public override void Update(GameTime gameTime, Bubble[,] gameObject)
         {
-
             if (IsActive)
             {
                 Velocity.X = (float)Math.Cos(Angle) * speed; //direction of bubble to go in axis x
                 Velocity.Y = (float)Math.Sin(Angle) * speed; // direction of bubble to go in axis y
                 Position += Velocity * gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond; // position of bubble that will increase to direction that canon point to
             }
-
         }
 
         public override void Draw(SpriteBatch spriteBatch)

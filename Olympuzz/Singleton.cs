@@ -10,15 +10,15 @@ namespace Olympuzz
 {
     internal class Singleton
     {
-        public Vector2 Dimensions = new Vector2(1280, 720);
+        public Vector2 Dimensions = new(1280, 720);
         public int bgMusicVolume = 100;
         public int Score = 0;
         public float soundMasterVolume = 1f;
         public bool Shooting = false;
-        public List<Vector2> removeBubble = new List<Vector2>();
+        public List<Vector2> removeBubble = new();
         public bool cmdExit = false, cmdFullScreen = false, cmdShowFPS = false;
-        public bool IsFullScreen;
-        public string BestTime, BestScore;
+        //public bool IsFullScreen;
+        //public string BestTime, BestScore;
 
         public MouseState MousePrevious, MouseCurrent;
 
@@ -27,10 +27,12 @@ namespace Olympuzz
         {
             get
             {
+#pragma warning disable IDE0074 // Use compound assignment
                 if (instance == null)
                 {
                     instance = new Singleton();
                 }
+#pragma warning restore IDE0074 // Use compound assignment
                 return instance;
             }
         }

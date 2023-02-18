@@ -18,7 +18,7 @@ namespace Olympuzz.GameObjects
         private Color _color;
         private float angle;
 
-        public SoundEffectInstance _deadSFX, _stickSFX;
+        //public SoundEffectInstance _deadSFX, _stickSFX;
         public Shooter(Texture2D texture, Texture2D bubble) : base(texture)
         {
             bubbleTexture = bubble;
