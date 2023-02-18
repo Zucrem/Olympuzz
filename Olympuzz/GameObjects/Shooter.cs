@@ -39,12 +39,12 @@ namespace Olympuzz.GameObjects
                     {
                         Name = "Bubble",
                         Position = new Vector2(Singleton.Instance.Dimensions.X / 2 - bubbleTexture.Width / 2, 700 - bubbleTexture.Height),
-                        deadSFX = _deadSFX,
-                        stickSFX = _stickSFX,
+                        //deadSFX = _deadSFX,
+                        //stickSFX = _stickSFX,
                         color = _color,
                         IsActive = true,
-                        Angle = angle + MathHelper.Pi,
-                        Speed = 1000,
+                        Angle = angle + MathHelper.Pi
+                        //Speed = 1000,
                     };
                     _color = GetRandomColor();
                     Singleton.Instance.Shooting = true;
