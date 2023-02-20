@@ -11,8 +11,11 @@ namespace Olympuzz
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Vector2 position , size;
-        private Texture2D reddot;
+        private Texture2D reddot,shooterTexture,bubbleTexture, baseTexture;
+        private readonly Texture2D[] bubleAllTexture = new Texture2D[5];
         private Button b;
+        private Shooter shooter;
+        private Bubble bubble;
 
         public OlympuzzMain()
         {
@@ -24,6 +27,13 @@ namespace Olympuzz
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            _graphics.PreferredBackBufferWidth = 1280;
+            _graphics.PreferredBackBufferHeight = 720;
+            _graphics.ApplyChanges();
+            Window.IsBorderless = true;
+            position = new Vector2(100, 100);
+            size = new Vector2(100, 100);
+
 
             base.Initialize();
         }
@@ -31,11 +41,25 @@ namespace Olympuzz
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            position = new Vector2(100,100);
+            shooterTexture = Content.Load<Texture2D>("bow only");
+            bubleAllTexture[0] = Content.Load<Texture2D>("Earth");
+            bubleAllTexture[1] = Content.Load<Texture2D>("Fire");
+            bubleAllTexture[2] = Content.Load<Texture2D>("Thunder");
+            bubleAllTexture[3] = Content.Load<Texture2D>("Water");
+            bubleAllTexture[4] = Content.Load<Texture2D>("Wind");
+            baseTexture = Content.Load<Texture2D>("base");
             reddot = Content.Load<Texture2D>("Basic_red_dot");
-            size = new Vector2(100,100);
+
+
             b = new Button(reddot, position,size);
+            shooter = new Shooter(shooterTexture, bubleAllTexture, baseTexture)
+            {
+                Name = "Shooter",
+                Position = new Vector2(_graphics.PreferredBackBufferWidth/2, _graphics.PreferredBackBufferHeight),
+                //Position = new Vector2(640, 720),
+                color = Color.White,
+                IsActive = true,
+            };
             // TODO: use this.Content to load your game content here
         }
 
@@ -50,6 +74,7 @@ namespace Olympuzz
                 Debug.WriteLine("GG");
             }
 
+
             base.Update(gameTime);
         }
 
@@ -59,6 +84,7 @@ namespace Olympuzz
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
+            shooter.Draw(_spriteBatch);
             b.Draw(_spriteBatch);
             _spriteBatch.End();
             base.Draw(gameTime);
