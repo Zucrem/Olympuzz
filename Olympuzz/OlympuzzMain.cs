@@ -69,7 +69,7 @@ namespace Olympuzz
             shooter = new Shooter(shooterTexture, bubleAllTexture, baseTexture)
             {
                 Name = "Shooter",
-                Position = new Vector2(_graphics.PreferredBackBufferWidth/2, _graphics.PreferredBackBufferHeight),
+                //Position = new Vector2(Singleton.Instance.Dimensions.X / 2 - shooterTexture.Width / 2, 700 - shooterTexture.Height),
                 //Position = new Vector2(640, 720),
                 color = Color.White,
                 IsActive = true,
@@ -101,6 +101,8 @@ namespace Olympuzz
                 Singleton.Instance.cmdFullScreen = false;
             }*/
 
+            shooter.Update(gameTime);
+
             base.Update(gameTime);
         }
 
@@ -119,6 +121,7 @@ namespace Olympuzz
             }*/
 
             // TODO: Add your drawing code here
+
             shooter.Draw(_spriteBatch);
             b.Draw(_spriteBatch);
             _spriteBatch.End();

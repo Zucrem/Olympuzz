@@ -11,6 +11,7 @@ namespace Olympuzz.GameObjects
     public class _GameObject
     {
         protected Texture2D _texture;//รูป
+        protected Texture2D[] _allTextures;
 
         public Vector2 Position;
         public float Rotation;
@@ -39,7 +40,16 @@ namespace Olympuzz.GameObjects
             IsActive = true;
         }
 
-        public virtual void Update(GameTime gameTime, Bubble[,] gameObjects)
+        public _GameObject(Texture2D[] allTextures)
+        {
+            _allTextures = allTextures;
+            Position = Vector2.Zero;
+            Scale = Vector2.One;
+            Rotation = 0f;
+            IsActive = true;
+        }
+
+        public virtual void Update(GameTime gameTime)
         {
         }
         public virtual void Draw(SpriteBatch spriteBatch)
