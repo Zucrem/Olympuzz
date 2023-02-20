@@ -94,12 +94,11 @@ namespace Olympuzz
             {
                 Exit();
             }
-            /*if (Singleton.Instance.cmdFullScreen)
+
+            if (Singleton.Instance.cmdExit)
             {
-                _graphics.ToggleFullScreen();
-                _graphics.ApplyChanges();
-                Singleton.Instance.cmdFullScreen = false;
-            }*/
+                Exit();
+            }
 
             base.Update(gameTime);
         }

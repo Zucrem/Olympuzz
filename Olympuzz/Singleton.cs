@@ -16,7 +16,7 @@ namespace Olympuzz
         public float soundMasterVolume = 1f;
         public bool Shooting = false;
         public List<Vector2> removeBubble = new();
-        //public bool cmdExit = false, cmdFullScreen = false, cmdShowFPS = false;
+        public bool cmdExit = false; //cmdFullScreen = false, cmdShowFPS = false;
         public bool IsFullScreen;
         //public string BestTime, BestScore;
 
