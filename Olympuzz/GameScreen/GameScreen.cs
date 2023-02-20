@@ -13,7 +13,7 @@ namespace Olympuzz.GameScreen
     class GameScreen
     {
 
-        protected ContentManager content;
+        /*protected ContentManager content;
 
         public virtual void LoadContent()
         {
@@ -30,6 +30,6 @@ namespace Olympuzz.GameScreen
         public virtual void Draw(SpriteBatch spriteBatch)
         {
 
-        }
+        }*/
     }
 }
