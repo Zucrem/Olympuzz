@@ -31,14 +31,22 @@ namespace Olympuzz.GameObjects
 
         public bool IsClicked(MouseState mouseState, GameTime gameTime)
         {
-            bool wasPressed = isPressed;
-            isPressed = bounds.Contains(mouseState.Position) && mouseState.LeftButton == ButtonState.Pressed;
 
+            bool wasPressed = isPressed;
+
+            // bound.Contains use to active only if mouse is in Position && check if mouse was left click
+            isPressed = bounds.Contains(mouseState.Position) && mouseState.LeftButton == ButtonState.Pressed; 
+
+            //if left mouse was click && check if mouse was holding
             if (isPressed && !wasPressed)
             {
+                //count time from lastClickTime
+                //ex. Program was run for 5 sec (5000 ms) and user doesn't click = 0 lastClickTime , then elapsedMs = 5000 - 0
                 int elapsedMs = (int)gameTime.TotalGameTime.TotalMilliseconds - lastClickTime;
+                // if pass max click delay time since LastClickTime then lastClickTime was that Time
                 if (elapsedMs > MAX_CLICK_DELAY_MS)
                 {
+                    //lastclickTime = TotalTime of program that time
                     lastClickTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
                     return true;
                 }

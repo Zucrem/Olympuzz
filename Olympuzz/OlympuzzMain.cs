@@ -12,8 +12,11 @@ namespace Olympuzz
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         private Vector2 position , size;
-        private Texture2D reddot;
+        private Texture2D reddot,shooterTexture,bubbleTexture, baseTexture;
+        private readonly Texture2D[] bubleAllTexture = new Texture2D[5];
         private Button b;
+        private Shooter shooter;
+        private Bubble bubble;
 
         private Song BGM;
         private SpriteFont Arial;
@@ -28,6 +31,10 @@ namespace Olympuzz
             IsMouseVisible = true;
             Content.RootDirectory = "Content";
             Window.Position = new Point((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2) - (graphics.PreferredBackBufferWidth / 2), (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2) - (graphics.PreferredBackBufferHeight / 2));
+            Window.IsBorderless = true;
+            position = new Vector2(100, 100);
+            size = new Vector2(100, 100);
+            
             graphics.ApplyChanges();
         }
 
@@ -38,27 +45,40 @@ namespace Olympuzz
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = Singleton.Instance.bgMusicVolume;
             MediaPlayer.Play(BGM);
-
+            
+            // TODO: Add your initialization logic here
+            
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            shooterTexture = Content.Load<Texture2D>("bow only");
+            bubleAllTexture[0] = Content.Load<Texture2D>("Earth");
+            bubleAllTexture[1] = Content.Load<Texture2D>("Fire");
+            bubleAllTexture[2] = Content.Load<Texture2D>("Thunder");
+            bubleAllTexture[3] = Content.Load<Texture2D>("Water");
+            bubleAllTexture[4] = Content.Load<Texture2D>("Wind");
+            baseTexture = Content.Load<Texture2D>("base");
 
-            position = new Vector2(100,100);
             reddot = Content.Load<Texture2D>("Basic_red_dot");
-            size = new Vector2(100,100);
-            b = new Button(reddot, position,size);
-        }
 
-        protected override void LoadContent()
-        {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            b = new Button(reddot, position,size);
+            shooter = new Shooter(shooterTexture, bubleAllTexture, baseTexture)
+            {
+                Name = "Shooter",
+                Position = new Vector2(_graphics.PreferredBackBufferWidth/2, _graphics.PreferredBackBufferHeight),
+                //Position = new Vector2(640, 720),
+                color = Color.White,
+                IsActive = true,
+            };
+            
             ScreenManager.Instance.LoadContent(Content);
             Arial = Content.Load<SpriteFont>("Fonts/Arial");
-        }
-
+         }
+         
         protected override void UnloadContent()
         {
             ScreenManager.Instance.UnloadContent();
@@ -80,6 +100,7 @@ namespace Olympuzz
                 graphics.ApplyChanges();
                 Singleton.Instance.cmdFullScreen = false;
             }
+
             base.Update(gameTime);
         }
 
@@ -97,7 +118,12 @@ namespace Olympuzz
                 spriteBatch.DrawString(Arial, string.Format("FPS: " + FrameCounter.Instance.AverageFramesPerSecond.ToString("F")), new Vector2(1090, 10), Color.Yellow);
             }
 
-            spriteBatch.End();
+            // TODO: Add your drawing code here
+            _spriteBatch.Begin();
+            shooter.Draw(_spriteBatch);
+            b.Draw(_spriteBatch);
+            _spriteBatch.End();
+            
             base.Draw(gameTime);
         }
     }
