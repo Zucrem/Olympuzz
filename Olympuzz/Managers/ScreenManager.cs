@@ -11,7 +11,7 @@ namespace Olympuzz.Managers
 {
     public class ScreenManager
     {
-        public ContentManager Content { private set; get; }
+       /* public ContentManager Content { private set; get; }
         public enum GameScreen
         {
             MenuScreen,
@@ -68,6 +68,6 @@ namespace Olympuzz.Managers
                     instance = new ScreenManager();
                 return instance;
             }
-        }
+        }*/
     }
 }

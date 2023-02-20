@@ -4,13 +4,14 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Olympuzz.GameObjects;
 using System.Diagnostics;
+using Olympuzz.Managers;
 
 namespace Olympuzz
 {
     public class OlympuzzMain : Game
     {
-        private GraphicsDeviceManager graphics;
-        private SpriteBatch spriteBatch;
+        private GraphicsDeviceManager _graphics;
+        private SpriteBatch _spriteBatch;
         private Vector2 position , size;
         private Texture2D reddot,shooterTexture,bubbleTexture, baseTexture;
         private readonly Texture2D[] bubleAllTexture = new Texture2D[5];
@@ -23,28 +24,27 @@ namespace Olympuzz
 
         public OlympuzzMain()
         {
-            graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = (int)Singleton.Instance.Dimensions.X;
-            graphics.PreferredBackBufferHeight = (int)Singleton.Instance.Dimensions.Y;
-            graphics.SynchronizeWithVerticalRetrace = false;
+            _graphics = new GraphicsDeviceManager(this);
+            _graphics.PreferredBackBufferWidth = (int)Singleton.Instance.Dimensions.X;
+            _graphics.PreferredBackBufferHeight = (int)Singleton.Instance.Dimensions.Y;
+            _graphics.SynchronizeWithVerticalRetrace = false;
             IsFixedTimeStep = false;
             IsMouseVisible = true;
             Content.RootDirectory = "Content";
-            Window.Position = new Point((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2) - (graphics.PreferredBackBufferWidth / 2), (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2) - (graphics.PreferredBackBufferHeight / 2));
-            Window.IsBorderless = true;
-            position = new Vector2(100, 100);
-            size = new Vector2(100, 100);
+            Window.IsBorderless = true;// make window borderless
+            position = new Vector2(100, 100);//use to set position of reddot button
+            size = new Vector2(100, 100);//use to set size of reddot button
             
-            graphics.ApplyChanges();
+            _graphics.ApplyChanges();
         }
 
         protected override void Initialize()
         {
             //song
-            BGM = Content.Load<Song>("Audios/Spirit_of_the_Dead");
+            /*BGM = Content.Load<Song>("Audios/Spirit_of_the_Dead");
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = Singleton.Instance.bgMusicVolume;
-            MediaPlayer.Play(BGM);
+            MediaPlayer.Play(BGM);*/
             
             // TODO: Add your initialization logic here
             
@@ -75,31 +75,31 @@ namespace Olympuzz
                 IsActive = true,
             };
             
-            ScreenManager.Instance.LoadContent(Content);
-            Arial = Content.Load<SpriteFont>("Fonts/Arial");
+            //ScreenManager.Instance.LoadContent(Content);
+            //Arial = Content.Load<SpriteFont>("Fonts/Arial");
          }
          
-        protected override void UnloadContent()
+        /*protected override void UnloadContent()
         {
             ScreenManager.Instance.UnloadContent();
-        }
+        }*/
 
         protected override void Update(GameTime gameTime)
         {
-            ScreenManager.Instance.Update(gameTime);
-            Singleton.Instance.IsFullScreen = graphics.IsFullScreen;
-            MediaPlayer.Volume = Singleton.Instance.BGM_MasterVolume;
+            //ScreenManager.Instance.Update(gameTime);
+            Singleton.Instance.IsFullScreen = _graphics.IsFullScreen;
+            //MediaPlayer.Volume = Singleton.Instance.bgMusicVolume;
 
-            if (Singleton.Instance.cmdExit)
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 Exit();
             }
-            if (Singleton.Instance.cmdFullScreen)
+            /*if (Singleton.Instance.cmdFullScreen)
             {
-                graphics.ToggleFullScreen();
-                graphics.ApplyChanges();
+                _graphics.ToggleFullScreen();
+                _graphics.ApplyChanges();
                 Singleton.Instance.cmdFullScreen = false;
-            }
+            }*/
 
             base.Update(gameTime);
         }
@@ -107,19 +107,18 @@ namespace Olympuzz
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.White);
-            spriteBatch.Begin();
+            _spriteBatch.Begin();
 
-            //fade in and out screen
-            ScreenManager.Instance.Draw(spriteBatch);
+            /*//fade in and out screen
+            ScreenManager.Instance.Draw(_spriteBatch);
             if (Singleton.Instance.cmdShowFPS)
             {
                 float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
                 FrameCounter.Instance.Update(deltaTime);
-                spriteBatch.DrawString(Arial, string.Format("FPS: " + FrameCounter.Instance.AverageFramesPerSecond.ToString("F")), new Vector2(1090, 10), Color.Yellow);
-            }
+                _spriteBatch.DrawString(Arial, string.Format("FPS: " + FrameCounter.Instance.AverageFramesPerSecond.ToString("F")), new Vector2(1090, 10), Color.Yellow);
+            }*/
 
             // TODO: Add your drawing code here
-            _spriteBatch.Begin();
             shooter.Draw(_spriteBatch);
             b.Draw(_spriteBatch);
             _spriteBatch.End();

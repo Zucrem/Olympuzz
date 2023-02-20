@@ -13,13 +13,13 @@ namespace Olympuzz.GameScreen
 {
     class SplashScreen : GameScreen
     {
-        private Vector2 fontSize;
+        /*private Vector2 fontSize;
         private Color color; //เพื่อupdate ค่าความโปร่งสี
         private SpriteFont Arcanista, KM;//กำหนดชื่อ font
         private Texture2D Logo, GameName, Black;//กำหนด ภาพของหน้า splashscreen
         private int alpha; // ค่าความโปร่งสี
         private int displayIndex; // order of index to display splash screen
-        private float timer; // Elapsed time in game
+        private float timer; // Elapsed time in game 
         private float timePerUpdate; // Will do update function when _timer > _timePerUpdate
         private bool Show; // true will fade in and false will fade out
 
@@ -110,6 +110,6 @@ namespace Olympuzz.GameScreen
                     break;
             }
 
-        }
+        }*/
     }
 }
