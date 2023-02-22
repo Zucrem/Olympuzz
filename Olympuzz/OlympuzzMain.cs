@@ -69,7 +69,7 @@ namespace Olympuzz
             shooter = new Shooter(shooterTexture, bubleAllTexture, baseTexture)
             {
                 Name = "Shooter",
-                //Position = new Vector2(Singleton.Instance.Dimensions.X / 2 - shooterTexture.Width / 2, 700 - shooterTexture.Height),
+                Position = new Vector2(Singleton.Instance.Dimensions.X / 2, Singleton.Instance.Dimensions.Y),
                 //Position = new Vector2(640, 720),
                 color = Color.White,
                 IsActive = true,
