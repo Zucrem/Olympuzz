@@ -27,18 +27,6 @@ namespace Olympuzz.GameObjects
         {
             bubbleTexture = bubble;
             this._base = _base;
-            Position = new Vector2(960, 500);
-            //bubble = new Bubble(bubbleTexture)
-            //{
-            //    Name = "Bubble",
-            //    Position = new Vector2(960,500),
-            //    //deadSFX = _deadSFX,
-            //    //stickSFX = _stickSFX,
-            //    //color = _color,
-            //    IsActive = true,
-            //    Angle = 10,
-            //    speed = 500,
-            //};
 
         }
         
@@ -47,20 +35,18 @@ namespace Olympuzz.GameObjects
             Singleton.Instance.MousePrevious = Singleton.Instance.MouseCurrent;//เก็บสถานะmouseก่อนหน้า
             Singleton.Instance.MouseCurrent = Mouse.GetState();//เก็บสถานะmouseปัจจุบัน
 
-            if (Singleton.Instance.MouseCurrent.Y < 625)//mouseต้องสูงกว่าขนาดเท่านี้
+            if (Singleton.Instance.MouseCurrent.Y < 400 && Singleton.Instance.MouseCurrent.X < 900)//mouseต้องสูงกว่าขนาดเท่านี้
             {
-                angle = (float)Math.Atan2(Singleton.Instance.MouseCurrent.Y - 500,Singleton.Instance.MouseCurrent.X - 960);//มุม = ตำแหน่งที่ยิง - สถานะmouse x y
+                angle = (float)Math.Atan2(Singleton.Instance.MouseCurrent.Y - Singleton.Instance.Dimensions.Y,Singleton.Instance.MouseCurrent.X - (Singleton.Instance.Dimensions.X/2));//มุม = ตำแหน่งที่ยิง - สถานะmouse x y
                 //ถ้าไม่ได้ยิง และ กดเม้าซ้าย และเม้าก่อนหน้าปล่อยอยู่
                 if (!Singleton.Instance.Shooting && Singleton.Instance.MouseCurrent.LeftButton == ButtonState.Pressed && Singleton.Instance.MousePrevious.LeftButton == ButtonState.Released)
                 {
                     bubble = new Bubble(bubbleTexture)
                     {
                         Name = "Bubble",
-                        //Position = new Vector2(Singleton.Instance.Dimensions.X/2,Singleton.Instance.Dimensions.Y),
-                        Position = new Vector2(960, 500),
+                        Position = this.Position,
                         //deadSFX = _deadSFX,
                         //stickSFX = _stickSFX,
-                        //color = _color,
                         IsActive = true,
                         Angle = angle + MathHelper.Pi,
                         speed = -1000,
@@ -74,15 +60,10 @@ namespace Olympuzz.GameObjects
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            //spriteBatch.Draw(_texture, Position + new Vector2(50, 50), null, Color.White, angle + MathHelper.ToRadians(-90f), new Vector2(50, 50), 1.5f, SpriteEffects.None, 0f);//วาดหน้าไม้
             spriteBatch.Draw(_base, Position,null, Color.White, 0, new Vector2(_texture.Width / 2, _texture.Height), 1f, SpriteEffects.None, 0f);
-            //spriteBatch.Draw(_texture, Position, null, Color.White, angle + MathHelper.ToRadians(45f), new Vector2(_texture.Width / 2, _texture.Height), 1f, SpriteEffects.None, 0f);
             spriteBatch.Draw(_texture, Position, null, Color.White, angle + MathHelper.ToRadians(90f), new Vector2(_texture.Width / 2, _texture.Height), 1f, SpriteEffects.None, 0f);
             if (Singleton.Instance.Shooting)//ถ้ายังไม่ได้อยู่ในสถานะยิงให้วาดรูปลูกบอล
                 bubble.Draw(spriteBatch);
-                //spriteBatch.Draw(bubbleTexture, new Vector2(Singleton.Instance.Dimensions.X / 2 - bubbleTexture.Width / 2, 700 - bubbleTexture.Height), _color);//ตำแหน่งกลางหน้าจอ - กลางลูกบอล, ตำแหน่งหน้าไม้ - กลางลูกบอล
-            //else//ถ้ายิง ให้วาดแค่หน้าไม้
-            //    bubble.Draw(spriteBatch);
         }
 
     }
