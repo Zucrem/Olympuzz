@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace Olympuzz.GameScreen
 {
     class PlayScreen
-    {
+    {/*
         private Texture2D background, blackScreen, BubbleTexture, ShooterTexture;
         private SpriteFont Arial, Arcanista;
         private Bubble[,] bubble = new Bubble[9, 8];
@@ -309,6 +309,6 @@ namespace Olympuzz.GameScreen
             {
                 spriteBatch.Draw(blackScreen, Vector2.Zero, color);
             }
-        }
+        }*/
     }
 }

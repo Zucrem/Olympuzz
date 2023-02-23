@@ -39,13 +39,17 @@ namespace Olympuzz.GameObjects
                 if (Position.X > 900) 
                 { 
                     Angle = -Angle; 
-                    Angle += MathHelper.ToRadians(180); 
+                    Angle += MathHelper.ToRadians(180);
+                    IsActive = false;
+                    //Singleton.Instance.Shooting = false;
                 }
+                if (Position.Y < 0) Singleton.Instance.Shooting = false;
             }
         }
 
         public override void Draw(SpriteBatch _spriteBatch)
         {
+            //draw(texture,position,reactangle,color,angle,origin,scale,effect,orderInlayer) buble at Position and origin of Image is middle bottom of image
             _spriteBatch.Draw(bubbleTexture, Position, null, Color.White, 0, new Vector2(bubbleTexture.Width / 2, bubbleTexture.Height), 1f, SpriteEffects.None, 0f);
 
         }
