@@ -39,17 +39,19 @@ namespace Olympuzz.GameScreen
         private Texture2D shooterTexture, baseTexture;
         private readonly Texture2D[] bubleAllTexture = new Texture2D[5];
 
+        //border = 640,684
+        
         public void Initial()
         {
             color = new Color(255, 255, 255, alpha);
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 5; i++)
             {
-                for (int j = 0; j < 8 - (i % 2); j++)
+                for (int j = 0; j < 10 - (i % 2); j++)
                 {
                     bubble[i, j] = new Bubble(bubleAllTexture)
                     {
-                        Name = "Bubble",
-                        Position = new Vector2((j * 80) + ((i % 2) == 0 ? 320 : 360), (i * 70) + 40),
+                        Name = "Bubble", 
+                        Position = new Vector2((j * 50) + ((i % 2) == 0 ? 414 : 439), (i * 45) + 85), // what x cordition is the best 414 or 415
                         IsActive = false,
                     };
                 }
@@ -60,7 +62,7 @@ namespace Olympuzz.GameScreen
             shooter = new Shooter(shooterTexture, bubleAllTexture, baseTexture)
             {
                 Name = "Shooter",
-                Position = new Vector2(Singleton.Instance.Dimensions.X / 2 - shooterTexture.Width / 2, 700 - shooterTexture.Height),
+                Position = new Vector2(Singleton.Instance.Dimensions.X / 2, Singleton.Instance.Dimensions.Y),
                 //_deadSFX = BubbleSFX_dead,
                 //_stickSFX = BubbleSFX_stick,
                 IsActive = true,
@@ -255,9 +257,9 @@ namespace Olympuzz.GameScreen
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(background, Vector2.Zero, Color.White);
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < 9; i++) // Bubble in Even Line
             {
-                for (int j = 0; j < 8; j++)
+                for (int j = 0; j < 10; j++) //Bubble in Odd Line
                 {
                     if (bubble[i, j] != null)
                         bubble[i, j].Draw(spriteBatch);
@@ -288,6 +290,6 @@ namespace Olympuzz.GameScreen
             {
                 spriteBatch.Draw(blackScreen, Vector2.Zero, color);
             }
-        }*/
+        }
     }
 }
