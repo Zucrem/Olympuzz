@@ -6,35 +6,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Olympuzz.GameScreen;
+using System.Diagnostics;
 
 namespace Olympuzz.Managers
 {
     public class ScreenManager
     {
-       /* public ContentManager Content { private set; get; }
-        public enum GameScreen
+        public ContentManager Content { private set; get; }
+        public enum GameScreenName
         {
             MenuScreen,
             PlayScreen
         }
         //object gamescreen
-        private GameScreen currentScreen;
+        private _GameScreen currentScreen;
 
         //constructer ให้ current state == หน้าโหลด or หน้าปิด
         public ScreenManager()
         {
             currentScreen = new SplashScreen();
         }
-        public void LoadScreen(GameScreen screenName)
+        public void LoadScreen(GameScreenName screenName)
         {
             switch (screenName)
             {
                 //ถ้าไปหน้าmenu
-                case GameScreen.MenuScreen:
+                case GameScreenName.MenuScreen:
                     currentScreen = new MenuScreen();
                     break;
                 //ถ้าไปหน้าเล่นเกม
-                case GameScreen.PlayScreen:
+                case GameScreenName.PlayScreen:
                     currentScreen = new PlayScreen();
                     break;
             }
@@ -68,6 +70,6 @@ namespace Olympuzz.Managers
                     instance = new ScreenManager();
                 return instance;
             }
-        }*/
+        }
     }
 }

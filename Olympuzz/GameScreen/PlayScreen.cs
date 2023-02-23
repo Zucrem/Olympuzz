@@ -15,13 +15,12 @@ using System.Threading.Tasks;
 
 namespace Olympuzz.GameScreen
 {
-    class PlayScreen
-    {/*
-        private Texture2D background, blackScreen, BubbleTexture, ShooterTexture;
-        private SpriteFont Arial, Arcanista;
-        private Bubble[,] bubble = new Bubble[9, 8];
+    class PlayScreen : _GameScreen
+    {
+        private Texture2D background, blackScreen;
+        //private SpriteFont Arial, Arcanista;
+        private Bubble[,] bubble = new Bubble[9, 10];
         private Color color;
-        private Random random = new Random();
         private Shooter shooter;
         private Vector2 fontSize;
         private float _timer = 0f;
@@ -36,6 +35,10 @@ namespace Olympuzz.GameScreen
         private SoundEffectInstance BubbleSFX_stick, BubbleSFX_dead;
         private SoundEffectInstance Click;
 
+
+        private Texture2D shooterTexture, baseTexture;
+        private readonly Texture2D[] bubleAllTexture = new Texture2D[5];
+
         public void Initial()
         {
             color = new Color(255, 255, 255, alpha);
@@ -43,54 +46,25 @@ namespace Olympuzz.GameScreen
             {
                 for (int j = 0; j < 8 - (i % 2); j++)
                 {
-                    bubble[i, j] = new Bubble(BubbleTexture)
+                    bubble[i, j] = new Bubble(bubleAllTexture)
                     {
                         Name = "Bubble",
                         Position = new Vector2((j * 80) + ((i % 2) == 0 ? 320 : 360), (i * 70) + 40),
-                        color = GetRandomColor(),
                         IsActive = false,
                     };
                 }
             }
-            Click.Volume = Singleton.Instance.bgMusicVolume;
+            /*Click.Volume = Singleton.Instance.bgMusicVolume;
             BubbleSFX_stick.Volume = Singleton.Instance.bgMusicVolume;
-            BubbleSFX_dead.Volume = Singleton.Instance.bgMusicVolume;
-            shooter = new Shooter(ShooterTexture, BubbleTexture)
+            BubbleSFX_dead.Volume = Singleton.Instance.bgMusicVolume;*/
+            shooter = new Shooter(shooterTexture, bubleAllTexture, baseTexture)
             {
                 Name = "Shooter",
-                Position = new Vector2(Singleton.Instance.Dimensions.X / 2 - ShooterTexture.Width / 2, 700 - ShooterTexture.Height),
-                color = Color.White,
+                Position = new Vector2(Singleton.Instance.Dimensions.X / 2 - shooterTexture.Width / 2, 700 - shooterTexture.Height),
                 //_deadSFX = BubbleSFX_dead,
                 //_stickSFX = BubbleSFX_stick,
                 IsActive = true,
             };
-        }
-
-        public Color GetRandomColor()
-        {
-            Color _color = Color.blackScreen;
-            switch (random.Next(0, 6))
-            {
-                case 0:
-                    _color = Color.White;
-                    break;
-                case 1:
-                    _color = Color.Blue;
-                    break;
-                case 2:
-                    _color = Color.Yellow;
-                    break;
-                case 3:
-                    _color = Color.Red;
-                    break;
-                case 4:
-                    _color = Color.Green;
-                    break;
-                case 5:
-                    _color = Color.Purple;
-                    break;
-            }
-            return _color;
         }
 
         public bool CheckWin(Bubble[,] bubble)
@@ -110,15 +84,20 @@ namespace Olympuzz.GameScreen
         public override void LoadContent()
         {
             base.LoadContent();
-            background = content.Load<Texture2D>("PlayScreen/background");
-            blackScreen = content.Load<Texture2D>("SplashScreen/blackScreen");
-            BubbleTexture = content.Load<Texture2D>("PlayScreen/bubble_sheet");
-            ShooterTexture = content.Load<Texture2D>("PlayScreen/bow_sheet");
-            Arial = content.Load<SpriteFont>("Fonts/Arial");
+            background = content.Load<Texture2D>("gud room");
+            blackScreen = content.Load<Texture2D>("blackScreen");
+            shooterTexture = content.Load<Texture2D>("bow only");
+            bubleAllTexture[0] = content.Load<Texture2D>("Earth");
+            bubleAllTexture[1] = content.Load<Texture2D>("Fire");
+            bubleAllTexture[2] = content.Load<Texture2D>("Thunder");
+            bubleAllTexture[3] = content.Load<Texture2D>("Water");
+            bubleAllTexture[4] = content.Load<Texture2D>("Wind");
+            baseTexture = content.Load<Texture2D>("base");
+            /*Arial = content.Load<SpriteFont>("Fonts/Arial");
             Arcanista = content.Load<SpriteFont>("Fonts/Arcanista");
             BubbleSFX_dead = content.Load<SoundEffect>("Audios/UI_SoundPack8_Error_v1").CreateInstance();
             BubbleSFX_stick = content.Load<SoundEffect>("Audios/UI_SoundPack11_Select_v14").CreateInstance();
-            Click = content.Load<SoundEffect>("Audios/transition t07 two-step 007").CreateInstance();
+            Click = content.Load<SoundEffect>("Audios/transition t07 two-step 007").CreateInstance();*/
             Initial();
         }
         public override void UnloadContent()
@@ -130,15 +109,16 @@ namespace Olympuzz.GameScreen
             if (!gameOver && !gameWin)
             {
                 //create bubble on the field
-                for (int i = 0; i < 9; i++)
+                /*for (int i = 0; i < 9; i++)
                 {
                     for (int j = 0; j < 8; j++)
                     {
                         if (bubble[i, j] != null)
                             bubble[i, j].Update(gameTime, bubble);
                     }
-                }
-                shooter.Update(gameTime, bubble);
+                }*/
+                //shooter.Update(gameTime, bubble);
+                shooter.Update(gameTime);
                 Timer += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                 for (int i = 0; i < 8; i++)
                 {
@@ -198,8 +178,8 @@ namespace Olympuzz.GameScreen
                             if (bubble[i, j] != null)
                             {
                                 gameOver = true;
-                                Singleton.Instance.BestScore = Singleton.Instance.Score.ToString();
-                                Singleton.Instance.BestTime = Timer.ToString("F");
+                                //Singleton.Instance.BestScore = Singleton.Instance.Score.ToString();
+                                //Singleton.Instance.BestTime = Timer.ToString("F");
                             }
                         }
                     }
@@ -227,11 +207,10 @@ namespace Olympuzz.GameScreen
                     {
                         for (int j = 0; j < 8 - (i % 2); j++)
                         {
-                            bubble[i, j] = new Bubble(BubbleTexture)
+                            bubble[i, j] = new Bubble(bubleAllTexture)
                             {
                                 Name = "Bubble",
                                 Position = new Vector2((j * 80) + ((i % 2) == 0 ? 320 : 360), (i * 70) + 40),
-                                color = GetRandomColor(),
                                 IsActive = false,
                             };
                         }
@@ -269,7 +248,7 @@ namespace Olympuzz.GameScreen
                 }
             }
 
-
+            shooter.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -286,22 +265,22 @@ namespace Olympuzz.GameScreen
             }
             shooter.Draw(spriteBatch);
 
-            spriteBatch.DrawString(Arcanista, "Score : " + Singleton.Instance.Score, new Vector2(1060, 260), color);
+            /*spriteBatch.DrawString(Arcanista, "Score : " + Singleton.Instance.Score, new Vector2(1060, 260), color);
             spriteBatch.DrawString(Arcanista, "Time : " + Timer.ToString("F"), new Vector2(20, 260), color);
-            spriteBatch.DrawString(Arcanista, "Next Time : " + (tickPerUpdate - __timer).ToString("F"), new Vector2(20, 210), color);
+            spriteBatch.DrawString(Arcanista, "Next Time : " + (tickPerUpdate - __timer).ToString("F"), new Vector2(20, 210), color);*/
 
             if (gameOver)
             {
                 spriteBatch.Draw(blackScreen, Vector2.Zero, new Color(255, 255, 255, 210));
-                fontSize = Arial.MeasureString("GameOver !!");
-                spriteBatch.DrawString(Arial, "GameOver !!", Singleton.Instance.Dimensions / 2 - fontSize / 2, color);
+                /*fontSize = Arial.MeasureString("GameOver !!");
+                spriteBatch.DrawString(Arial, "GameOver !!", Singleton.Instance.Dimensions / 2 - fontSize / 2, color);*/
             }
 
             if (gameWin)
             {
                 spriteBatch.Draw(blackScreen, Vector2.Zero, new Color(255, 255, 255, 210));
-                fontSize = Arial.MeasureString("GameWin !!");
-                spriteBatch.DrawString(Arial, "GameWin !!", Singleton.Instance.Dimensions / 2 - fontSize / 2, color);
+                /*fontSize = Arial.MeasureString("GameWin !!");
+                spriteBatch.DrawString(Arial, "GameWin !!", Singleton.Instance.Dimensions / 2 - fontSize / 2, color);*/
             }
 
             // Draw fade out
