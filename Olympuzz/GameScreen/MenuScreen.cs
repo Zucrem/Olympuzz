@@ -3,15 +3,16 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using Microsoft.Xna.Framework.Audio;
+using Olympuzz.Managers;
 
 namespace Olympuzz.GameScreen
 {
-    class MenuScreen : GameScreen
+    class MenuScreen : _GameScreen
     {
-        /*
+        
         private Color _Color = new Color(250, 250, 250, 0);
-        //private Texture2D background, blackScreen;//background
-        //private Texture2D startPic, howToPlayPic, settingPic, ExitH, checkBoxYes, checkBoxNo, apply, back, Arrow;
+        private Texture2D backgroundPic, blackScreenPic;//background
+        private Texture2D startPic, howToPlayPic, settingPic, exitPic, checkBoxYes, checkBoxNo, apply, back, Arrow;
         //private SpriteFont Arial, Arcanista, KM;
         private Vector2 fontSize;
 
@@ -40,25 +41,25 @@ namespace Olympuzz.GameScreen
         {
             base.LoadContent();
             // Texture2D รูปต่างๆ
-            backgroundPic = content.Load<Texture2D>("MenuScreen/Background");
-            blackScreenPic = content.Load<Texture2D>("SplashScreen/Black");
-            startPic = content.Load<Texture2D>("MenuScreen/start");
-            howToPlayPic = content.Load<Texture2D>("MenuScreen/about");
-            settingPic = content.Load<Texture2D>("MenuScreen/option");
-            exitPic = content.Load<Texture2D>("MenuScreen/exit");
-            checkBoxYes = content.Load<Texture2D>("MenuScreen/checkBox-yes");
-            checkBoxNo = content.Load<Texture2D>("MenuScreen/checkBox-no");
-            apply = content.Load<Texture2D>("MenuScreen/apply");
-            back = content.Load<Texture2D>("MenuScreen/back");
-            Arrow = content.Load<Texture2D>("MenuScreen/Arrow");
+            backgroundPic = content.Load<Texture2D>("gud room");
+            blackScreenPic = content.Load<Texture2D>("blackScreen");
+            startPic = content.Load<Texture2D>("Fire");
+            howToPlayPic = content.Load<Texture2D>("Fire");
+            settingPic = content.Load<Texture2D>("Fire");
+            exitPic = content.Load<Texture2D>("Fire");
+            checkBoxYes = content.Load<Texture2D>("Fire");
+            checkBoxNo = content.Load<Texture2D>("Fire");
+            apply = content.Load<Texture2D>("Fire");
+            back = content.Load<Texture2D>("Fire");
+            Arrow = content.Load<Texture2D>("Fire");
             // Fonts
-            Arial = content.Load<SpriteFont>("Fonts/Arial");
+            /*Arial = content.Load<SpriteFont>("Fonts/Arial");
             Arcanista = content.Load<SpriteFont>("Fonts/Arcanista");
-            KM = content.Load<SpriteFont>("Fonts/KH-Metropolis");
+            KM = content.Load<SpriteFont>("Fonts/KH-Metropolis");*/
             // Sounds
-            soundClickButton = content.Load<SoundEffect>("Audios/UI_SoundPack8_Error_v1").CreateInstance();
+            /*soundClickButton = content.Load<SoundEffect>("Audios/UI_SoundPack8_Error_v1").CreateInstance();
             soundEnterGame = content.Load<SoundEffect>("Audios/transition t07 two-step 007").CreateInstance();
-            soundSelectButton = content.Load<SoundEffect>("Audios/UI_SoundPack11_Select_v14").CreateInstance();
+            soundSelectButton = content.Load<SoundEffect>("Audios/UI_SoundPack11_Select_v14").CreateInstance();*/
             // Call Init
             Initial();
         }
@@ -69,9 +70,9 @@ namespace Olympuzz.GameScreen
         public override void Update(GameTime gameTime)
         {
             //click sound
-            soundSelectUI.Volume = Singleton.Instance.SFX_MasterVolume;
-            soundClickUI.Volume = Singleton.Instance.SFX_MasterVolume;
-            soundEnterGame.Volume = Singleton.Instance.SFX_MasterVolume;
+            /*soundSelectButton.Volume = Singleton.Instance.soundMasterVolume;
+            soundClickButton.Volume = Singleton.Instance.soundMasterVolume;
+            soundEnterGame.Volume = Singleton.Instance.soundMasterVolume;*/
 
             Singleton.Instance.MousePrevious = Singleton.Instance.MouseCurrent;
             Singleton.Instance.MouseCurrent = Mouse.GetState();
@@ -83,13 +84,13 @@ namespace Olympuzz.GameScreen
                     mhStart = true;
                     if (!mhsStart)
                     {
-                        soundSelectButton.Play();
+                        //soundSelectButton.Play();
                         mhsStart = true;
                     }
                     if (Singleton.Instance.MouseCurrent.LeftButton == ButtonState.Pressed && Singleton.Instance.MousePrevious.LeftButton == ButtonState.Released)
                     {
-                        soundEnterGame.Play();
-                        ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PalyScreen);
+                        //soundEnterGame.Play();
+                        ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
                     }
                 }
                 else
@@ -103,14 +104,14 @@ namespace Olympuzz.GameScreen
                     mhOption = true;
                     if (!mhsOption)
                     {
-                        soundSelectButton.Play();
+                        //soundSelectButton.Play();
                         mhsOption = true;
                     }
                     if (Singleton.Instance.MouseCurrent.LeftButton == ButtonState.Pressed && Singleton.Instance.MousePrevious.LeftButton == ButtonState.Released)
                     {
                         showSetting = true;
                         mainScreen = false;
-                        soundClickButton.Play();
+                        //soundClickButton.Play();
                     }
                 }
                 else
@@ -124,14 +125,14 @@ namespace Olympuzz.GameScreen
                     mhAbout = true;
                     if (!mhsAbout)
                     {
-                        soundSelectButton.Play();
+                        //soundSelectButton.Play();
                         mhsAbout = true;
                     }
                     if (Singleton.Instance.MouseCurrent.LeftButton == ButtonState.Pressed && Singleton.Instance.MousePrevious.LeftButton == ButtonState.Released)
                     {
                         showHowToPlay = true;
                         mainScreen = false;
-                        soundClickButton.Play();
+                        //soundClickButton.Play();
                     }
                 }
                 else
@@ -145,12 +146,12 @@ namespace Olympuzz.GameScreen
                     mhExit = true;
                     if (!mhsExit)
                     {
-                        soundSelectButton.Play();
+                        //soundSelectButton.Play();
                         mhsExit = true;
                     }
                     if (Singleton.Instance.MouseCurrent.LeftButton == ButtonState.Pressed && Singleton.Instance.MousePrevious.LeftButton == ButtonState.Released)
                     {
-                        soundEnterGame.Play();
+                        //soundEnterGame.Play();
                         Singleton.Instance.cmdExit = true;
                     }
                 }
@@ -171,7 +172,7 @@ namespace Olympuzz.GameScreen
                         mainScreen = true;
                         showHowToPlay = false;
                         showSetting = false;
-                        soundClickButton.Play();
+                        //soundClickButton.Play();
                     }
                 }
                 else
@@ -218,9 +219,9 @@ namespace Olympuzz.GameScreen
                         mhApply = true;
                         if (Singleton.Instance.MouseCurrent.LeftButton == ButtonState.Pressed && Singleton.Instance.MousePrevious.LeftButton == ButtonState.Released)
                         {
-                            soundClickButton.Play();
+                            /*soundClickButton.Play();
                             Singleton.Instance.bgMusicVolume = masterBGmusic;
-                            Singleton.Instance.soundMasterVolume = masterSFX / 100f;
+                            Singleton.Instance.soundMasterVolume = masterSFX / 100f;*/
                         }
                     }
                     else
@@ -265,7 +266,7 @@ namespace Olympuzz.GameScreen
             }
             if (mhStart)
             {
-                spriteBatch.Draw(StartH, new Vector2(551, 332), Color.White);
+                spriteBatch.Draw(startPic, new Vector2(551, 332), Color.White);
             }
             // Draw UI when is NOT MainMenu
             if (!mainScreen)
@@ -282,7 +283,7 @@ namespace Olympuzz.GameScreen
                 // Draw Option Screen
                 if (showSetting)
                 {
-                    fontSize = KM.MeasureString("Setting");
+                    /*fontSize = KM.MeasureString("Setting");
                     spriteBatch.DrawString(KM, "Setting", new Vector2(Singleton.Instance.Dimensions.X / 2 - fontSize.X / 2, 125), Color.White);
 
                     spriteBatch.DrawString(Arcanista, "BGM Volume", new Vector2(300, 250), Color.White);
@@ -294,7 +295,7 @@ namespace Olympuzz.GameScreen
                     spriteBatch.Draw(Arrow, new Vector2(700, 315), null, Color.White, 0, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
                     spriteBatch.DrawString(Arcanista, masterSFX.ToString(), new Vector2(800, 325), Color.White);
                     spriteBatch.Draw(Arrow, new Vector2(900, 315), Color.White);
-
+                    */
                     if (mhApply)
                     {
                         spriteBatch.Draw(apply, new Vector2(1100 - back.Width, 625), Color.OrangeRed);
@@ -321,10 +322,8 @@ namespace Olympuzz.GameScreen
                     spriteBatch.DrawString(Arcanista, "Fonts", new Vector2(1000, 250), Color.NavajoWhite);
                     spriteBatch.DrawString(Arcanista, "- Arial", new Vector2(985, 350), Color.White);
                     spriteBatch.DrawString(Arcanista, "- Arcanista", new Vector2(950, 425), Color.White);
-                    spriteBatch.DrawString(Arcanista, "- KH-Metropolis", new Vector2(920, 500), Color.White);
+                    spriteBatch.DrawString(Arcanista, "- KH-Metropolis", new Vector2(920, 500), Color.White);*/
 
-                    spriteBatch.DrawString(Arial, "FPS Counter Script : https://stackoverflow.com/questions/20676185", new Vector2(50, 630), Color.White);
-                    spriteBatch.DrawString(Arial, "/xna-monogame-getting-the-frames-per-second", new Vector2(350, 660), Color.White);
                 }
             }
             // Draw fade out
@@ -332,6 +331,6 @@ namespace Olympuzz.GameScreen
             {
                 spriteBatch.Draw(blackScreenPic, Vector2.Zero, _Color);
             }
-        }*/
+        }
     }
 }

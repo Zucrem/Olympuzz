@@ -8,15 +8,16 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using static Olympuzz.Managers.ScreenManager;
+using System.Diagnostics;
 
 namespace Olympuzz.GameScreen
 {
-    class SplashScreen : GameScreen
+    class SplashScreen : _GameScreen
     {
-        /*private Vector2 fontSize;
+        private Vector2 fontSize;
         private Color color; //เพื่อupdate ค่าความโปร่งสี
         private SpriteFont Arcanista, KM;//กำหนดชื่อ font
-        private Texture2D Logo, GameName, Black;//กำหนด ภาพของหน้า splashscreen
+        private Texture2D Logo, GameName,blackScreen;//กำหนด ภาพของหน้า splashscreen
         private int alpha; // ค่าความโปร่งสี
         private int displayIndex; // order of index to display splash screen
         private float timer; // Elapsed time in game 
@@ -34,11 +35,11 @@ namespace Olympuzz.GameScreen
         public override void LoadContent()
         {
             base.LoadContent();
-            Arcanista = content.Load<SpriteFont>("Fonts/Arcanista");
+            /*Arcanista = content.Load<SpriteFont>("Fonts/Arcanista");
             KM = content.Load<SpriteFont>("Fonts/KH-Metropolis");
             Logo = content.Load<Texture2D>("SplashScreen/Logo");
-            GameName = content.Load<Texture2D>("SplashScreen/Logo");
-            Black = content.Load<Texture2D>("SplashScreen/Black");
+            GameName = content.Load<Texture2D>("SplashScreen/Logo");*/
+            blackScreen = content.Load<Texture2D>("blackScreen");
         }
         public override void UnloadContent() { base.UnloadContent(); }
         public override void Update(GameTime gameTime)
@@ -52,11 +53,15 @@ namespace Olympuzz.GameScreen
                     //fade in
                     alpha += 5;
                     // when fade in finish
-                    if (alpha >= 250)
+                    if (alpha >= 10)
                     {
                         Show = false;
+
                         // transition screen
-                        if (displayIndex == 3) ScreenManager.Instance.LoadScreen(ScreenManager.GameScreen.MenuScreen);
+                        if (displayIndex == 3)
+                        {
+                            ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.MenuScreen);
+                        }
                     }
                 }
                 else
@@ -95,21 +100,20 @@ namespace Olympuzz.GameScreen
             switch (displayIndex)
             {
                 case 0:
-                    spriteBatch.Draw(Logo, new Vector2((Singleton.Instance.Dimensions.X - Logo.Width) / 2, (Singleton.Instance.Dimensions.Y - Logo.Height) / 2), color);
+                    //spriteBatch.Draw(Logo, new Vector2((Singleton.Instance.Dimensions.X - Logo.Width) / 2, (Singleton.Instance.Dimensions.Y - Logo.Height) / 2), color);
                     break;
                 case 1:
-                    fontSize = Arcanista.MeasureString("proudly   present");
-                    spriteBatch.DrawString(Arcanista, "proudly   present", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, (Singleton.Instance.Dimensions.Y - fontSize.Y) / 2), color);
+                    //fontSize = Arcanista.MeasureString("proudly   present");
+                    //spriteBatch.DrawString(Arcanista, "proudly   present", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, (Singleton.Instance.Dimensions.Y - fontSize.Y) / 2), color);
                     break;
                 case 2:
-                    fontSize = KM.MeasureString("Egypt Bubble");
-                    spriteBatch.DrawString(KM, "Egypt Bubble", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, (Singleton.Instance.Dimensions.Y - fontSize.Y) / 2), color);
+                    //fontSize = KM.MeasureString("Egypt Bubble");
+                    //spriteBatch.DrawString(KM, "Egypt Bubble", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, (Singleton.Instance.Dimensions.Y - fontSize.Y) / 2), color);
                     break;
                 case 3:
-                    spriteBatch.Draw(Black, Vector2.Zero, color);
+                    spriteBatch.Draw(blackScreen, Vector2.Zero, color);
                     break;
             }
-
-        }*/
+        }
     }
 }

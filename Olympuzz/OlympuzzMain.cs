@@ -13,7 +13,7 @@ namespace Olympuzz
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Vector2 position , size;
-        private Texture2D reddot,shooterTexture,bubbleTexture, baseTexture;
+        private Texture2D reddot,shooterTexture, baseTexture;
         private readonly Texture2D[] bubleAllTexture = new Texture2D[5];
         private Button b;
         private Shooter shooter;
@@ -54,7 +54,7 @@ namespace Olympuzz
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            shooterTexture = Content.Load<Texture2D>("bow only");
+            /*shooterTexture = Content.Load<Texture2D>("bow only");
             bubleAllTexture[0] = Content.Load<Texture2D>("Earth");
             bubleAllTexture[1] = Content.Load<Texture2D>("Fire");
             bubleAllTexture[2] = Content.Load<Texture2D>("Thunder");
@@ -73,20 +73,22 @@ namespace Olympuzz
                 //Position = new Vector2(640, 720),
                 color = Color.White,
                 IsActive = true,
-            };
-            
+            };*/
+
             //ScreenManager.Instance.LoadContent(Content);
             //Arial = Content.Load<SpriteFont>("Fonts/Arial");
-         }
+
+            ScreenManager.Instance.LoadContent(Content);
+        }
          
-        /*protected override void UnloadContent()
+        protected override void UnloadContent()
         {
             ScreenManager.Instance.UnloadContent();
-        }*/
+        }
 
         protected override void Update(GameTime gameTime)
         {
-            //ScreenManager.Instance.Update(gameTime);
+            ScreenManager.Instance.Update(gameTime);
             Singleton.Instance.IsFullScreen = _graphics.IsFullScreen;
             //MediaPlayer.Volume = Singleton.Instance.bgMusicVolume;
 
@@ -100,19 +102,17 @@ namespace Olympuzz
                 Exit();
             }
 
-            shooter.Update(gameTime);
-
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.White);
+            //GraphicsDevice.Clear(Color.White);
             _spriteBatch.Begin();
 
-            /*//fade in and out screen
+            //fade in and out screen
             ScreenManager.Instance.Draw(_spriteBatch);
-            if (Singleton.Instance.cmdShowFPS)
+            /*if (Singleton.Instance.cmdShowFPS)
             {
                 float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
                 FrameCounter.Instance.Update(deltaTime);
@@ -121,8 +121,8 @@ namespace Olympuzz
 
             // TODO: Add your drawing code here
 
-            shooter.Draw(_spriteBatch);
-            b.Draw(_spriteBatch);
+            //shooter.Draw(_spriteBatch);
+            //b.Draw(_spriteBatch);
             _spriteBatch.End();
             
             base.Draw(gameTime);
