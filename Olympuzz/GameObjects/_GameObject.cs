@@ -49,11 +49,10 @@ namespace Olympuzz.GameObjects
             IsActive = true;
         }
 
-        public virtual void Update(GameTime gameTime)
-        {
-        }
-        public virtual void Draw(SpriteBatch spriteBatch)
-        {
-        }
+        public virtual void Update(GameTime gameTime) {}
+
+        public virtual void Draw(SpriteBatch spriteBatch) {}
+
+        public virtual void Update(GameTime gameTime, Bubble[,] bubbles) { }
     }
 }

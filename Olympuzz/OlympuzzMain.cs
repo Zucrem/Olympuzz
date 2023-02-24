@@ -17,10 +17,9 @@ namespace Olympuzz
         private readonly Texture2D[] bubleAllTexture = new Texture2D[5];
         private Button b;
         private Shooter shooter;
-        private Bubble bubble;
 
-        private Song BGM;
-        private SpriteFont Arial;
+        //private Song BGM;
+        //private SpriteFont Arial;
 
         public OlympuzzMain()
         {

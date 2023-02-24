@@ -20,8 +20,6 @@ namespace Olympuzz.GameObjects
         private float angle;
         private Texture2D _base;
 
-        private Vector2 d;
-
         //public SoundEffectInstance _deadSFX, _stickSFX;
         public Shooter(Texture2D texture, Texture2D[] bubble , Texture2D _base) : base(texture)
         {
@@ -41,10 +39,11 @@ namespace Olympuzz.GameObjects
                 //ถ้าไม่ได้ยิง และ กดเม้าซ้าย และเม้าก่อนหน้าปล่อยอยู่
                 if (!Singleton.Instance.Shooting && Singleton.Instance.MouseCurrent.LeftButton == ButtonState.Pressed && Singleton.Instance.MousePrevious.LeftButton == ButtonState.Released)
                 {
+                    //If have GameScreen change this to set bubble Angle and speed only and Don't create bubble in this anymore because GameScreen had already generate Orb for shooting
                     bubble = new Bubble(bubbleTexture)
                     {
                         Name = "Bubble",
-                        Position = this.Position,
+                        Position = Position,
                         //deadSFX = _deadSFX,
                         //stickSFX = _stickSFX,
                         IsActive = true,
@@ -55,7 +54,7 @@ namespace Olympuzz.GameObjects
                 }
             }//ถ้าหน้าไม้อยู่ในสถานะยิง
             if (Singleton.Instance.Shooting)
-                bubble.Update(gameTime);
+                bubble.Update(gameTime,null);
         } 
 
         public override void Draw(SpriteBatch spriteBatch)
