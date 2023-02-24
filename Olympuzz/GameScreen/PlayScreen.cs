@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Olympuzz.GameScreen
 {
@@ -19,12 +20,12 @@ namespace Olympuzz.GameScreen
     {
         private Texture2D background, blackScreen;
         //private SpriteFont Arial, Arcanista;
-        private Bubble[,] bubble = new Bubble[9, 10];
+        private Bubble[,] bubble = new Bubble[15, 10];
         private Color color;
         private Shooter shooter;
         private Vector2 fontSize;
         private float _timer = 0f;
-        private float __timer = 0f;
+        private float _scrollTime = 0f;
         private float Timer = 0f;
         private float timerPerUpdate = 0.05f;
         private float tickPerUpdate = 30f;
@@ -34,7 +35,7 @@ namespace Olympuzz.GameScreen
         private bool gameWin = false;
         private SoundEffectInstance BubbleSFX_stick, BubbleSFX_dead;
         private SoundEffectInstance Click;
-
+        private bool isEven = true;
 
         private Texture2D shooterTexture, baseTexture;
         private readonly Texture2D[] bubleAllTexture = new Texture2D[5];
@@ -44,17 +45,19 @@ namespace Olympuzz.GameScreen
         public void Initial()
         {
             color = new Color(255, 255, 255, alpha);
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++) // if end in 13 line i < 5 || if end in 12 line i < 4
             {
                 for (int j = 0; j < 10 - (i % 2); j++)
                 {
                     bubble[i, j] = new Bubble(bubleAllTexture)
                     {
                         Name = "Bubble", 
-                        Position = new Vector2((j * 50) + ((i % 2) == 0 ? 414 : 439), (i * 45) + 85), // what x cordition is the best 414 or 415
+                        Position = new Vector2((j * 50) + (isEven ? 414 : 439), (i * 42) + 85), // what x cordition is the best 414 or 415
+                        isEven = isEven,
                         IsActive = false,
                     };
                 }
+                isEven = !isEven;
             }
             /*Click.Volume = Singleton.Instance.bgMusicVolume;
             BubbleSFX_stick.Volume = Singleton.Instance.bgMusicVolume;
@@ -62,7 +65,7 @@ namespace Olympuzz.GameScreen
             shooter = new Shooter(shooterTexture, bubleAllTexture, baseTexture)
             {
                 Name = "Shooter",
-                Position = new Vector2(Singleton.Instance.Dimensions.X / 2, Singleton.Instance.Dimensions.Y),
+                Position = new Vector2(Singleton.Instance.Dimensions.X / 2, 684),
                 //_deadSFX = BubbleSFX_dead,
                 //_stickSFX = BubbleSFX_stick,
                 IsActive = true,
@@ -122,106 +125,117 @@ namespace Olympuzz.GameScreen
                 //shooter.Update(gameTime, bubble);
                 shooter.Update(gameTime);
                 Timer += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
-                for (int i = 0; i < 8; i++)
+                for (int j = 0; j < 10; j++)
                 {
-                    if (bubble[8, i] != null)
+                    if (bubble[12, j] != null)
                     {
                         gameOver = true;
                         //Singleton.Instance.BestScore = Singleton.Instance.Score.ToString();
                         //Singleton.Instance.BestTime = Timer.ToString("F");
                     }
                 }
-                //Check ball flying
-                for (int i = 1; i < 9; i++)
-                {
-                    for (int j = 1; j < 7 - (i % 2); j++)
-                    {
-                        if (i % 2 != 0)
-                        {
-                            if (bubble[i - 1, j] == null && bubble[i - 1, j + 1] == null)
-                            {
-                                bubble[i, j] = null;
-                            }
-                            if (bubble[i, 1] == null && bubble[i - 1, 0] == null && bubble[i - 1, 1] == null)
-                            {
-                                bubble[i, 0] = null;
-                            }
-                            if (bubble[i, 5] == null && bubble[i - 1, 7] == null && bubble[i - 1, 6] == null)
-                            {
-                                bubble[i, 6] = null;
-                            }
-                        }
-                        else
-                        {
-                            if (bubble[i - 1, j - 1] == null && bubble[i - 1, j] == null)
-                            {
-                                bubble[i, j] = null;
-                            }
-                            if (bubble[i - 1, 0] == null && bubble[i, 1] == null)
-                            {
-                                bubble[i, 0] = null;
-                            }
-                            if (bubble[i - 1, 6] == null && bubble[i, 6] == null)
-                            {
-                                bubble[i, 7] = null;
-                            }
-                        }
-                    }
-                }
 
-                __timer += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
-                if (__timer >= tickPerUpdate)
+                //Check ball flying
+                //for (int i = 1; i < 9; i++)
+                //{
+                //    for (int j = 1; j < 7 - (i % 2); j++)
+                //    {
+                //        if (i % 2 != 0)
+                //        {
+                //            if (bubble[i - 1, j] == null && bubble[i - 1, j + 1] == null)
+                //            {
+                //                bubble[i, j] = null;
+                //            }
+                //            if (bubble[i, 1] == null && bubble[i - 1, 0] == null && bubble[i - 1, 1] == null)
+                //            {
+                //                bubble[i, 0] = null;
+                //            }
+                //            if (bubble[i, 5] == null && bubble[i - 1, 7] == null && bubble[i - 1, 6] == null)
+                //            {
+                //                bubble[i, 6] = null;
+                //            }
+                //        }
+                //        else
+                //        {
+                //            if (bubble[i - 1, j - 1] == null && bubble[i - 1, j] == null)
+                //            {
+                //                bubble[i, j] = null;
+                //            }
+                //            if (bubble[i - 1, 0] == null && bubble[i, 1] == null)
+                //            {
+                //                bubble[i, 0] = null;
+                //            }
+                //            if (bubble[i - 1, 6] == null && bubble[i, 6] == null)
+                //            {
+                //                bubble[i, 7] = null;
+                //            }
+                //        }
+                //    }
+                //}
+
+                _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond * 10;
+                if (_scrollTime >= tickPerUpdate)
                 {
                     // Check game over before scroll
-                    for (int i = 6; i < 9; i++)
+                    for (int i = 6; i < 13; i++)
                     {
-                        for (int j = 0; j < 8 - (i % 2); j++)
+                        for (int j = 0; j < 10 - (isEven ? 0 : 1); j++)
                         {
-                            if (bubble[i, j] != null)
+                            if (bubble[12, j] != null)
                             {
-                                gameOver = true;
+                                //gameOver = true;
                                 //Singleton.Instance.BestScore = Singleton.Instance.Score.ToString();
                                 //Singleton.Instance.BestTime = Timer.ToString("F");
                             }
                         }
                     }
+
                     // Scroll position 
-                    for (int i = 5; i >= 0; i--)
+                    for (int i = 11; i >= 0; i--)
                     {
-                        for (int j = 0; j < 8 - (i % 2); j++)
+                        for (int j = 0; j < 10; j++)
                         {
-                            bubble[i + 2, j] = bubble[i, j];
+                            bubble[i + 1, j] = bubble[i, j];
+                            if (bubble[i, j] != null)
+                                if (j == (bubble[i, j].isEven ? 9 : 8)) break;
                         }
                     }
+
                     // Draw new scroll position
-                    for (int i = 0; i < 9; i++)
+                    for (int i = 0; i < 13; i++)
                     {
-                        for (int j = 0; j < 8 - (i % 2); j++)
+                        for (int j = 0; j < 10; j++)
                         {
                             if (bubble[i, j] != null)
                             {
-                                bubble[i, j].Position = new Vector2((j * 80) + ((i % 2) == 0 ? 320 : 360), (i * 70) + 40);
+                                bubble[i, j].Position = new Vector2((j * 50) + (bubble[i,j].isEven ? 414 : 439), (i * 42) + 85);
+                                
+                                if (j == (bubble[i, j].isEven ? 9 : 8)) break;
                             }
+                            
                         }
                     }
+
                     //Random ball after scroll
-                    for (int i = 0; i < 2; i++)
+                    for (int i = 0; i < 1; i++)
                     {
-                        for (int j = 0; j < 8 - (i % 2); j++)
+                        for (int j = 0; j < 10 - (isEven ? 0 : 1); j++)
                         {
                             bubble[i, j] = new Bubble(bubleAllTexture)
                             {
                                 Name = "Bubble",
-                                Position = new Vector2((j * 80) + ((i % 2) == 0 ? 320 : 360), (i * 70) + 40),
+                                Position = new Vector2((j * 50) + (isEven ? 414 : 439), (i * 42) + 85),
+                                isEven = isEven,
                                 IsActive = false,
                             };
                         }
+                        isEven = !isEven;
                     }
 
-                    __timer -= tickPerUpdate;
+                    _scrollTime -= tickPerUpdate;
                 }
 
-                gameWin = CheckWin(bubble);
+                //gameWin = CheckWin(bubble);
 
             }
             else
@@ -257,9 +271,9 @@ namespace Olympuzz.GameScreen
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(background, Vector2.Zero, Color.White);
-            for (int i = 0; i < 9; i++) // Bubble in Even Line
+            for (int i = 0; i < 15; i++) // Line of bubble
             {
-                for (int j = 0; j < 10; j++) //Bubble in Odd Line
+                for (int j = 0; j < 10; j++) //Bubble in line
                 {
                     if (bubble[i, j] != null)
                         bubble[i, j].Draw(spriteBatch);
@@ -269,7 +283,7 @@ namespace Olympuzz.GameScreen
 
             /*spriteBatch.DrawString(Arcanista, "Score : " + Singleton.Instance.Score, new Vector2(1060, 260), color);
             spriteBatch.DrawString(Arcanista, "Time : " + Timer.ToString("F"), new Vector2(20, 260), color);
-            spriteBatch.DrawString(Arcanista, "Next Time : " + (tickPerUpdate - __timer).ToString("F"), new Vector2(20, 210), color);*/
+            spriteBatch.DrawString(Arcanista, "Next Time : " + (tickPerUpdate - _scrollTime).ToString("F"), new Vector2(20, 210), color);*/
 
             if (gameOver)
             {

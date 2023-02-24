@@ -54,7 +54,7 @@ namespace Olympuzz.GameObjects
                 }
             }//ถ้าหน้าไม้อยู่ในสถานะยิง
             if (Singleton.Instance.Shooting)
-                bubble.Update(gameTime);
+                bubble.Update(gameTime,null);
         } 
 
         public override void Draw(SpriteBatch spriteBatch)
