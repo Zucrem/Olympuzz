@@ -18,30 +18,35 @@ namespace Olympuzz.GameScreen
 {
     class PlayScreen : _GameScreen
     {
-        private Texture2D background, blackScreen;
+        private Texture2D background, blackScreen , shooterTexture, baseTexture, redbutton , board;
+        private readonly Texture2D[] bubleAllTexture = new Texture2D[5];
+
+        private Color color;
+        private Vector2 fontSize;
+
         //private SpriteFont Arial, Arcanista;
         private Bubble[,] bubble = new Bubble[15, 10];
-        private Color color;
         private Shooter shooter;
-        private Vector2 fontSize;
+        private Button button;
+
         private float _timer = 0f;
         private float _scrollTime = 0f;
         private float Timer = 0f;
         private float timerPerUpdate = 0.05f;
         private float tickPerUpdate = 30f;
         private int alpha = 255;
+        
+        private SoundEffectInstance BubbleSFX_stick, BubbleSFX_dead;
+        private SoundEffectInstance Click;
+        
+        private bool isEven = true;
         private bool fadeFinish = false;
         private bool gameOver = false;
         private bool gameWin = false;
-        private SoundEffectInstance BubbleSFX_stick, BubbleSFX_dead;
-        private SoundEffectInstance Click;
-        private bool isEven = true;
-
-        private Texture2D shooterTexture, baseTexture;
-        private readonly Texture2D[] bubleAllTexture = new Texture2D[5];
+        //private Texture2D shooterTexture, baseTexture , redbutton;
 
         //border = 640,684
-        
+
         public void Initial()
         {
             color = new Color(255, 255, 255, alpha);
@@ -52,7 +57,7 @@ namespace Olympuzz.GameScreen
                     bubble[i, j] = new Bubble(bubleAllTexture)
                     {
                         Name = "Bubble", 
-                        Position = new Vector2((j * 50) + (isEven ? 414 : 439), (i * 42) + 85), // what x cordition is the best 414 or 415
+                        Position = new Vector2((j * 49) + (isEven ? 363 : 388), (i * 42) + 105), // what x cordition is the best 414 or 415
                         isEven = isEven,
                         IsActive = false,
                     };
@@ -62,6 +67,9 @@ namespace Olympuzz.GameScreen
             /*Click.Volume = Singleton.Instance.bgMusicVolume;
             BubbleSFX_stick.Volume = Singleton.Instance.bgMusicVolume;
             BubbleSFX_dead.Volume = Singleton.Instance.bgMusicVolume;*/
+
+            button = new Button(redbutton,new Vector2(100,100),new Vector2(100,100));
+
             shooter = new Shooter(shooterTexture, bubleAllTexture, baseTexture)
             {
                 Name = "Shooter",
@@ -89,15 +97,17 @@ namespace Olympuzz.GameScreen
         public override void LoadContent()
         {
             base.LoadContent();
-            background = content.Load<Texture2D>("gud room");
+            background = content.Load<Texture2D>("Stag_1/Poseidon Stage");
             blackScreen = content.Load<Texture2D>("blackScreen");
-            shooterTexture = content.Load<Texture2D>("bow only");
+            shooterTexture = content.Load<Texture2D>("PlayScreen/bow_2 v2");
             bubleAllTexture[0] = content.Load<Texture2D>("Earth");
             bubleAllTexture[1] = content.Load<Texture2D>("Fire");
             bubleAllTexture[2] = content.Load<Texture2D>("Thunder");
             bubleAllTexture[3] = content.Load<Texture2D>("Water");
             bubleAllTexture[4] = content.Load<Texture2D>("Wind");
-            baseTexture = content.Load<Texture2D>("base");
+            redbutton = content.Load<Texture2D>("Water");
+            baseTexture = content.Load<Texture2D>("PlayScreen/base_2 v2");
+            board = content.Load<Texture2D>("Stag_1/board");
             /*Arial = content.Load<SpriteFont>("Fonts/Arial");
             Arcanista = content.Load<SpriteFont>("Fonts/Arcanista");
             BubbleSFX_dead = content.Load<SoundEffect>("Audios/UI_SoundPack8_Error_v1").CreateInstance();
@@ -123,7 +133,7 @@ namespace Olympuzz.GameScreen
                     }
                 }*/
                 //shooter.Update(gameTime, bubble);
-                shooter.Update(gameTime);
+                shooter.Update(gameTime,bubble);
                 Timer += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                 for (int j = 0; j < 10; j++)
                 {
@@ -134,7 +144,10 @@ namespace Olympuzz.GameScreen
                         //Singleton.Instance.BestTime = Timer.ToString("F");
                     }
                 }
-
+                if (button.IsClicked(Mouse.GetState(),gameTime))
+                {
+                    Debug.WriteLine("Button was clicked");
+                }
                 //Check ball flying
                 //for (int i = 1; i < 9; i++)
                 //{
@@ -173,7 +186,7 @@ namespace Olympuzz.GameScreen
                 //    }
                 //}
 
-                _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond * 10;
+                _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                 if (_scrollTime >= tickPerUpdate)
                 {
                     // Check game over before scroll
@@ -208,7 +221,7 @@ namespace Olympuzz.GameScreen
                         {
                             if (bubble[i, j] != null)
                             {
-                                bubble[i, j].Position = new Vector2((j * 50) + (bubble[i,j].isEven ? 414 : 439), (i * 42) + 85);
+                                bubble[i, j].Position = new Vector2((j * 49) + (bubble[i,j].isEven ? 363 : 388), (i * 42) + 105);
                                 
                                 if (j == (bubble[i, j].isEven ? 9 : 8)) break;
                             }
@@ -224,7 +237,7 @@ namespace Olympuzz.GameScreen
                             bubble[i, j] = new Bubble(bubleAllTexture)
                             {
                                 Name = "Bubble",
-                                Position = new Vector2((j * 50) + (isEven ? 414 : 439), (i * 42) + 85),
+                                Position = new Vector2((j * 49) + (isEven ? 363 : 388), (i * 42) + 105),
                                 isEven = isEven,
                                 IsActive = false,
                             };
@@ -264,13 +277,15 @@ namespace Olympuzz.GameScreen
                 }
             }
 
-            shooter.Update(gameTime);
+            shooter.Update(gameTime,bubble);
 
             base.Update(gameTime);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Draw(board, new Vector2(336,54), Color.White);
             spriteBatch.Draw(background, Vector2.Zero, Color.White);
+            
             for (int i = 0; i < 15; i++) // Line of bubble
             {
                 for (int j = 0; j < 10; j++) //Bubble in line
@@ -279,7 +294,9 @@ namespace Olympuzz.GameScreen
                         bubble[i, j].Draw(spriteBatch);
                 }
             }
+
             shooter.Draw(spriteBatch);
+            button.Draw(spriteBatch);
 
             /*spriteBatch.DrawString(Arcanista, "Score : " + Singleton.Instance.Score, new Vector2(1060, 260), color);
             spriteBatch.DrawString(Arcanista, "Time : " + Timer.ToString("F"), new Vector2(20, 260), color);
