@@ -23,6 +23,11 @@ namespace Olympuzz.GameObjects
             bubbleTexture = RandomBubble();
         }
 
+        public Bubble(Texture2D bubble) : base(bubble)
+        {
+            bubbleTexture = bubble;
+        }
+
         public override void Update(GameTime gameTime, Bubble[,] bubbles)
         {
             if (IsActive)
@@ -30,8 +35,7 @@ namespace Olympuzz.GameObjects
                 Velocity.X = (float)Math.Cos(Angle) * speed; //direction of bubble to go in axis x
                 Velocity.Y = (float)Math.Sin(Angle) * speed; // direction of bubble to go in axis y
                 Position += Velocity * gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond; // position of bubble that will increase to direction that canon point to
-                //bubbleCollision(bubbles);
-
+                bubbleCollision(bubbles);
                 if (Position.X < 400) 
                 {   
                     Angle = -Angle;
@@ -49,13 +53,13 @@ namespace Olympuzz.GameObjects
 
         public void bubbleCollision(Bubble[,] bubbles)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 15; i++)
             {
-                for (int j = 0; j < 15; j++)
+                for (int j = 0; j < 10; j++)
                 {
-                    if (bubbles[i,j] != null && !bubbles[i,j].IsActive) //if bubble at that position have a bubble and exist in board
+                    if (bubbles[i, j] != null && !bubbles[i, j].IsActive) //if bubble at that position have a bubble and exist in board
                     {
-                        if (CheckCollision(bubbles[i, j]) <= 70) ;
+                        if (CheckCollision(bubbles[i, j]) <= 42) ;
                     }
                 }
             }

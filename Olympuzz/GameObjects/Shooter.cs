@@ -28,7 +28,7 @@ namespace Olympuzz.GameObjects
 
         }
         
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, Bubble[,] bubbles)
         {
             Singleton.Instance.MousePrevious = Singleton.Instance.MouseCurrent;//เก็บสถานะmouseก่อนหน้า
             Singleton.Instance.MouseCurrent = Mouse.GetState();//เก็บสถานะmouseปัจจุบัน
@@ -54,7 +54,7 @@ namespace Olympuzz.GameObjects
                 }
             }//ถ้าหน้าไม้อยู่ในสถานะยิง
             if (Singleton.Instance.Shooting)
-                bubble.Update(gameTime,null);
+                bubble.Update(gameTime, bubbles);
         } 
 
         public override void Draw(SpriteBatch spriteBatch)
