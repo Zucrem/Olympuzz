@@ -25,6 +25,8 @@ namespace Olympuzz.GameObjects
         {
             bubbleTexture = bubble;
             this._base = _base;
+            
+            Debug.WriteLine(angle);
 
         }
         
@@ -60,7 +62,15 @@ namespace Olympuzz.GameObjects
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_base, Position,null, Color.White, 0, new Vector2(_texture.Width / 2, _texture.Height), 1f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(_texture, Position, null, Color.White, angle + MathHelper.ToRadians(90f), new Vector2(_texture.Width / 2, _texture.Height), 1f, SpriteEffects.None, 0f);
+            if (angle == 0)
+            {
+                spriteBatch.Draw(_texture, Position, null, Color.White, angle, new Vector2(_texture.Width / 2, _texture.Height), 1f, SpriteEffects.None, 0f);
+            }
+            else
+            {
+                spriteBatch.Draw(_texture, Position, null, Color.White, angle + MathHelper.ToRadians(90f), new Vector2(_texture.Width / 2, _texture.Height), 1f, SpriteEffects.None, 0f); 
+            }
+
             if (Singleton.Instance.Shooting)//ถ้ายังไม่ได้อยู่ในสถานะยิงให้วาดรูปลูกบอล
                 bubble.Draw(spriteBatch);
         }

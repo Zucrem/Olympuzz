@@ -15,23 +15,42 @@ namespace Olympuzz.GameObjects
         private Texture2D texture;
         private Vector2 position;
         private Rectangle bounds;
+        private bool isHovered;
         private bool isPressed;
 
         private const int MAX_CLICK_DELAY_MS = 300;
         private int lastClickTime;
+
+        //sound
+        //private SoundEffectInstance soundClickButton, soundEnterGame, soundSelectButton;
 
         public Button(Texture2D texture, Vector2 position , Vector2 size)
         {
             this.texture = texture;
             this.position = position;
             this.bounds = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
+            isHovered = false;
             this.isPressed = false;
             this.lastClickTime = 0;
         }
 
+        //click sound
+        /*soundHoverButton.Volume = Singleton.Instance.soundMasterVolume;
+        soundClickButton.Volume = Singleton.Instance.soundMasterVolume;*/
+
+
+        // Sounds
+        /*soundClickButton = content.Load<SoundEffect>("Audios/UI_SoundPack8_Error_v1").CreateInstance();
+        soundHoverButton = content.Load<SoundEffect>("Audios/transition t07 two-step 007").CreateInstance();*/
+
+        public bool isWhileHovering(MouseState mouseState)
+        {
+            isHovered = bounds.Contains(mouseState.Position);
+            return isHovered;
+        }
         public bool IsClicked(MouseState mouseState, GameTime gameTime)
         {
-
+            //soundClickButton.Play();
             bool wasPressed = isPressed;
 
             // bound.Contains use to active only if mouse is in Position && check if mouse was left click
@@ -47,6 +66,7 @@ namespace Olympuzz.GameObjects
                 if (elapsedMs > MAX_CLICK_DELAY_MS)
                 {
                     //lastclickTime = TotalTime of program that time
+                    //soundClickButton.Play();
                     lastClickTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
                     return true;
                 }
@@ -57,7 +77,15 @@ namespace Olympuzz.GameObjects
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, bounds, Color.White);
+            if (isWhileHovering(Singleton.Instance.MouseCurrent))
+            {
+                //soundHoverButton.Play();
+                spriteBatch.Draw(texture, bounds, Color.LightGray);
+            }
+            else
+            {
+                spriteBatch.Draw(texture, bounds, Color.White);
+            }
         }
     }
 }
