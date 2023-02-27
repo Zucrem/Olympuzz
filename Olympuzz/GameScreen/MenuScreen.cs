@@ -17,7 +17,7 @@ namespace Olympuzz.GameScreen
         private Texture2D startPic, howToPlayPic, settingPic, exitPic, checkBoxBGM, checkBoxSFX, apply, back, ArrowLeftBGM, ArrowRightBGM, ArrowLeftSFX, ArrowRightSFX;
 
         //all button
-        Button startButton, howToPlayButton, settingButton, exitButton, backButton, applySettingButton, arrowLbgmButton, arrowRbgmButton, arrowLsfxButton, arrowRsfxButton;
+        private Button startButton, howToPlayButton, settingButton, exitButton, backButton, applySettingButton, arrowLbgmButton, arrowRbgmButton, arrowLsfxButton, arrowRsfxButton;
 
         //private SpriteFont Arial, Arcanista, KM;
         private Vector2 fontSize;
@@ -66,19 +66,19 @@ namespace Olympuzz.GameScreen
 
             //all button
             //mainscreen button
-            startPic = content.Load<Texture2D>("Water");
-            howToPlayPic = content.Load<Texture2D>("Water");
-            settingPic = content.Load<Texture2D>("Water");
-            exitPic = content.Load<Texture2D>("Water");
+            startPic = content.Load<Texture2D>("PlayScreen/Water");
+            howToPlayPic = content.Load<Texture2D>("PlayScreen/Water");
+            settingPic = content.Load<Texture2D>("PlayScreen/Water");
+            exitPic = content.Load<Texture2D>("PlayScreen/Water");
             //setting and how2play button
             /*checkBoxBGM = content.Load<Texture2D>("Fire");
             checkBoxSFX = content.Load<Texture2D>("Fire");*/
-            apply = content.Load<Texture2D>("Fire");
-            back = content.Load<Texture2D>("Fire");
-            ArrowLeftBGM = content.Load<Texture2D>("Wind");
-            ArrowRightBGM = content.Load<Texture2D>("Earth");
-            ArrowLeftSFX = content.Load<Texture2D>("Wind");
-            ArrowRightSFX = content.Load<Texture2D>("Earth");
+            apply = content.Load<Texture2D>("PlayScreen/Fire");
+            back = content.Load<Texture2D>("PlayScreen/Fire");
+            ArrowLeftBGM = content.Load<Texture2D>("PlayScreen/Wind");
+            ArrowRightBGM = content.Load<Texture2D>("PlayScreen/Earth");
+            ArrowLeftSFX = content.Load<Texture2D>("PlayScreen/Wind");
+            ArrowRightSFX = content.Load<Texture2D>("PlayScreen/Earth");
             // Fonts
             /*Arial = content.Load<SpriteFont>("Fonts/Arial");
             Arcanista = content.Load<SpriteFont>("Fonts/Arcanista");
