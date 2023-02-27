@@ -108,7 +108,6 @@ namespace Olympuzz
         {
             //GraphicsDevice.Clear(Color.White);
             _spriteBatch.Begin();
-
             //fade in and out screen
             ScreenManager.Instance.Draw(_spriteBatch);
             /*if (Singleton.Instance.cmdShowFPS)
