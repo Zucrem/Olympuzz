@@ -5,6 +5,8 @@ using System;
 using Microsoft.Xna.Framework.Audio;
 using Olympuzz.Managers;
 using Olympuzz.GameObjects;
+using System.Threading;
+using System.Timers;
 
 namespace Olympuzz.GameScreen
 {
@@ -37,15 +39,13 @@ namespace Olympuzz.GameScreen
         private int masterBGM  = Singleton.Instance.bgMusicVolume;
         private int masterSFX = Convert.ToInt32(Singleton.Instance.soundMasterVolume * 100);
 
-
-
         public void Initial()
         {
             //main menu button
             startButton = new Button(startPic, new Vector2(490, 389), new Vector2(300, 70));
             settingButton = new Button(settingPic, new Vector2(490, 490), new Vector2(300, 70));
-            exitButton = new Button(exitPic, new Vector2(900, 609), new Vector2(300, 70));
-            //exitButton = new Button(exitPic, new Vector2(490, 609), new Vector2(300, 70));
+            //exitButton = new Button(exitPic, new Vector2(900, 609), new Vector2(300, 70));
+            exitButton = new Button(exitPic, new Vector2(490, 609), new Vector2(300, 70));
 
             //setting and how2play button
             backButton = new Button(back, new Vector2(490, 609), new Vector2(300, 70));
@@ -101,76 +101,80 @@ namespace Olympuzz.GameScreen
 
             Singleton.Instance.MousePrevious = Singleton.Instance.MouseCurrent;
             Singleton.Instance.MouseCurrent = Mouse.GetState();
-            if (mainScreen)
-            {
-                // Click start game
-                if (startButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+            int elapsedMs = (int)gameTime.TotalGameTime.TotalMilliseconds - Singleton.Instance.lastClickTime;
+            //if (elapsedMs > 300)
+            //{
+                if (mainScreen)
                 {
-                    ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
-                    mainScreen = false;
+                    // Click start game
+                    if (startButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
+                        mainScreen = false;
+                    }
+                    // Click setting
+                    if (settingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        showSetting = true;
+                        mainScreen = false;
+                    }
+                    // Click Exit
+                    if (exitButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        Singleton.Instance.cmdExit = true;
+                    }
                 }
-                // Click setting
-                if (settingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                else
                 {
-                    showSetting = true;
-                    mainScreen = false;
-                }
-                // Click Exit
-                if (exitButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    Singleton.Instance.cmdExit = true;
-                }
-            }
-            else
-            {
-                if (showSetting)
-                {
+                    if (showSetting)
+                    {
 
-                    // Click Arrow BGM Left and RIght
-                    if (applySettingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                    {
-                        if (masterBGM > 0)
+                        // Click Arrow BGM Left and RIght
+                        if (applySettingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                         {
-                            masterBGM -= 5;
+                            if (masterBGM > 0)
+                            {
+                                masterBGM -= 5;
+                            }
                         }
-                    }
-                    else if (applySettingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                    {
-                        if (masterBGM < 100)
+                        else if (applySettingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                         {
-                            masterBGM += 5;
+                            if (masterBGM < 100)
+                            {
+                                masterBGM += 5;
+                            }
                         }
-                    }
-                    // Click Arrow SFX Left and RIght
-                    if (applySettingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                    {
-                        if (masterSFX > 0)
+                        // Click Arrow SFX Left and RIght
+                        if (applySettingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                         {
-                            masterSFX -= 5;
+                            if (masterSFX > 0)
+                            {
+                                masterSFX -= 5;
+                            }
                         }
-                    }
-                    else if (applySettingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                    {
-                        if (masterSFX < 100)
+                        else if (applySettingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                         {
-                            masterSFX += 5;
+                            if (masterSFX < 100)
+                            {
+                                masterSFX += 5;
+                            }
                         }
-                    }
-                    // Apply setting to Game (this is real changing to apply to singleton)
-                    if (applySettingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                    {
-                        /*Singleton.Instance.bgMusicVolume = masterBGM ;
-                        Singleton.Instance.soundMasterVolume = masterSFX / 100f;*/
-                    }
-                    // Click Back
-                    if (backButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                    {
-                        mainScreen = true;
-                        showSetting = false;
-                        //soundClickButton.Play();
+                        // Apply setting to Game (this is real changing to apply to singleton)
+                        if (applySettingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                        {
+                            /*Singleton.Instance.bgMusicVolume = masterBGM ;
+                            Singleton.Instance.soundMasterVolume = masterSFX / 100f;*/
+                        }
+                        // Click Back
+                        if (backButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                        {
+                            mainScreen = true;
+                            showSetting = false;
+                            //soundClickButton.Play();
+                        }
                     }
                 }
-            }
+           // }
 
             // fade out
             if (!fadeFinish)
