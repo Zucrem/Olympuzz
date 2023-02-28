@@ -14,7 +14,7 @@ namespace Olympuzz.GameScreen
         private Color _Color = new Color(250, 250, 250, 0);
         private Texture2D backgroundPic, blackScreenPic;//background
         //all picture
-        private Texture2D startPic, howToPlayPic, settingPic, exitPic, checkBoxBGM, checkBoxSFX, apply, back, ArrowLeftBGM, ArrowRightBGM, ArrowLeftSFX, ArrowRightSFX;
+        private Texture2D startPic, settingPic, exitPic, checkBoxBGM, checkBoxSFX, apply, back, ArrowLeftBGM, ArrowRightBGM, ArrowLeftSFX, ArrowRightSFX;
 
         //all button
         private Button startButton, howToPlayButton, settingButton, exitButton, backButton, applySettingButton, arrowLbgmButton, arrowRbgmButton, arrowLsfxButton, arrowRsfxButton;
@@ -43,10 +43,9 @@ namespace Olympuzz.GameScreen
         {
             //main menu button
             startButton = new Button(startPic, new Vector2(490, 389), new Vector2(300, 70));
-            howToPlayButton = new Button(howToPlayPic, new Vector2(490, 490), new Vector2(300, 70));
-            settingButton = new Button(settingPic, new Vector2(600, 609), new Vector2(300, 70));
-            //settingButton = new Button(settingPic, new Vector2(490, 609), new Vector2(300, 70));
-            exitButton = new Button(exitPic, new Vector2(700, 100), new Vector2(300, 70));
+            settingButton = new Button(settingPic, new Vector2(490, 490), new Vector2(300, 70));
+            exitButton = new Button(exitPic, new Vector2(900, 609), new Vector2(300, 70));
+            //exitButton = new Button(exitPic, new Vector2(490, 609), new Vector2(300, 70));
 
             //setting and how2play button
             backButton = new Button(back, new Vector2(490, 609), new Vector2(300, 70));
@@ -67,7 +66,6 @@ namespace Olympuzz.GameScreen
             //all button
             //mainscreen button
             startPic = content.Load<Texture2D>("PlayScreen/Water");
-            howToPlayPic = content.Load<Texture2D>("PlayScreen/Water");
             settingPic = content.Load<Texture2D>("PlayScreen/Water");
             exitPic = content.Load<Texture2D>("PlayScreen/Water");
             //setting and how2play button
@@ -117,12 +115,6 @@ namespace Olympuzz.GameScreen
                     showSetting = true;
                     mainScreen = false;
                 }
-                // Click How to Play
-                if (howToPlayButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    showHowToPlay = true;
-                    mainScreen = false;
-                }
                 // Click Exit
                 if (exitButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                 {
@@ -131,15 +123,7 @@ namespace Olympuzz.GameScreen
             }
             else
             {
-                // Click Back
-                if (backButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    mainScreen = true;
-                    showHowToPlay = false;
-                    showSetting = false;
-                    //soundClickButton.Play();
-                }
-                else if (showSetting)
+                if (showSetting)
                 {
 
                     // Click Arrow BGM Left and RIght
@@ -178,6 +162,13 @@ namespace Olympuzz.GameScreen
                         /*Singleton.Instance.bgMusicVolume = masterBGM ;
                         Singleton.Instance.soundMasterVolume = masterSFX / 100f;*/
                     }
+                    // Click Back
+                    if (backButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        mainScreen = true;
+                        showSetting = false;
+                        //soundClickButton.Play();
+                    }
                 }
             }
 
@@ -205,7 +196,6 @@ namespace Olympuzz.GameScreen
             {
                 spriteBatch.Draw(backgroundPic, Vector2.Zero, Color.White);
                 startButton.Draw(spriteBatch);
-                howToPlayButton.Draw(spriteBatch);
                 settingButton.Draw(spriteBatch);
                 exitButton.Draw(spriteBatch);
             }
@@ -242,26 +232,6 @@ namespace Olympuzz.GameScreen
                     arrowRsfxButton.Draw(spriteBatch);
 
                     applySettingButton.Draw(spriteBatch);
-                }
-                // Draw About Screen
-                else if (showHowToPlay)
-                {
-                    /*fontSize = KM.MeasureString("About");
-                    spriteBatch.DrawString(KM, "About", new Vector2(Singleton.Instance.Diemensions.X / 2 - fontSize.X / 2, 125), Color.White);
-
-                    spriteBatch.DrawString(Arcanista, "Graphics", new Vector2(200, 250), Color.NavajoWhite);
-                    spriteBatch.DrawString(Arcanista, "- We create", new Vector2(160, 350), Color.White);
-                    spriteBatch.DrawString(Arcanista, "All Graphics", new Vector2(150, 425), Color.White);
-
-                    spriteBatch.DrawString(Arcanista, "Audios", new Vector2(600, 250), Color.NavajoWhite);
-                    spriteBatch.DrawString(Arcanista, "- www.sonniss.com", new Vector2(520, 350), Color.White);
-                    spriteBatch.DrawString(Arcanista, "Free Audios Bundle", new Vector2(510, 425), Color.White);
-
-                    spriteBatch.DrawString(Arcanista, "Fonts", new Vector2(1000, 250), Color.NavajoWhite);
-                    spriteBatch.DrawString(Arcanista, "- Arial", new Vector2(985, 350), Color.White);
-                    spriteBatch.DrawString(Arcanista, "- Arcanista", new Vector2(950, 425), Color.White);
-                    spriteBatch.DrawString(Arcanista, "- KH-Metropolis", new Vector2(920, 500), Color.White);*/
-
                 }
             }
 
