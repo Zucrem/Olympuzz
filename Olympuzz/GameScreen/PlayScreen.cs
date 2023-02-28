@@ -70,8 +70,8 @@ namespace Olympuzz.GameScreen
                 {
                     bubble[i, j] = new Bubble(bubleAllTexture)
                     {
-                        Name = "Bubble",
-                        Position = new Vector2((j * 49) + (isEven ? 363 : 388), (i * 42) + 105), // what x cordition is the best 414 or 415
+                        Name = "Bubble", 
+                        Position = new Vector2((j * 49) + (isEven ? 363 : 388), (i * 42) + 79), // what x cordition is the best 414 or 415
                         isEven = isEven,
                         IsActive = false,
                     };
@@ -104,7 +104,7 @@ namespace Olympuzz.GameScreen
             shooter = new Shooter(shooterTexture, bubleAllTexture, baseTexture)
             {
                 Name = "Shooter",
-                Position = new Vector2(Singleton.Instance.Dimensions.X / 2, 684),
+                Position = new Vector2(583,702),
                 //_deadSFX = BubbleSFX_dead,
                 //_stickSFX = BubbleSFX_stick,
                 IsActive = true,
@@ -141,16 +141,18 @@ namespace Olympuzz.GameScreen
             bubleAllTexture[2] = content.Load<Texture2D>("PlayScreen/Thunder");
             bubleAllTexture[3] = content.Load<Texture2D>("PlayScreen/Water");
             bubleAllTexture[4] = content.Load<Texture2D>("PlayScreen/Wind");
-
-            baseTexture = content.Load<Texture2D>("PlayScreen/base_2 v2");
-
+            
+            baseTexture = content.Load<Texture2D>("PlayScreen/base");
+           
             //all button on playscreen
             pauseButtonPic = content.Load<Texture2D>("Stag_1/pause but");
+            
             //all button on pausescreen or lose or win
             continueButtonPic = content.Load<Texture2D>("PlayScreen/Earth");
             settingButtonPic = content.Load<Texture2D>("PlayScreen/Wind");
             exitButtonPic = content.Load<Texture2D>("PlayScreen/Water");
             restartButtonPic = content.Load<Texture2D>("PlayScreen/Fire");
+            
             //add button when win
             nextButtonPic = content.Load<Texture2D>("PlayScreen/Fire");
             //all button on setting screen
@@ -160,13 +162,14 @@ namespace Olympuzz.GameScreen
             ArrowRightBGM = content.Load<Texture2D>("PlayScreen/Earth");
             ArrowLeftSFX = content.Load<Texture2D>("PlayScreen/Wind");
             ArrowRightSFX = content.Load<Texture2D>("PlayScreen/Earth");
-
+            
             /*Arial = content.Load<SpriteFont>("Fonts/Arial");
             Arcanista = content.Load<SpriteFont>("Fonts/Arcanista");
             BubbleSFX_dead = content.Load<SoundEffect>("Audios/UI_SoundPack8_Error_v1").CreateInstance();
             BubbleSFX_stick = content.Load<SoundEffect>("Audios/UI_SoundPack11_Select_v14").CreateInstance();
             Click = content.Load<SoundEffect>("Audios/transition t07 two-step 007").CreateInstance();*/
             Initial();
+            
         }
         public override void UnloadContent()
         {
@@ -185,8 +188,10 @@ namespace Olympuzz.GameScreen
                             bubble[i, j].Update(gameTime, bubble);
                     }
                 }*/
+                
                 //shooter.Update(gameTime, bubble);
                 shooter.Update(gameTime, bubble);
+                
                 Timer += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                 for (int j = 0; j < 10; j++)
                 {
@@ -242,8 +247,8 @@ namespace Olympuzz.GameScreen
                 //        }
                 //    }
                 //}
-
-                _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond * 100;
+                
+                _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                 if (_scrollTime >= tickPerUpdate)
                 {
                     // Check game over before scroll
@@ -280,8 +285,7 @@ namespace Olympuzz.GameScreen
                         {
                             if (bubble[i, j] != null)
                             {
-                                bubble[i, j].Position = new Vector2((j * 49) + (bubble[i, j].isEven ? 363 : 388), (i * 42) + 105);
-
+                                bubble[i, j].Position = new Vector2((j * 49) + (bubble[i,j].isEven ? 363 : 388), (i * 42) + 79);
                                 if (j == (bubble[i, j].isEven ? 9 : 8)) break;
                             }
 
@@ -296,7 +300,7 @@ namespace Olympuzz.GameScreen
                             bubble[i, j] = new Bubble(bubleAllTexture)
                             {
                                 Name = "Bubble",
-                                Position = new Vector2((j * 49) + (isEven ? 363 : 388), (i * 42) + 105),
+                                Position = new Vector2((j * 49) + (isEven ? 363 : 388), (i * 42) + 79),
                                 isEven = isEven,
                                 IsActive = false,
                             };

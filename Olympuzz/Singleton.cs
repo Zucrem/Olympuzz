@@ -18,6 +18,7 @@ namespace Olympuzz
         public List<Vector2> removeBubble = new();
         public bool cmdExit = false; //cmdFullScreen = false, cmdShowFPS = false;
         public bool IsFullScreen;
+        public int speed = -700;
         //public string BestTime, BestScore;
 
         public MouseState MousePrevious, MouseCurrent;
