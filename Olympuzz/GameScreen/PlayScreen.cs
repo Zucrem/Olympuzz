@@ -417,7 +417,7 @@ namespace Olympuzz.GameScreen
                     break;
             }
 
-                    for (int i = 0; i < 15; i++) // Line of bubble
+            for (int i = 0; i < 15; i++) // Line of bubble
             {
                 for (int j = 0; j < 10; j++) //Bubble in line
                 {
@@ -492,7 +492,6 @@ namespace Olympuzz.GameScreen
                         spriteBatch.DrawString(Arial, "GameWin !!", Singleton.Instance.Dimensions / 2 - fontSize / 2, color);*/
                     }
                 }
-                    
             }
 
             // Draw fade out
