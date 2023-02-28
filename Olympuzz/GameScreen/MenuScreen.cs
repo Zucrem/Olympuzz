@@ -17,7 +17,7 @@ namespace Olympuzz.GameScreen
         private Texture2D startPic, howToPlayPic, settingPic, exitPic, checkBoxBGM, checkBoxSFX, apply, back, ArrowLeftBGM, ArrowRightBGM, ArrowLeftSFX, ArrowRightSFX;
 
         //all button
-        Button startButton, howToPlayButton, settingButton, exitButton, backButton, applySettingButton, arrowLbgmButton, arrowRbgmButton, arrowLsfxButton, arrowRsfxButton;
+        private Button startButton, howToPlayButton, settingButton, exitButton, backButton, applySettingButton, arrowLbgmButton, arrowRbgmButton, arrowLsfxButton, arrowRsfxButton;
 
         //private SpriteFont Arial, Arcanista, KM;
         private Vector2 fontSize;

@@ -18,34 +18,48 @@ namespace Olympuzz.GameScreen
 {
     class PlayScreen : _GameScreen
     {
-        private Texture2D background, blackScreen , shooterTexture, baseTexture, redbutton , board;
+        //all pictures
+        private Texture2D bgLevel1, blackScreenPic, shooterTexture, baseTexture, pauseButtonPic, board, settingButtonPic, continueButtonPic, restartButtonPic, nextButtonPic, exitButtonPic;
+        private Texture2D apply, back, ArrowLeftBGM, ArrowRightBGM, ArrowLeftSFX, ArrowRightSFX;
         private readonly Texture2D[] bubleAllTexture = new Texture2D[5];
 
         private Color color;
         private Vector2 fontSize;
 
         //private SpriteFont Arial, Arcanista;
+
+        //all playscreen
         private Bubble[,] bubble = new Bubble[15, 10];
         private Shooter shooter;
-        private Button button;
+        private Button pauseButton;
+        //button at pause screen
+        private Button settingButton, continueButton, restartButton, nextButton, exitButton;
+        //button for setting
+        private Button backButton, applySettingButton, arrowLbgmButton, arrowRbgmButton, arrowLsfxButton, arrowRsfxButton;
 
+        //timer
         private float _timer = 0f;
         private float _scrollTime = 0f;
         private float Timer = 0f;
         private float timerPerUpdate = 0.05f;
         private float tickPerUpdate = 30f;
         private int alpha = 255;
-        
+
         private SoundEffectInstance BubbleSFX_stick, BubbleSFX_dead;
         private SoundEffectInstance Click;
-        
+
+        //check if go next page or fade finish
+        private bool notPlay = false;
+        private bool pauseEvent = false;
         private bool isEven = true;
         private bool fadeFinish = false;
         private bool gameOver = false;
         private bool gameWin = false;
-        //private Texture2D shooterTexture, baseTexture , redbutton;
+        //check if go setting
+        private bool settingEvent = false;
 
-        //border = 640,684
+        //select level
+        private int level = 1;
 
         public void Initial()
         {
@@ -68,7 +82,24 @@ namespace Olympuzz.GameScreen
             BubbleSFX_stick.Volume = Singleton.Instance.bgMusicVolume;
             BubbleSFX_dead.Volume = Singleton.Instance.bgMusicVolume;*/
 
-            button = new Button(redbutton,new Vector2(100,100),new Vector2(100,100));
+            //all button
+            pauseButton = new Button(pauseButtonPic, new Vector2(100, 100), new Vector2(300, 70));//create button object on playscreen
+            //create button on pause and win or lose screen
+            continueButton = new Button(continueButtonPic, new Vector2(490, 239), new Vector2(300, 70));
+            settingButton = new Button(settingButtonPic, new Vector2(490, 389), new Vector2(300, 70));
+            exitButton = new Button(exitButtonPic, new Vector2(490, 600), new Vector2(300, 70));
+            restartButton = new Button(restartButtonPic, new Vector2(490, 490), new Vector2(300, 70));
+            nextButton = new Button(nextButtonPic, new Vector2(490, 239), new Vector2(300, 70));//create Button after win
+            //setting button
+            //backButton = new Button(back, new Vector2(490, 609), new Vector2(300, 70));
+            backButton = new Button(back, new Vector2(800, 609), new Vector2(300, 70));
+            arrowLbgmButton = new Button(ArrowLeftBGM, new Vector2(700, 240), new Vector2(70, 50));
+            arrowRbgmButton = new Button(ArrowRightBGM, new Vector2(900, 240), new Vector2(70, 50));
+            arrowLsfxButton = new Button(ArrowLeftSFX, new Vector2(700, 315), new Vector2(70, 50));
+            arrowRsfxButton = new Button(ArrowRightSFX, new Vector2(900, 315), new Vector2(70, 50));
+            applySettingButton = new Button(apply, new Vector2(745, 510), new Vector2(300, 70));
+
+
 
             shooter = new Shooter(shooterTexture, bubleAllTexture, baseTexture)
             {
@@ -97,23 +128,48 @@ namespace Olympuzz.GameScreen
         public override void LoadContent()
         {
             base.LoadContent();
-            background = content.Load<Texture2D>("Stag_1/Poseidon Stage");
-            blackScreen = content.Load<Texture2D>("blackScreen");
-            shooterTexture = content.Load<Texture2D>("PlayScreen/bow");
+            //bgLevel1 picture add
+            blackScreenPic = content.Load<Texture2D>("blackScreen");
+            //lvl 1 map
+            bgLevel1 = content.Load<Texture2D>("Stag_1/Poseidon Stage");
+            board = content.Load<Texture2D>("Stag_1/board");
+
+            //all object
+            shooterTexture = content.Load<Texture2D>("PlayScreen/bow_2 v2");
             bubleAllTexture[0] = content.Load<Texture2D>("PlayScreen/Earth");
             bubleAllTexture[1] = content.Load<Texture2D>("PlayScreen/Fire");
             bubleAllTexture[2] = content.Load<Texture2D>("PlayScreen/Thunder");
             bubleAllTexture[3] = content.Load<Texture2D>("PlayScreen/Water");
             bubleAllTexture[4] = content.Load<Texture2D>("PlayScreen/Wind");
-            redbutton = content.Load<Texture2D>("PlayScreen/Water");
+            
             baseTexture = content.Load<Texture2D>("PlayScreen/base");
-            board = content.Load<Texture2D>("Stag_1/board");
+           
+            //all button on playscreen
+            pauseButtonPic = content.Load<Texture2D>("Stag_1/pause but");
+            
+            //all button on pausescreen or lose or win
+            continueButtonPic = content.Load<Texture2D>("PlayScreen/Earth");
+            settingButtonPic = content.Load<Texture2D>("PlayScreen/Wind");
+            exitButtonPic = content.Load<Texture2D>("PlayScreen/Water");
+            restartButtonPic = content.Load<Texture2D>("PlayScreen/Fire");
+            
+            //add button when win
+            nextButtonPic = content.Load<Texture2D>("PlayScreen/Fire");
+            //all button on setting screen
+            apply = content.Load<Texture2D>("PlayScreen/Fire");
+            back = content.Load<Texture2D>("PlayScreen/Fire");
+            ArrowLeftBGM = content.Load<Texture2D>("PlayScreen/Wind");
+            ArrowRightBGM = content.Load<Texture2D>("PlayScreen/Earth");
+            ArrowLeftSFX = content.Load<Texture2D>("PlayScreen/Wind");
+            ArrowRightSFX = content.Load<Texture2D>("PlayScreen/Earth");
+            
             /*Arial = content.Load<SpriteFont>("Fonts/Arial");
             Arcanista = content.Load<SpriteFont>("Fonts/Arcanista");
             BubbleSFX_dead = content.Load<SoundEffect>("Audios/UI_SoundPack8_Error_v1").CreateInstance();
             BubbleSFX_stick = content.Load<SoundEffect>("Audios/UI_SoundPack11_Select_v14").CreateInstance();
             Click = content.Load<SoundEffect>("Audios/transition t07 two-step 007").CreateInstance();*/
             Initial();
+            
         }
         public override void UnloadContent()
         {
@@ -132,22 +188,27 @@ namespace Olympuzz.GameScreen
                             bubble[i, j].Update(gameTime, bubble);
                     }
                 }*/
+                
                 //shooter.Update(gameTime, bubble);
-
-                shooter.Update(gameTime,bubble);
+                shooter.Update(gameTime, bubble);
+                
                 Timer += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                 for (int j = 0; j < 10; j++)
                 {
                     if (bubble[12, j] != null)
                     {
-                        gameOver = true;
+                        gameOver = true; 
+                        notPlay = true;
+                        pauseEvent = false;
+                        Debug.WriteLine("loser");
                         //Singleton.Instance.BestScore = Singleton.Instance.Score.ToString();
                         //Singleton.Instance.BestTime = Timer.ToString("F");
                     }
                 }
-                if (button.IsClicked(Mouse.GetState(),gameTime))
+                if (pauseButton.IsClicked(Mouse.GetState(), gameTime))
                 {
-                    Debug.WriteLine("Button was clicked");
+                    notPlay = true;
+                    pauseEvent = true;
                 }
                 //Check ball flying
                 //for (int i = 1; i < 9; i++)
@@ -186,6 +247,7 @@ namespace Olympuzz.GameScreen
                 //        }
                 //    }
                 //}
+                
                 _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                 if (_scrollTime >= tickPerUpdate)
                 {
@@ -196,7 +258,9 @@ namespace Olympuzz.GameScreen
                         {
                             if (bubble[12, j] != null)
                             {
-                                //gameOver = true;
+                                notPlay = true;
+                                gameOver = true;
+                                pauseEvent = false;
                                 //Singleton.Instance.BestScore = Singleton.Instance.Score.ToString();
                                 //Singleton.Instance.BestTime = Timer.ToString("F");
                             }
@@ -222,10 +286,9 @@ namespace Olympuzz.GameScreen
                             if (bubble[i, j] != null)
                             {
                                 bubble[i, j].Position = new Vector2((j * 49) + (bubble[i,j].isEven ? 363 : 388), (i * 42) + 79);
-                                
                                 if (j == (bubble[i, j].isEven ? 9 : 8)) break;
                             }
-                            
+
                         }
                     }
 
@@ -247,24 +310,82 @@ namespace Olympuzz.GameScreen
 
                     _scrollTime -= tickPerUpdate;
                 }
-
-                //gameWin = CheckWin(bubble);
+                /*notPlay = true;
+                gameWin = CheckWin(bubble);*/
 
             }
-            else
+
+            //if in pause, gameover , gamewin
+            if (notPlay)
             {
-                Singleton.Instance.MousePrevious = Singleton.Instance.MouseCurrent;
-                Singleton.Instance.MouseCurrent = Mouse.GetState();
-                if (Singleton.Instance.MouseCurrent.LeftButton == ButtonState.Pressed && Singleton.Instance.MousePrevious.LeftButton == ButtonState.Released)
+                if (settingEvent)
+                {
+                    //if click back in setting page
+                    if (backButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        settingEvent = false;
+                    }
+                }
+
+                //if still not win or lose
+                if (!gameOver && !gameWin)
+                {
+                    //if click back
+                    if (continueButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        notPlay = false;
+                        pauseEvent = false;
+                    }
+                }
+                else
+                {
+                    //if go next level
+                    if (nextButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        if (level < 4)
+                        {
+                            notPlay = false;
+                            pauseEvent = false;
+                            settingEvent = false;
+                            level += 1;
+                            ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
+                        }
+
+                    }
+                }
+
+                //if click seting
+                if (settingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                {
+                    settingEvent = true;
+                }
+
+                //if click restart
+                if (restartButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                 {
                     Singleton.Instance.Score = 0;
+                    notPlay = false;
+                    pauseEvent = false;
+                    settingEvent = false;
+                    ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
+                }
+
+                //if click exit
+                if (exitButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                {
+                    Singleton.Instance.Score = 0;
+                    notPlay = false;
+                    pauseEvent = false;
+                    settingEvent = false;
                     ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.MenuScreen);
                 }
             }
-            // fade out
+            
+
             if (!fadeFinish)
             {
                 _timer += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                // fade out when start
                 if (_timer >= timerPerUpdate)
                 {
                     alpha -= 5;
@@ -276,50 +397,112 @@ namespace Olympuzz.GameScreen
                     color.A = (byte)alpha;
                 }
             }
+            
 
-            shooter.Update(gameTime,bubble);
+            shooter.Update(gameTime, bubble);
 
             base.Update(gameTime);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(board, new Vector2(336,54), Color.White);
-            spriteBatch.Draw(background, Vector2.Zero, Color.White);
-            
-            for (int i = 0; i < 15; i++) // Line of bubble
+            switch (level)
+            {
+                case 1://bgLevel1
+                    spriteBatch.Draw(board, new Vector2(336, 54), Color.White);
+                    spriteBatch.Draw(bgLevel1, Vector2.Zero, Color.White);
+                    break;
+                case 2://bgLevel2
+                    //spriteBatch.Draw(board, new Vector2(336, 54), Color.White);
+                    //spriteBatch.Draw(bgLevel1, Vector2.Zero, Color.White);
+                    break;
+                case 3://bgLevel3
+                    //spriteBatch.Draw(board, new Vector2(336, 54), Color.White);
+                    //spriteBatch.Draw(bgLevel1, Vector2.Zero, Color.White);
+                    break;
+            }
+
+                    for (int i = 0; i < 15; i++) // Line of bubble
             {
                 for (int j = 0; j < 10; j++) //Bubble in line
                 {
                     if (bubble[i, j] != null)
+                    { 
                         bubble[i, j].Draw(spriteBatch);
+                    }
                 }
             }
 
             shooter.Draw(spriteBatch);
-            button.Draw(spriteBatch);
+            pauseButton.Draw(spriteBatch);
 
             /*spriteBatch.DrawString(Arcanista, "Score : " + Singleton.Instance.Score, new Vector2(1060, 260), color);
             spriteBatch.DrawString(Arcanista, "Time : " + Timer.ToString("F"), new Vector2(20, 260), color);
             spriteBatch.DrawString(Arcanista, "Next Time : " + (tickPerUpdate - _scrollTime).ToString("F"), new Vector2(20, 210), color);*/
 
-            if (gameOver)
+            if (notPlay)
             {
-                spriteBatch.Draw(blackScreen, Vector2.Zero, new Color(255, 255, 255, 210));
-                /*fontSize = Arial.MeasureString("GameOver !!");
-                spriteBatch.DrawString(Arial, "GameOver !!", Singleton.Instance.Dimensions / 2 - fontSize / 2, color);*/
-            }
+                spriteBatch.Draw(blackScreenPic, Vector2.Zero, new Color(255, 255, 255, 210));
+                if (settingEvent)
+                {
+                    backButton.Draw(spriteBatch);
+                    /*fontSize = KM.MeasureString("Setting");
+                    spriteBatch.DrawString(KM, "Setting", new Vector2(Singleton.Instance.Dimensions.X / 2 - fontSize.X / 2, 125), Color.White);
 
-            if (gameWin)
-            {
-                spriteBatch.Draw(blackScreen, Vector2.Zero, new Color(255, 255, 255, 210));
-                /*fontSize = Arial.MeasureString("GameWin !!");
-                spriteBatch.DrawString(Arial, "GameWin !!", Singleton.Instance.Dimensions / 2 - fontSize / 2, color);*/
+                    //BGM
+                    spriteBatch.DrawString(Arcanista, "BGM Volume", new Vector2(300, 250), Color.White);
+                    spriteBatch.Draw(Arrow, new Vector2(700, 240), null, Color.White, 0, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
+                    spriteBatch.DrawString(Arcanista, masterBGM .ToString(), new Vector2(800, 250), Color.White);
+                    spriteBatch.Draw(Arrow, new Vector2(900, 240), Color.White);
+
+                    //SFX
+                    spriteBatch.DrawString(Arcanista, "SFX Volume", new Vector2(300, 325), Color.White);
+                    spriteBatch.Draw(Arrow, new Vector2(700, 315), null, Color.White, 0, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
+                    spriteBatch.DrawString(Arcanista, masterSFX.ToString(), new Vector2(800, 325), Color.White);
+                    spriteBatch.Draw(Arrow, new Vector2(900, 315), Color.White);
+                    */
+
+                    //BGM
+                    arrowLbgmButton.Draw(spriteBatch);
+                    arrowRbgmButton.Draw(spriteBatch);
+
+                    //SFX
+                    arrowLsfxButton.Draw(spriteBatch);
+                    arrowRsfxButton.Draw(spriteBatch);
+
+                    applySettingButton.Draw(spriteBatch);
+                }
+                else
+                {
+                    //normal for pause
+                    restartButton.Draw(spriteBatch);
+                    settingButton.Draw(spriteBatch);
+                    exitButton.Draw(spriteBatch);
+                    //only for if still playing
+                    if (pauseEvent)
+                    {
+                        continueButton.Draw(spriteBatch);
+                    }
+                    //only if gameover
+                    if (gameOver)
+                    {
+                        /*fontSize = Arial.MeasureString("GameOver !!");
+                        spriteBatch.DrawString(Arial, "GameOver !!", Singleton.Instance.Dimensions / 2 - fontSize / 2, color);*/
+                    }
+                    //only if gamewin
+                    if (gameWin)
+                    {
+                        nextButton.Draw(spriteBatch);
+                        /*fontSize = Arial.MeasureString("GameWin !!");
+                        spriteBatch.DrawString(Arial, "GameWin !!", Singleton.Instance.Dimensions / 2 - fontSize / 2, color);*/
+                    }
+                }
+                    
             }
 
             // Draw fade out
             if (!fadeFinish)
             {
-                spriteBatch.Draw(blackScreen, Vector2.Zero, color);
+                spriteBatch.Draw(blackScreenPic, Vector2.Zero, color);
             }
         }
     }
