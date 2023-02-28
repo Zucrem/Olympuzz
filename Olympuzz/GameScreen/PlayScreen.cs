@@ -57,7 +57,7 @@ namespace Olympuzz.GameScreen
                     bubble[i, j] = new Bubble(bubleAllTexture)
                     {
                         Name = "Bubble", 
-                        Position = new Vector2((j * 49) + (isEven ? 363 : 388), (i * 42) + 105), // what x cordition is the best 414 or 415
+                        Position = new Vector2((j * 49) + (isEven ? 363 : 388), (i * 42) + 79), // what x cordition is the best 414 or 415
                         isEven = isEven,
                         IsActive = false,
                     };
@@ -73,7 +73,7 @@ namespace Olympuzz.GameScreen
             shooter = new Shooter(shooterTexture, bubleAllTexture, baseTexture)
             {
                 Name = "Shooter",
-                Position = new Vector2(Singleton.Instance.Dimensions.X / 2, 684),
+                Position = new Vector2(583,702),
                 //_deadSFX = BubbleSFX_dead,
                 //_stickSFX = BubbleSFX_stick,
                 IsActive = true,
@@ -99,14 +99,14 @@ namespace Olympuzz.GameScreen
             base.LoadContent();
             background = content.Load<Texture2D>("Stag_1/Poseidon Stage");
             blackScreen = content.Load<Texture2D>("blackScreen");
-            shooterTexture = content.Load<Texture2D>("PlayScreen/bow_2 v2");
-            bubleAllTexture[0] = content.Load<Texture2D>("Earth");
-            bubleAllTexture[1] = content.Load<Texture2D>("Fire");
-            bubleAllTexture[2] = content.Load<Texture2D>("Thunder");
-            bubleAllTexture[3] = content.Load<Texture2D>("Water");
-            bubleAllTexture[4] = content.Load<Texture2D>("Wind");
-            redbutton = content.Load<Texture2D>("Water");
-            baseTexture = content.Load<Texture2D>("PlayScreen/base_2 v2");
+            shooterTexture = content.Load<Texture2D>("PlayScreen/bow");
+            bubleAllTexture[0] = content.Load<Texture2D>("PlayScreen/Earth");
+            bubleAllTexture[1] = content.Load<Texture2D>("PlayScreen/Fire");
+            bubleAllTexture[2] = content.Load<Texture2D>("PlayScreen/Thunder");
+            bubleAllTexture[3] = content.Load<Texture2D>("PlayScreen/Water");
+            bubleAllTexture[4] = content.Load<Texture2D>("PlayScreen/Wind");
+            redbutton = content.Load<Texture2D>("PlayScreen/Water");
+            baseTexture = content.Load<Texture2D>("PlayScreen/base");
             board = content.Load<Texture2D>("Stag_1/board");
             /*Arial = content.Load<SpriteFont>("Fonts/Arial");
             Arcanista = content.Load<SpriteFont>("Fonts/Arcanista");
@@ -133,6 +133,7 @@ namespace Olympuzz.GameScreen
                     }
                 }*/
                 //shooter.Update(gameTime, bubble);
+
                 shooter.Update(gameTime,bubble);
                 Timer += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                 for (int j = 0; j < 10; j++)
@@ -185,7 +186,6 @@ namespace Olympuzz.GameScreen
                 //        }
                 //    }
                 //}
-
                 _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                 if (_scrollTime >= tickPerUpdate)
                 {
@@ -221,7 +221,7 @@ namespace Olympuzz.GameScreen
                         {
                             if (bubble[i, j] != null)
                             {
-                                bubble[i, j].Position = new Vector2((j * 49) + (bubble[i,j].isEven ? 363 : 388), (i * 42) + 105);
+                                bubble[i, j].Position = new Vector2((j * 49) + (bubble[i,j].isEven ? 363 : 388), (i * 42) + 79);
                                 
                                 if (j == (bubble[i, j].isEven ? 9 : 8)) break;
                             }
@@ -237,7 +237,7 @@ namespace Olympuzz.GameScreen
                             bubble[i, j] = new Bubble(bubleAllTexture)
                             {
                                 Name = "Bubble",
-                                Position = new Vector2((j * 49) + (isEven ? 363 : 388), (i * 42) + 105),
+                                Position = new Vector2((j * 49) + (isEven ? 363 : 388), (i * 42) + 79),
                                 isEven = isEven,
                                 IsActive = false,
                             };
