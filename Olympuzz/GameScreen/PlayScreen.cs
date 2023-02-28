@@ -19,7 +19,7 @@ namespace Olympuzz.GameScreen
     class PlayScreen : _GameScreen
     {
         //all pictures
-        private Texture2D background, blackScreenPic, shooterTexture, baseTexture, pauseButtonPic, board, settingButtonPic, continueButtonPic, restartButtonPic, nextButtonPic, exitButtonPic;
+        private Texture2D bgLevel1, blackScreenPic, shooterTexture, baseTexture, pauseButtonPic, board, settingButtonPic, continueButtonPic, restartButtonPic, nextButtonPic, exitButtonPic;
         private Texture2D apply, back, ArrowLeftBGM, ArrowRightBGM, ArrowLeftSFX, ArrowRightSFX;
         private readonly Texture2D[] bubleAllTexture = new Texture2D[5];
 
@@ -58,7 +58,8 @@ namespace Olympuzz.GameScreen
         //check if go setting
         private bool settingEvent = false;
 
-        //border = 640,684
+        //select level
+        private int level = 1;
 
         public void Initial()
         {
@@ -82,15 +83,13 @@ namespace Olympuzz.GameScreen
             BubbleSFX_dead.Volume = Singleton.Instance.bgMusicVolume;*/
 
             //all button
-            //create button object on playscreen
-            pauseButton = new Button(pauseButtonPic, new Vector2(100, 100), new Vector2(300, 70));
+            pauseButton = new Button(pauseButtonPic, new Vector2(100, 100), new Vector2(300, 70));//create button object on playscreen
             //create button on pause and win or lose screen
             continueButton = new Button(continueButtonPic, new Vector2(490, 239), new Vector2(300, 70));
             settingButton = new Button(settingButtonPic, new Vector2(490, 389), new Vector2(300, 70));
             exitButton = new Button(exitButtonPic, new Vector2(490, 600), new Vector2(300, 70));
             restartButton = new Button(restartButtonPic, new Vector2(490, 490), new Vector2(300, 70));
-            //create Button after win
-            nextButton = new Button(nextButtonPic, new Vector2(490, 239), new Vector2(300, 70));
+            nextButton = new Button(nextButtonPic, new Vector2(490, 239), new Vector2(300, 70));//create Button after win
             //setting button
             //backButton = new Button(back, new Vector2(490, 609), new Vector2(300, 70));
             backButton = new Button(back, new Vector2(800, 609), new Vector2(300, 70));
@@ -129,9 +128,11 @@ namespace Olympuzz.GameScreen
         public override void LoadContent()
         {
             base.LoadContent();
-            //background picture add
+            //bgLevel1 picture add
             blackScreenPic = content.Load<Texture2D>("blackScreen");
-            background = content.Load<Texture2D>("Stag_1/Poseidon Stage");
+            //lvl 1 map
+            bgLevel1 = content.Load<Texture2D>("Stag_1/Poseidon Stage");
+            board = content.Load<Texture2D>("Stag_1/board");
 
             //all object
             shooterTexture = content.Load<Texture2D>("PlayScreen/bow_2 v2");
@@ -142,7 +143,6 @@ namespace Olympuzz.GameScreen
             bubleAllTexture[4] = content.Load<Texture2D>("PlayScreen/Wind");
 
             baseTexture = content.Load<Texture2D>("PlayScreen/base_2 v2");
-            board = content.Load<Texture2D>("Stag_1/board");
 
             //all button on playscreen
             pauseButtonPic = content.Load<Texture2D>("Stag_1/pause but");
@@ -192,8 +192,10 @@ namespace Olympuzz.GameScreen
                 {
                     if (bubble[12, j] != null)
                     {
+                        gameOver = true; 
                         notPlay = true;
-                        gameOver = true;
+                        pauseEvent = false;
+                        Debug.WriteLine("loser");
                         //Singleton.Instance.BestScore = Singleton.Instance.Score.ToString();
                         //Singleton.Instance.BestTime = Timer.ToString("F");
                     }
@@ -241,7 +243,7 @@ namespace Olympuzz.GameScreen
                 //    }
                 //}
 
-                _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond * 100;
                 if (_scrollTime >= tickPerUpdate)
                 {
                     // Check game over before scroll
@@ -253,6 +255,7 @@ namespace Olympuzz.GameScreen
                             {
                                 notPlay = true;
                                 gameOver = true;
+                                pauseEvent = false;
                                 //Singleton.Instance.BestScore = Singleton.Instance.Score.ToString();
                                 //Singleton.Instance.BestTime = Timer.ToString("F");
                             }
@@ -306,28 +309,9 @@ namespace Olympuzz.GameScreen
                 /*notPlay = true;
                 gameWin = CheckWin(bubble);*/
 
-                // fade out
-                if (!fadeFinish)
-                {
-                    _timer += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
-                    if (_timer >= timerPerUpdate)
-                    {
-                        alpha -= 5;
-                        _timer -= timerPerUpdate;
-                        if (alpha <= 5)
-                        {
-                            fadeFinish = true;
-                        }
-                        color.A = (byte)alpha;
-                    }
-                }
-
-                shooter.Update(gameTime, bubble);
-
-                base.Update(gameTime);
             }
 
-            //if game over or game win
+            //if in pause, gameover , gamewin
             if (notPlay)
             {
                 if (settingEvent)
@@ -339,61 +323,101 @@ namespace Olympuzz.GameScreen
                     }
                 }
 
+                //if still not win or lose
+                if (!gameOver && !gameWin)
+                {
+                    //if click back
+                    if (continueButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        notPlay = false;
+                        pauseEvent = false;
+                    }
+                }
                 else
                 {
-                    //if still not win or lose
-                    if (!gameOver && !gameWin)
+                    //if go next level
+                    if (nextButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                     {
-                        //if click back
-                        if (continueButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                        if (level < 4)
                         {
                             notPlay = false;
                             pauseEvent = false;
+                            settingEvent = false;
+                            level += 1;
+                            ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
                         }
-                    }
-                    else
-                    {
-                        //if go next level
-                        if (nextButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                        {
-                        }
-                    }
 
-                    //if click seting
-                    if (settingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                    {
-                        settingEvent = true;
                     }
+                }
 
-                    //if click restart
-                    if (restartButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                    {
-                        Singleton.Instance.Score = 0;
-                        notPlay = false;
-                        pauseEvent = false;
-                        ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
-                    }
+                //if click seting
+                if (settingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                {
+                    settingEvent = true;
+                }
 
-                    //if click exit
-                    if (exitButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                    {
-                        Singleton.Instance.Score = 0;
-                        notPlay = false;
-                        pauseEvent = false;
-                        ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.MenuScreen);
-                    }
+                //if click restart
+                if (restartButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                {
+                    Singleton.Instance.Score = 0;
+                    notPlay = false;
+                    pauseEvent = false;
+                    settingEvent = false;
+                    ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
+                }
 
-                    
+                //if click exit
+                if (exitButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                {
+                    Singleton.Instance.Score = 0;
+                    notPlay = false;
+                    pauseEvent = false;
+                    settingEvent = false;
+                    ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.MenuScreen);
                 }
             }
+            
+
+            if (!fadeFinish)
+            {
+                _timer += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                // fade out when start
+                if (_timer >= timerPerUpdate)
+                {
+                    alpha -= 5;
+                    _timer -= timerPerUpdate;
+                    if (alpha <= 5)
+                    {
+                        fadeFinish = true;
+                    }
+                    color.A = (byte)alpha;
+                }
+            }
+            
+
+            shooter.Update(gameTime, bubble);
+
+            base.Update(gameTime);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            //background
-            spriteBatch.Draw(board, new Vector2(336,54), Color.White);
-            spriteBatch.Draw(background, Vector2.Zero, Color.White);
-            
-            for (int i = 0; i < 15; i++) // Line of bubble
+            switch (level)
+            {
+                case 1://bgLevel1
+                    spriteBatch.Draw(board, new Vector2(336, 54), Color.White);
+                    spriteBatch.Draw(bgLevel1, Vector2.Zero, Color.White);
+                    break;
+                case 2://bgLevel2
+                    //spriteBatch.Draw(board, new Vector2(336, 54), Color.White);
+                    //spriteBatch.Draw(bgLevel1, Vector2.Zero, Color.White);
+                    break;
+                case 3://bgLevel3
+                    //spriteBatch.Draw(board, new Vector2(336, 54), Color.White);
+                    //spriteBatch.Draw(bgLevel1, Vector2.Zero, Color.White);
+                    break;
+            }
+
+                    for (int i = 0; i < 15; i++) // Line of bubble
             {
                 for (int j = 0; j < 10; j++) //Bubble in line
                 {
@@ -413,9 +437,9 @@ namespace Olympuzz.GameScreen
 
             if (notPlay)
             {
+                spriteBatch.Draw(blackScreenPic, Vector2.Zero, new Color(255, 255, 255, 210));
                 if (settingEvent)
                 {
-                    spriteBatch.Draw(blackScreenPic, Vector2.Zero, new Color(255, 255, 255, 210));
                     backButton.Draw(spriteBatch);
                     /*fontSize = KM.MeasureString("Setting");
                     spriteBatch.DrawString(KM, "Setting", new Vector2(Singleton.Instance.Dimensions.X / 2 - fontSize.X / 2, 125), Color.White);
@@ -446,7 +470,6 @@ namespace Olympuzz.GameScreen
                 else
                 {
                     //normal for pause
-                    spriteBatch.Draw(blackScreenPic, Vector2.Zero, new Color(255, 255, 255, 210));
                     restartButton.Draw(spriteBatch);
                     settingButton.Draw(spriteBatch);
                     exitButton.Draw(spriteBatch);
