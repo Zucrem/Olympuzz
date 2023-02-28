@@ -322,58 +322,59 @@ namespace Olympuzz.GameScreen
                         settingEvent = false;
                     }
                 }
-
-                //if still not win or lose
-                if (!gameOver && !gameWin)
-                {
-                    //if click back
-                    if (continueButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                else {
+                    //if still not win or lose
+                    if (!gameOver && !gameWin)
                     {
-                        notPlay = false;
-                        pauseEvent = false;
-                    }
-                }
-                else
-                {
-                    //if go next level
-                    if (nextButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                    {
-                        if (level < 4)
+                        //if click back
+                        if (continueButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                         {
                             notPlay = false;
                             pauseEvent = false;
-                            settingEvent = false;
-                            level += 1;
-                            ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
                         }
-
                     }
-                }
+                    else
+                    {
+                        //if go next level
+                        if (nextButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                        {
+                            if (level < 4)
+                            {
+                                notPlay = false;
+                                pauseEvent = false;
+                                settingEvent = false;
+                                level += 1;
+                                ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
+                            }
 
-                //if click seting
-                if (settingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    settingEvent = true;
-                }
+                        }
+                    }
 
-                //if click restart
-                if (restartButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    Singleton.Instance.Score = 0;
-                    notPlay = false;
-                    pauseEvent = false;
-                    settingEvent = false;
-                    ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
-                }
+                    //if click seting
+                    if (settingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        settingEvent = true;
+                    }
 
-                //if click exit
-                if (exitButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    Singleton.Instance.Score = 0;
-                    notPlay = false;
-                    pauseEvent = false;
-                    settingEvent = false;
-                    ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.MenuScreen);
+                    //if click restart
+                    if (restartButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        Singleton.Instance.Score = 0;
+                        notPlay = false;
+                        pauseEvent = false;
+                        settingEvent = false;
+                        ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
+                    }
+
+                    //if click exit
+                    if (exitButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        Singleton.Instance.Score = 0;
+                        notPlay = false;
+                        pauseEvent = false;
+                        settingEvent = false;
+                        ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.MenuScreen);
+                    }
                 }
             }
             
