@@ -18,8 +18,7 @@ namespace Olympuzz.GameObjects
         private bool isHovered;
         private bool isPressed;
 
-        private const int MAX_CLICK_DELAY_MS = 300;
-        private int lastClickTime;
+        private const int MAX_CLICK_DELAY_MS = 200;
 
         //sound
         //private SoundEffectInstance soundClickButton, soundEnterGame, soundSelectButton;
@@ -31,7 +30,6 @@ namespace Olympuzz.GameObjects
             this.bounds = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
             isHovered = false;
             this.isPressed = false;
-            this.lastClickTime = 0;
         }
 
         //click sound
@@ -61,13 +59,13 @@ namespace Olympuzz.GameObjects
             {
                 //count time from lastClickTime
                 //ex. Program was run for 5 sec (5000 ms) and user doesn't click = 0 lastClickTime , then elapsedMs = 5000 - 0
-                int elapsedMs = (int)gameTime.TotalGameTime.TotalMilliseconds - lastClickTime;
+                int elapsedMs = (int)gameTime.TotalGameTime.TotalMilliseconds - Singleton.Instance.lastClickTime;
                 // if pass max click delay time since LastClickTime then lastClickTime was that Time
                 if (elapsedMs > MAX_CLICK_DELAY_MS)
                 {
                     //lastclickTime = TotalTime of program that time
                     //soundClickButton.Play();
-                    lastClickTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
+                    Singleton.Instance.lastClickTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
                     return true;
                 }
             }

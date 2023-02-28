@@ -91,8 +91,8 @@ namespace Olympuzz.GameScreen
             restartButton = new Button(restartButtonPic, new Vector2(490, 490), new Vector2(300, 70));
             nextButton = new Button(nextButtonPic, new Vector2(490, 239), new Vector2(300, 70));//create Button after win
             //setting button
-            //backButton = new Button(back, new Vector2(490, 609), new Vector2(300, 70));
-            backButton = new Button(back, new Vector2(800, 609), new Vector2(300, 70));
+            backButton = new Button(back, new Vector2(490, 609), new Vector2(300, 70));
+            //backButton = new Button(back, new Vector2(800, 609), new Vector2(300, 70));
             arrowLbgmButton = new Button(ArrowLeftBGM, new Vector2(700, 240), new Vector2(70, 50));
             arrowRbgmButton = new Button(ArrowRightBGM, new Vector2(900, 240), new Vector2(70, 50));
             arrowLsfxButton = new Button(ArrowLeftSFX, new Vector2(700, 315), new Vector2(70, 50));
@@ -135,7 +135,7 @@ namespace Olympuzz.GameScreen
             board = content.Load<Texture2D>("Stag_1/board");
 
             //all object
-            shooterTexture = content.Load<Texture2D>("PlayScreen/bow_2 v2");
+            shooterTexture = content.Load<Texture2D>("PlayScreen/bow");
             bubleAllTexture[0] = content.Load<Texture2D>("PlayScreen/Earth");
             bubleAllTexture[1] = content.Load<Texture2D>("PlayScreen/Fire");
             bubleAllTexture[2] = content.Load<Texture2D>("PlayScreen/Thunder");
@@ -177,7 +177,7 @@ namespace Olympuzz.GameScreen
         }
         public override void Update(GameTime gameTime)
         {
-            if (!gameOver && !gameWin)
+            if (!gameOver && !gameWin && !notPlay)
             {
                 //create bubble on the field
                 /*for (int i = 0; i < 9; i++)
@@ -318,6 +318,7 @@ namespace Olympuzz.GameScreen
             //if in pause, gameover , gamewin
             if (notPlay)
             {
+                Singleton.Instance.Shooting = false;
                 if (settingEvent)
                 {
                     //if click back in setting page
