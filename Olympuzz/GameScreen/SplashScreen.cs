@@ -17,7 +17,7 @@ namespace Olympuzz.GameScreen
         private Vector2 fontSize;
         private Color color; //เพื่อupdate ค่าความโปร่งสี
         private SpriteFont Arcanista, KM;//กำหนดชื่อ font
-        private Texture2D Logo, GameName,blackScreen;//กำหนด ภาพของหน้า splashscreen
+        private Texture2D LogoPic, GameName,blackScreen;//กำหนด ภาพของหน้า splashscreen
         private int alpha; // ค่าความโปร่งสี
         private int displayIndex; // order of index to display splash screen
         private float timer; // Elapsed time in game 
@@ -37,8 +37,8 @@ namespace Olympuzz.GameScreen
             base.LoadContent();
             /*Arcanista = content.Load<SpriteFont>("Fonts/Arcanista");
             KM = content.Load<SpriteFont>("Fonts/KH-Metropolis");
-            Logo = content.Load<Texture2D>("SplashScreen/Logo");
             GameName = content.Load<Texture2D>("SplashScreen/Logo");*/
+            LogoPic = content.Load<Texture2D>("SplashScreen/Logo");
             blackScreen = content.Load<Texture2D>("blackScreen");
         }
         public override void UnloadContent() { base.UnloadContent(); }
@@ -100,7 +100,7 @@ namespace Olympuzz.GameScreen
             switch (displayIndex)
             {
                 case 0:
-                    //spriteBatch.Draw(Logo, new Vector2((Singleton.Instance.Dimensions.X - Logo.Width) / 2, (Singleton.Instance.Dimensions.Y - Logo.Height) / 2), color);
+                    spriteBatch.Draw(LogoPic, new Vector2((Singleton.Instance.Dimensions.X - LogoPic.Width) / 2, (Singleton.Instance.Dimensions.Y - LogoPic.Height) / 2), color);
                     break;
                 case 1:
                     //fontSize = Arcanista.MeasureString("proudly   present");

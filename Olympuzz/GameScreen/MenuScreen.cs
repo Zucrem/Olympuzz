@@ -16,7 +16,7 @@ namespace Olympuzz.GameScreen
         private Color _Color = new Color(250, 250, 250, 0);
         private Texture2D backgroundPic, blackScreenPic;//background
         //all picture
-        private Texture2D startPic, settingPic, exitPic, checkBoxBGM, checkBoxSFX, apply, back, ArrowLeftBGM, ArrowRightBGM, ArrowLeftSFX, ArrowRightSFX;
+        private Texture2D logoPic, startPic, settingPic, exitPic, checkBoxBGM, checkBoxSFX, apply, back, ArrowLeftBGM, ArrowRightBGM, ArrowLeftSFX, ArrowRightSFX;
 
         //all button
         private Button startButton, howToPlayButton, settingButton, exitButton, backButton, applySettingButton, arrowLbgmButton, arrowRbgmButton, arrowLsfxButton, arrowRsfxButton;
@@ -42,10 +42,9 @@ namespace Olympuzz.GameScreen
         public void Initial()
         {
             //main menu button
-            startButton = new Button(startPic, new Vector2(490, 389), new Vector2(300, 70));
-            settingButton = new Button(settingPic, new Vector2(490, 490), new Vector2(300, 70));
-            //exitButton = new Button(exitPic, new Vector2(900, 609), new Vector2(300, 70));
-            exitButton = new Button(exitPic, new Vector2(490, 609), new Vector2(300, 70));
+            startButton = new Button(startPic, new Vector2(293, 293), new Vector2(300, 70));
+            settingButton = new Button(settingPic, new Vector2(293, 410), new Vector2(300, 70));
+            exitButton = new Button(exitPic, new Vector2(293, 505), new Vector2(300, 70));
 
             //setting and how2play button
             backButton = new Button(back, new Vector2(490, 609), new Vector2(300, 70));
@@ -60,6 +59,7 @@ namespace Olympuzz.GameScreen
             base.LoadContent();
             // Texture2D รูปต่างๆ
             //allbackground
+            logoPic = content.Load<Texture2D>("gud room");
             backgroundPic = content.Load<Texture2D>("gud room");
             blackScreenPic = content.Load<Texture2D>("blackScreen");
 
@@ -198,6 +198,7 @@ namespace Olympuzz.GameScreen
             //Draw UI in Main Menu
             if (mainScreen)
             {
+                spriteBatch.Draw(logoPic, new Vector2(830, 130), new Color(255, 255, 255, 210));
                 spriteBatch.Draw(backgroundPic, Vector2.Zero, Color.White);
                 startButton.Draw(spriteBatch);
                 settingButton.Draw(spriteBatch);
