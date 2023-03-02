@@ -59,15 +59,15 @@ namespace Olympuzz.GameScreen
             base.LoadContent();
             // Texture2D รูปต่างๆ
             //allbackground
-            logoPic = content.Load<Texture2D>("gud room");
-            backgroundPic = content.Load<Texture2D>("gud room");
+            logoPic = content.Load<Texture2D>("GameLogo");
+            backgroundPic = content.Load<Texture2D>("MenuScreen/MainMenuBG");
             blackScreenPic = content.Load<Texture2D>("blackScreen");
 
             //all button
             //mainscreen button
-            startPic = content.Load<Texture2D>("PlayScreen/Water");
-            settingPic = content.Load<Texture2D>("PlayScreen/Water");
-            exitPic = content.Load<Texture2D>("PlayScreen/Water");
+            startPic = content.Load<Texture2D>("MenuScreen/PlayButton");
+            settingPic = content.Load<Texture2D>("MenuScreen/SettingButton");
+            exitPic = content.Load<Texture2D>("MenuScreen/ExitButton");
             //setting and how2play button
             /*checkBoxBGM = content.Load<Texture2D>("Fire");
             checkBoxSFX = content.Load<Texture2D>("Fire");*/
@@ -198,8 +198,8 @@ namespace Olympuzz.GameScreen
             //Draw UI in Main Menu
             if (mainScreen)
             {
-                spriteBatch.Draw(logoPic, new Vector2(830, 130), new Color(255, 255, 255, 210));
                 spriteBatch.Draw(backgroundPic, Vector2.Zero, Color.White);
+                spriteBatch.Draw(logoPic, new Vector2(830, 130), new Color(255, 255, 255, 255));
                 startButton.Draw(spriteBatch);
                 settingButton.Draw(spriteBatch);
                 exitButton.Draw(spriteBatch);
