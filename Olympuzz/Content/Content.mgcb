@@ -90,6 +90,12 @@
 /processorParam:TextureFormat=Color
 /build:MenuScreen/MainMenuBG.jpg
 
+#begin MenuScreen/MainmenuTheme.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:MenuScreen/MainmenuTheme.mp3
+
 #begin MenuScreen/PlayButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -245,4 +251,10 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Stag_1/score.jpg
+
+#begin Stag_1/The Kraken.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Stag_1/The Kraken.mp3;Stag_1/PoseidonTheme.mp3
 

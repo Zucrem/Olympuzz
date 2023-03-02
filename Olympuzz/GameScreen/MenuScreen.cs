@@ -7,6 +7,7 @@ using Olympuzz.Managers;
 using Olympuzz.GameObjects;
 using System.Threading;
 using System.Timers;
+using Microsoft.Xna.Framework.Media;
 
 namespace Olympuzz.GameScreen
 {
@@ -24,6 +25,9 @@ namespace Olympuzz.GameScreen
         //private SpriteFont Alagan;
         private SpriteFont smallfonts, bigfonts;//กำหนดชื่อ font
         private Vector2 fontSize;
+
+        //bg and sfx song
+        private Song MainmenuTheme;
 
 
         //check if go next page or fade finish
@@ -83,10 +87,12 @@ namespace Olympuzz.GameScreen
             smallfonts = content.Load<SpriteFont>("Alagard");
             bigfonts = content.Load<SpriteFont>("AlagardBig");
 
-            // Sounds
-            /*soundClickButton = content.Load<SoundEffect>("Audios/UI_SoundPack8_Error_v1").CreateInstance();
-            soundEnterGame = content.Load<SoundEffect>("Audios/transition t07 two-step 007").CreateInstance();
-            soundSelectButton = content.Load<SoundEffect>("Audios/UI_SoundPack11_Select_v14").CreateInstance();*/
+            //song and sfx
+            MainmenuTheme = content.Load<Song>("MenuScreen/MainmenuTheme");
+            MediaPlayer.Volume = Singleton.Instance.bgMusicVolume;
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(MainmenuTheme);
+
             // Call Init
             Initial();
         }
@@ -130,7 +136,6 @@ namespace Olympuzz.GameScreen
                 {
                     if (showSetting)
                     {
-
                         // Click Arrow BGM Left and RIght
                         if (applySettingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                         {
@@ -172,7 +177,6 @@ namespace Olympuzz.GameScreen
                         {
                             mainScreen = true;
                             showSetting = false;
-                            //soundClickButton.Play();
                         }
                     }
                 }
