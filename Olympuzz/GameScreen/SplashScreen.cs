@@ -16,8 +16,8 @@ namespace Olympuzz.GameScreen
     {
         private Vector2 fontSize;
         private Color color; //เพื่อupdate ค่าความโปร่งสี
-        private SpriteFont Arcanista, KM;//กำหนดชื่อ font
-        private Texture2D LogoPic, GameName,blackScreen;//กำหนด ภาพของหน้า splashscreen
+        private SpriteFont smallfonts, bigfonts;//กำหนดชื่อ font
+        private Texture2D LogoPic, blackScreen;//กำหนด ภาพของหน้า splashscreen
         private int alpha; // ค่าความโปร่งสี
         private int displayIndex; // order of index to display splash screen
         private float timer; // Elapsed time in game 
@@ -35,9 +35,8 @@ namespace Olympuzz.GameScreen
         public override void LoadContent()
         {
             base.LoadContent();
-            /*Arcanista = content.Load<SpriteFont>("Fonts/Arcanista");
-            KM = content.Load<SpriteFont>("Fonts/KH-Metropolis");
-            GameName = content.Load<Texture2D>("SplashScreen/Logo");*/
+            smallfonts = content.Load<SpriteFont>("Alagard");
+            bigfonts = content.Load<SpriteFont>("AlagardBig");
             LogoPic = content.Load<Texture2D>("GameLogo");
             blackScreen = content.Load<Texture2D>("blackScreen");
         }
@@ -74,9 +73,10 @@ namespace Olympuzz.GameScreen
                         Show = true;
                         // Change display index and set next display
                         displayIndex++;
-                        if (displayIndex == 1)
+                        //change 
+                        if (displayIndex == 0)
                         {
-                            color = Color.Black;
+                            color = Color.Wheat;
                             timePerUpdate -= 0.015f;
                         }
                         else if (displayIndex == 2)
@@ -100,15 +100,15 @@ namespace Olympuzz.GameScreen
             switch (displayIndex)
             {
                 case 0:
-                    spriteBatch.Draw(LogoPic, new Vector2((Singleton.Instance.Dimensions.X - LogoPic.Width) / 2, (Singleton.Instance.Dimensions.Y - LogoPic.Height) / 2), color);
+                    fontSize = smallfonts.MeasureString("Teletubbie's Group Present");
+                    spriteBatch.DrawString(smallfonts, "Teletubbie's Group Present", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 450), color);
                     break;
                 case 1:
-                    //fontSize = Arcanista.MeasureString("proudly   present");
-                    //spriteBatch.DrawString(Arcanista, "proudly   present", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, (Singleton.Instance.Dimensions.Y - fontSize.Y) / 2), color);
+                    spriteBatch.Draw(LogoPic, new Vector2((Singleton.Instance.Dimensions.X - LogoPic.Width) / 2, 200), color);
                     break;
                 case 2:
-                    //fontSize = KM.MeasureString("Egypt Bubble");
-                    //spriteBatch.DrawString(KM, "Egypt Bubble", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, (Singleton.Instance.Dimensions.Y - fontSize.Y) / 2), color);
+                    fontSize = bigfonts.MeasureString("The Best Bubble Shooter Game Ever");
+                    spriteBatch.DrawString(bigfonts, "The Best Bubble Shooter Game Ever", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 550), color);
                     break;
                 case 3:
                     spriteBatch.Draw(blackScreen, Vector2.Zero, color);
