@@ -24,9 +24,10 @@ namespace Olympuzz.GameScreen
         private readonly Texture2D[] bubleAllTexture = new Texture2D[5];
 
         private Color color;
-        private Vector2 fontSize;
 
-        //private SpriteFont Arial, Arcanista;
+        //private SpriteFont Alagan;
+        private SpriteFont smallfonts, bigfonts;//กำหนดชื่อ font
+        private Vector2 fontSize;
 
         //all playscreen
         private Bubble[,] bubble = new Bubble[15, 10];
@@ -162,12 +163,10 @@ namespace Olympuzz.GameScreen
             ArrowRightBGM = content.Load<Texture2D>("PlayScreen/Earth");
             ArrowLeftSFX = content.Load<Texture2D>("PlayScreen/Wind");
             ArrowRightSFX = content.Load<Texture2D>("PlayScreen/Earth");
-            
-            /*Arial = content.Load<SpriteFont>("Fonts/Arial");
-            Arcanista = content.Load<SpriteFont>("Fonts/Arcanista");
-            BubbleSFX_dead = content.Load<SoundEffect>("Audios/UI_SoundPack8_Error_v1").CreateInstance();
-            BubbleSFX_stick = content.Load<SoundEffect>("Audios/UI_SoundPack11_Select_v14").CreateInstance();
-            Click = content.Load<SoundEffect>("Audios/transition t07 two-step 007").CreateInstance();*/
+
+            // Fonts
+            smallfonts = content.Load<SpriteFont>("Alagard");
+            bigfonts = content.Load<SpriteFont>("AlagardBig");
             Initial();
             
         }
@@ -447,9 +446,9 @@ namespace Olympuzz.GameScreen
                 if (settingEvent)
                 {
                     backButton.Draw(spriteBatch);
-                    /*fontSize = KM.MeasureString("Setting");
-                    spriteBatch.DrawString(KM, "Setting", new Vector2(Singleton.Instance.Dimensions.X / 2 - fontSize.X / 2, 125), Color.White);
-
+                    fontSize = bigfonts.MeasureString("Setting");
+                    spriteBatch.DrawString(bigfonts, "Setting", new Vector2(Singleton.Instance.Dimensions.X / 2 - fontSize.X / 2, 125), Color.White);
+                    /*
                     //BGM
                     spriteBatch.DrawString(Arcanista, "BGM Volume", new Vector2(300, 250), Color.White);
                     spriteBatch.Draw(Arrow, new Vector2(700, 240), null, Color.White, 0, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
@@ -487,15 +486,15 @@ namespace Olympuzz.GameScreen
                     //only if gameover
                     if (gameOver)
                     {
-                        /*fontSize = Arial.MeasureString("GameOver !!");
-                        spriteBatch.DrawString(Arial, "GameOver !!", Singleton.Instance.Dimensions / 2 - fontSize / 2, color);*/
+                        fontSize = bigfonts.MeasureString("GameOver !!");
+                        spriteBatch.DrawString(bigfonts, "GameOver !!", Singleton.Instance.Dimensions / 2 - fontSize / 2, color);
                     }
                     //only if gamewin
                     if (gameWin)
                     {
                         nextButton.Draw(spriteBatch);
-                        /*fontSize = Arial.MeasureString("GameWin !!");
-                        spriteBatch.DrawString(Arial, "GameWin !!", Singleton.Instance.Dimensions / 2 - fontSize / 2, color);*/
+                        fontSize = bigfonts.MeasureString("GameWin !!");
+                        spriteBatch.DrawString(bigfonts, "GameWin !!", Singleton.Instance.Dimensions / 2 - fontSize / 2, color);
                     }
                 }
             }

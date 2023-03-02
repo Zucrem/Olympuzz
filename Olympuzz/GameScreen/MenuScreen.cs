@@ -19,16 +19,17 @@ namespace Olympuzz.GameScreen
         private Texture2D logoPic, startPic, settingPic, exitPic, checkBoxBGM, checkBoxSFX, apply, back, ArrowLeftBGM, ArrowRightBGM, ArrowLeftSFX, ArrowRightSFX;
 
         //all button
-        private Button startButton, howToPlayButton, settingButton, exitButton, backButton, applySettingButton, arrowLbgmButton, arrowRbgmButton, arrowLsfxButton, arrowRsfxButton;
+        private Button startButton, settingButton, exitButton, backButton, applySettingButton, arrowLbgmButton, arrowRbgmButton, arrowLsfxButton, arrowRsfxButton;
 
-        //private SpriteFont Arial, Arcanista, KM;
+        //private SpriteFont Alagan;
+        private SpriteFont smallfonts, bigfonts;//กำหนดชื่อ font
         private Vector2 fontSize;
 
 
         //check if go next page or fade finish
         private bool fadeFinish = false;
         private bool mainScreen = true;
-        private bool showSetting = false, showHowToPlay = false;
+        private bool showSetting = false;
 
         //timer and alpha for fade out screen
         private float _timer = 0.0f;
@@ -77,10 +78,11 @@ namespace Olympuzz.GameScreen
             ArrowRightBGM = content.Load<Texture2D>("PlayScreen/Earth");
             ArrowLeftSFX = content.Load<Texture2D>("PlayScreen/Wind");
             ArrowRightSFX = content.Load<Texture2D>("PlayScreen/Earth");
+
             // Fonts
-            /*Arial = content.Load<SpriteFont>("Fonts/Arial");
-            Arcanista = content.Load<SpriteFont>("Fonts/Arcanista");
-            KM = content.Load<SpriteFont>("Fonts/KH-Metropolis");*/
+            smallfonts = content.Load<SpriteFont>("Alagard");
+            bigfonts = content.Load<SpriteFont>("AlagardBig");
+
             // Sounds
             /*soundClickButton = content.Load<SoundEffect>("Audios/UI_SoundPack8_Error_v1").CreateInstance();
             soundEnterGame = content.Load<SoundEffect>("Audios/transition t07 two-step 007").CreateInstance();
@@ -199,7 +201,7 @@ namespace Olympuzz.GameScreen
             if (mainScreen)
             {
                 spriteBatch.Draw(backgroundPic, Vector2.Zero, Color.White);
-                spriteBatch.Draw(logoPic, new Vector2(830, 130), new Color(255, 255, 255, 255));
+                spriteBatch.Draw(logoPic, new Vector2(865, 130), new Color(255, 255, 255, 255));
                 startButton.Draw(spriteBatch);
                 settingButton.Draw(spriteBatch);
                 exitButton.Draw(spriteBatch);
@@ -212,9 +214,9 @@ namespace Olympuzz.GameScreen
                 // Draw Option Screen
                 if (showSetting)
                 {
-                    /*fontSize = KM.MeasureString("Setting");
-                    spriteBatch.DrawString(KM, "Setting", new Vector2(Singleton.Instance.Dimensions.X / 2 - fontSize.X / 2, 125), Color.White);
-
+                    fontSize = bigfonts.MeasureString("Setting");
+                    spriteBatch.DrawString(bigfonts, "Setting", new Vector2(Singleton.Instance.Dimensions.X / 2 - fontSize.X / 2, 125), Color.White);
+                    /*
                     //BGM
                     spriteBatch.DrawString(Arcanista, "BGM Volume", new Vector2(300, 250), Color.White);
                     spriteBatch.Draw(Arrow, new Vector2(700, 240), null, Color.White, 0, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
@@ -225,8 +227,7 @@ namespace Olympuzz.GameScreen
                     spriteBatch.DrawString(Arcanista, "SFX Volume", new Vector2(300, 325), Color.White);
                     spriteBatch.Draw(Arrow, new Vector2(700, 315), null, Color.White, 0, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
                     spriteBatch.DrawString(Arcanista, masterSFX.ToString(), new Vector2(800, 325), Color.White);
-                    spriteBatch.Draw(Arrow, new Vector2(900, 315), Color.White);
-                    */
+                    spriteBatch.Draw(Arrow, new Vector2(900, 315), Color.White);*/
 
                     //BGM
                     arrowLbgmButton.Draw(spriteBatch);
