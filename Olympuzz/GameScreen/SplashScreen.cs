@@ -38,7 +38,7 @@ namespace Olympuzz.GameScreen
             /*Arcanista = content.Load<SpriteFont>("Fonts/Arcanista");
             KM = content.Load<SpriteFont>("Fonts/KH-Metropolis");
             GameName = content.Load<Texture2D>("SplashScreen/Logo");*/
-            LogoPic = content.Load<Texture2D>("PlayScreen/Water");
+            LogoPic = content.Load<Texture2D>("GameLogo");
             blackScreen = content.Load<Texture2D>("blackScreen");
         }
         public override void UnloadContent() { base.UnloadContent(); }
