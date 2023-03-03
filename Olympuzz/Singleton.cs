@@ -11,20 +11,27 @@ namespace Olympuzz
     internal class Singleton
     {
         public Vector2 Dimensions = new(1280, 720);
-        public int bgMusicVolume = 100;
-        public int Score = 0;
+        public float bgMusicVolume = 1f;
         public float soundMasterVolume = 1f;
+        public int Score = 0;
         public bool Shooting = false;
         public List<Vector2> removeBubble = new();
-        public bool cmdExit = false; //cmdFullScreen = false, cmdShowFPS = false;
+        public bool cmdExit = false;
         public int speed = -100; // -700
-        public int lastClickTime = 0;
+        public AudioState bgmState = AudioState.FULL;
+        public AudioState sfxState = AudioState.FULL;
 
-        //public string BestTime, BestScore;
 
         public MouseState MousePrevious, MouseCurrent;
 
         private static Singleton instance;
+
+        public enum AudioState
+        {
+            MUTE,
+            MEDIUM,
+            FULL
+        }
         public static Singleton Instance
         {
             get

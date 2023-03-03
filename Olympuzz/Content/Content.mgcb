@@ -13,6 +13,30 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Alagard.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Alagard.spritefont
+
+#begin alagard.ttf
+/copy:alagard.ttf
+
+#begin AlagardBig.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:AlagardBig.spritefont
+
+#begin AlagardMedium.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:AlagardMedium.spritefont
+
 #begin blackScreen.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -37,18 +61,6 @@
 /processorParam:TextureFormat=Color
 /build:GameLogo.png
 
-#begin gud room.jpg
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:gud room.jpg
-
 #begin MenuScreen/ExitButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -72,6 +84,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:MenuScreen/MainMenuBG.jpg
+
+#begin MenuScreen/MainmenuTheme.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:MenuScreen/MainmenuTheme.mp3
 
 #begin MenuScreen/PlayButton.png
 /importer:TextureImporter
@@ -180,6 +198,66 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:PlayScreen/Wind.png
+
+#begin SettingScreen/ArrowButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:SettingScreen/ArrowButton.png
+
+#begin SettingScreen/ArrowRButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:SettingScreen/ArrowRButton.png
+
+#begin SettingScreen/DoneButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:SettingScreen/DoneButton.png
+
+#begin SettingScreen/SettingBG.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:SettingScreen/SettingBG.jpg
+
+#begin Sounds/clickSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/clickSound.wav
+
+#begin Sounds/hoveringSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/hoveringSound.wav
 
 #begin Stag_1/board.jpg
 /importer:TextureImporter
