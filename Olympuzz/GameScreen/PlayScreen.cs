@@ -626,14 +626,14 @@ namespace Olympuzz.GameScreen
                     else if (gameOver)
                     {
                         fontSize = bigfonts.MeasureString("GameOver");
-                        spriteBatch.DrawString(bigfonts, "GameOver", new Vector2(547, 93), color);
+                        spriteBatch.DrawString(bigfonts, "GameOver", new Vector2(547, 130), color);
                     }
                     //only if gamewin
                     else if (gameWin)
                     {
                         nextButton.Draw(spriteBatch);
                         fontSize = bigfonts.MeasureString("GameWin");
-                        spriteBatch.DrawString(bigfonts, "GameWin", new Vector2(547, 93), color);
+                        spriteBatch.DrawString(bigfonts, "GameWin", new Vector2(547, 130), color);
                     }
                 }
             }
