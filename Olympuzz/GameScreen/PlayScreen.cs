@@ -35,8 +35,6 @@ namespace Olympuzz.GameScreen
 
         //all playscreen
         private Bubble[,] bubble = new Bubble[15, 10];
-        //private Bubble testBubble;
-
 
         private Shooter shooter;
         private Button pauseButton;
@@ -118,13 +116,6 @@ namespace Olympuzz.GameScreen
             sfxMediumSoundButton = new Button(sfxMediumSoundPic, new Vector2(650, 430), new Vector2(175, 50));
             sfxFullSoundButton = new Button(sfxFullSoundPic, new Vector2(825, 430), new Vector2(175, 50));
 
-            //testBubble = new Bubble(bubleAllTexture)
-            //{
-            //    Name = "Bubble",
-            //    isEven = false,
-            //    IsActive = true,
-            //};
-            
             backButton = new Button(backPic, new Vector2(490, 609), new Vector2(300, 70));
 
             //confirm exit button
@@ -256,6 +247,7 @@ namespace Olympuzz.GameScreen
                         gameOver = true; 
                         notPlay = true;
                         pauseEvent = false;
+                        Singleton.Instance.lastClickTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
                         MediaPlayer.Stop();
                         //Singleton.Instance.BestScore = Singleton.Instance.Score.ToString();
                         //Singleton.Instance.BestTime = Timer.ToString("F");
@@ -306,12 +298,8 @@ namespace Olympuzz.GameScreen
                 //        }
                 //    }
                 //}
-                //Vector2 rotationPoint = new Vector2(583, 702);
-                //Vector2 centerRotate = new Vector2(Singleton.Instance.MouseCurrent.X - rotationPoint.X, rotationPoint.Y - Singleton.Instance.MouseCurrent.Y);
-                //centerRotate.Normalize();
-                //testBubble.Position += centerRotate;
-                //new Vector2(583, 645)
 
+                
                 _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
 
                 if (_scrollTime >= tickPerUpdate)
@@ -657,8 +645,6 @@ namespace Olympuzz.GameScreen
                 }
             }
             
-            //testBubble.Draw(spriteBatch);
-
             // Draw fade out
             if (!fadeFinish)
             {
