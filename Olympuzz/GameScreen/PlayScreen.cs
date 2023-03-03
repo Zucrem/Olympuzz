@@ -35,6 +35,9 @@ namespace Olympuzz.GameScreen
 
         //all playscreen
         private Bubble[,] bubble = new Bubble[15, 10];
+        //private Bubble testBubble;
+
+
         private Shooter shooter;
         private Button pauseButton;
         //button at pause screen
@@ -50,6 +53,7 @@ namespace Olympuzz.GameScreen
         private float Timer = 0f;
         private float timerPerUpdate = 0.05f;
         private float tickPerUpdate = 30f;
+        private float bubbleAngle = 0f;
         private int alpha = 255;
 
         //song and sfx
@@ -114,6 +118,13 @@ namespace Olympuzz.GameScreen
             sfxMediumSoundButton = new Button(sfxMediumSoundPic, new Vector2(650, 430), new Vector2(175, 50));
             sfxFullSoundButton = new Button(sfxFullSoundPic, new Vector2(825, 430), new Vector2(175, 50));
 
+            //testBubble = new Bubble(bubleAllTexture)
+            //{
+            //    Name = "Bubble",
+            //    isEven = false,
+            //    IsActive = true,
+            //};
+            
             backButton = new Button(backPic, new Vector2(490, 609), new Vector2(300, 70));
 
             //confirm exit button
@@ -256,6 +267,8 @@ namespace Olympuzz.GameScreen
                     pauseEvent = true;
                     MediaPlayer.Pause();
                 }
+
+
                 //Check ball flying
                 //for (int i = 1; i < 9; i++)
                 //{
@@ -293,8 +306,14 @@ namespace Olympuzz.GameScreen
                 //        }
                 //    }
                 //}
-                
-                _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond * 100;
+                //Vector2 rotationPoint = new Vector2(583, 702);
+                //Vector2 centerRotate = new Vector2(Singleton.Instance.MouseCurrent.X - rotationPoint.X, rotationPoint.Y - Singleton.Instance.MouseCurrent.Y);
+                //centerRotate.Normalize();
+                //testBubble.Position += centerRotate;
+                //new Vector2(583, 645)
+
+                _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+
                 if (_scrollTime >= tickPerUpdate)
                 {
                     // Check game over before scroll
@@ -637,6 +656,8 @@ namespace Olympuzz.GameScreen
                     }
                 }
             }
+            
+            //testBubble.Draw(spriteBatch);
 
             // Draw fade out
             if (!fadeFinish)
