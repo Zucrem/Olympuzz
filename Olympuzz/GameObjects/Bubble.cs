@@ -13,17 +13,16 @@ namespace Olympuzz.GameObjects
     {
         private Random random = new Random();
         public float Angle; // angle of cannon use to set where bubble will fly to
-        private float rotateBubble = 0;
         Texture2D bubbleTexture;
         Texture2D[] allTexture;
         public bool isEven;
-        private int ranRotate;
+        //private int ranRotate;
 
         public Bubble(Texture2D[] allTexture) : base (allTexture)
         {
             this.allTexture = allTexture;
             bubbleTexture = RandomBubble();
-            ranRotate = random.Next(2);
+            //ranRotate = random.Next(2);
 
         }
 
@@ -40,14 +39,14 @@ namespace Olympuzz.GameObjects
                 Velocity.Y = (float)Math.Sin(Angle) * Singleton.Instance.speed; // direction of bubble to go in axis y
                 Position += Velocity * gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond; // position of bubble that will increase to direction that canon point to
 
-                if (ranRotate == 0)
-                {
-                    rotateBubble += ((float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond) * 5;
-                }
-                else
-                {
-                    rotateBubble -= ((float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond) * 5;
-                }
+                //if (ranRotate == 0)
+                //{
+                //    rotateBubble += ((float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond) * 5;
+                //}
+                //else
+                //{
+                //    rotateBubble -= ((float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond) * 5;
+                //}
 
                 bubbleCollision(bubbles);
                 //if (Position.Y <= 40)
@@ -130,7 +129,9 @@ namespace Olympuzz.GameObjects
                                 bubbles[i, j + 1] = this;
                                 bubbles[i, j + 1].isEven = bubbles[i, j].isEven;
                                 bubbles[i, j + 1].Position = new Vector2(((j + 1) * 49) + (bubbles[i, j].isEven ? 363 : 388), (i * 42) + 79);
-                                bubbles[i, j + 1].rotateBubble = 0;
+                                Shooter.canRotate = true;
+                                Shooter.nextBubble();
+                                bubbles[i, j + 1].Angle = 0;
                                 //RemoveBubble(bubbles, new Vector2(j + 1, i), bubbles[i, j + 1].bubbleTexture);
                             }
                             else if ((Position.Y - 20) <= bubbles[i, j].Position.Y) // Set side ball in left side of previous ball
@@ -138,7 +139,9 @@ namespace Olympuzz.GameObjects
                                 bubbles[i, j - 1] = this;
                                 bubbles[i, j - 1].isEven = bubbles[i, j].isEven;
                                 bubbles[i, j - 1].Position = new Vector2(((j - 1) * 49) + (bubbles[i, j].isEven ? 363 : 388), (i * 42) + 79);
-                                bubbles[i, j - 1].rotateBubble = 0;
+                                Shooter.canRotate = true;
+                                Shooter.nextBubble();
+                                bubbles[i, j - 1].Angle = 0;
                                 //RemoveBubble(bubbles, new Vector2(j - 1, i), bubbles[i, j - 1].bubbleTexture);
                             }
                             else if (Position.X >= bubbles[i, j].Position.X && Position.Y > bubbles[i,j].Position.Y) // Set under ball 
@@ -150,7 +153,9 @@ namespace Olympuzz.GameObjects
                                         bubbles[i + 1, j - 1] = this;
                                         bubbles[i + 1, j - 1].isEven = !bubbles[i, j].isEven;
                                         bubbles[i + 1, j - 1].Position = new Vector2(((j - 1) * 49) + (bubbles[i, j].isEven ? 388 : 363), ((i + 1) * 42) + 79);
-                                        bubbles[i + 1, j - 1].rotateBubble = 0;
+                                        Shooter.canRotate = true;
+                                        Shooter.nextBubble();
+                                        bubbles[i + 1, j - 1].Angle = 0;
                                         //RemoveBubble(bubbles, new Vector2(j - 1, i + 1), bubbles[i + 1, j - 1].bubbleTexture);
                                     }
                                     else
@@ -158,7 +163,9 @@ namespace Olympuzz.GameObjects
                                         bubbles[i + 1, j] = this;
                                         bubbles[i + 1, j].isEven = !bubbles[i, j].isEven;
                                         bubbles[i + 1, j].Position = new Vector2((j * 49) + (bubbles[i, j].isEven ? 388 : 363), ((i + 1) * 42) + 79);
-                                        bubbles[i + 1, j].rotateBubble = 0;
+                                        Shooter.canRotate = true;
+                                        Shooter.nextBubble();
+                                        bubbles[i + 1, j].Angle = 0;
                                         //RemoveBubble(bubbles, new Vector2(j, i + 1), bubbles[i + 1, j].bubbleTexture);
                                     }
                                 }
@@ -167,7 +174,9 @@ namespace Olympuzz.GameObjects
                                     bubbles[i + 1, j + 1] = this;
                                     bubbles[i + 1, j + 1].isEven = !bubbles[i, j].isEven;
                                     bubbles[i + 1, j + 1].Position = new Vector2(((j + 1) * 49) + (bubbles[i, j].isEven ? 388 : 363), ((i + 1) * 42) + 79);
-                                    bubbles[i + 1, j + 1].rotateBubble = 0;
+                                    Shooter.canRotate = true;
+                                    Shooter.nextBubble();
+                                    bubbles[i + 1, j + 1].Angle = 0;
                                     //RemoveBubble(bubbles, new Vector2(j + 1, i + 1), bubbles[i + 1, j + 1].bubbleTexture);
                                 }
                             }
@@ -178,7 +187,9 @@ namespace Olympuzz.GameObjects
                                     bubbles[i + 1, j - 1] = this;
                                     bubbles[i + 1, j - 1].isEven = !bubbles[i, j].isEven;
                                     bubbles[i + 1, j - 1].Position = new Vector2(((j - 1) * 49) + (bubbles[i, j].isEven ? 388 : 363), ((i + 1) * 42) + 79);
-                                    bubbles[i + 1, j - 1].rotateBubble = 0;
+                                    Shooter.canRotate = true;
+                                    Shooter.nextBubble();
+                                    bubbles[i + 1, j - 1].Angle = 0;
                                     //RemoveBubble(bubbles, new Vector2(j - 1, i + 1), bubbles[i + 1, j - 1].bubbleTexture);
                                 }
                                 else
@@ -186,20 +197,22 @@ namespace Olympuzz.GameObjects
                                     bubbles[i + 1, j] = this;
                                     bubbles[i + 1, j].isEven = !bubbles[i, j].isEven;
                                     bubbles[i + 1, j].Position = new Vector2((j * 49) + (bubbles[i, j].isEven ? 388 : 363), ((i + 1) * 42) + 79);
-                                    bubbles[i + 1, j].rotateBubble = 0;
+                                    Shooter.canRotate = true;
+                                    Shooter.nextBubble();
+                                    bubbles[i + 1, j].Angle = 0;
                                     //RemoveBubble(bubbles, new Vector2(j, i + 1), bubbles[i + 1, j].bubbleTexture);
                                 }
                             }
                             IsActive = false;
                             Singleton.Instance.Shooting = false;
-                            if (Singleton.Instance.removeBubble.Count >= 3)
-                            {
-                                foreach (Vector2 vectorRemove in Singleton.Instance.removeBubble)
-                                {
-                                    bubbles[(int)vectorRemove.Y, (int)vectorRemove.X] = null;
-                                }
-                            }
-                            Singleton.Instance.removeBubble.Clear();
+                            //if (Singleton.Instance.removeBubble.Count >= 3)
+                            //{
+                            //    foreach (Vector2 vectorRemove in Singleton.Instance.removeBubble)
+                            //    {
+                            //        bubbles[(int)vectorRemove.Y, (int)vectorRemove.X] = null;
+                            //    }
+                            //}
+                            //Singleton.Instance.removeBubble.Clear();
                             return;
                         }
                     }
@@ -257,7 +270,7 @@ namespace Olympuzz.GameObjects
         public override void Draw(SpriteBatch _spriteBatch)
         {
             //draw(texture,position,reactangle,color,angle,origin,scale,effect,orderInlayer) buble at Position and origin of Image is middle bottom of image
-            _spriteBatch.Draw(bubbleTexture, Position, null, Color.White, rotateBubble, new Vector2(bubbleTexture.Width / 2, bubbleTexture.Height/2), 1f, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(bubbleTexture, Position, null, Color.White, Angle, new Vector2(bubbleTexture.Width / 2, bubbleTexture.Height/2), 1f, SpriteEffects.None, 0f);
         }
 
         public Texture2D RandomBubble()
