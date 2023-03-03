@@ -39,43 +39,12 @@ namespace Olympuzz
 
         protected override void Initialize()
         {
-            //song
-            /*BGM = Content.Load<Song>("Audios/Spirit_of_the_Dead");
-            MediaPlayer.IsRepeating = true;
-            MediaPlayer.Volume = Singleton.Instance.bgMusicVolume;
-            MediaPlayer.Play(BGM);*/
-            
-            // TODO: Add your initialization logic here
-            
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            /*shooterTexture = Content.Load<Texture2D>("bow only");
-            bubleAllTexture[0] = Content.Load<Texture2D>("Earth");
-            bubleAllTexture[1] = Content.Load<Texture2D>("Fire");
-            bubleAllTexture[2] = Content.Load<Texture2D>("Thunder");
-            bubleAllTexture[3] = Content.Load<Texture2D>("Water");
-            bubleAllTexture[4] = Content.Load<Texture2D>("Wind");
-            baseTexture = Content.Load<Texture2D>("base");
-
-            reddot = Content.Load<Texture2D>("Basic_red_dot");
-
-
-            b = new Button(reddot, position,size);
-            shooter = new Shooter(shooterTexture, bubleAllTexture, baseTexture)
-            {
-                Name = "Shooter",
-                Position = new Vector2(Singleton.Instance.Dimensions.X / 2, Singleton.Instance.Dimensions.Y),
-                //Position = new Vector2(640, 720),
-                color = Color.White,
-                IsActive = true,
-            };*/
-
-            //ScreenManager.Instance.LoadContent(Content);
-            //Arial = Content.Load<SpriteFont>("Fonts/Arial");
 
             ScreenManager.Instance.LoadContent(Content);
         }
@@ -88,8 +57,6 @@ namespace Olympuzz
         protected override void Update(GameTime gameTime)
         {
             ScreenManager.Instance.Update(gameTime);
-            Singleton.Instance.IsFullScreen = _graphics.IsFullScreen;
-            //MediaPlayer.Volume = Singleton.Instance.bgMusicVolume;
 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
@@ -110,17 +77,6 @@ namespace Olympuzz
             _spriteBatch.Begin();
             //fade in and out screen
             ScreenManager.Instance.Draw(_spriteBatch);
-            /*if (Singleton.Instance.cmdShowFPS)
-            {
-                float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-                FrameCounter.Instance.Update(deltaTime);
-                _spriteBatch.DrawString(Arial, string.Format("FPS: " + FrameCounter.Instance.AverageFramesPerSecond.ToString("F")), new Vector2(1090, 10), Color.Yellow);
-            }*/
-
-            // TODO: Add your drawing code here
-
-            //shooter.Draw(_spriteBatch);
-            //b.Draw(_spriteBatch);
             _spriteBatch.End();
             
             base.Draw(gameTime);

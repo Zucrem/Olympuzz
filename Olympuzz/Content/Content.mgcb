@@ -30,6 +30,13 @@
 /processorParam:TextureFormat=Compressed
 /build:AlagardBig.spritefont
 
+#begin AlagardMedium.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:AlagardMedium.spritefont
+
 #begin blackScreen.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -53,18 +60,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:GameLogo.png
-
-#begin gud room.jpg
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:gud room.jpg
 
 #begin MenuScreen/ExitButton.png
 /importer:TextureImporter
@@ -251,10 +246,4 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Stag_1/score.jpg
-
-#begin Stag_1/The Kraken.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:Stag_1/The Kraken.mp3;Stag_1/PoseidonTheme.mp3
 

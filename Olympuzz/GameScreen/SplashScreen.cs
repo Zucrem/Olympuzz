@@ -14,7 +14,7 @@ namespace Olympuzz.GameScreen
 {
     class SplashScreen : _GameScreen
     {
-        private Vector2 fontSize;
+        private Vector2 fontSize;//ขนาด font ที่เอามา
         private Color color; //เพื่อupdate ค่าความโปร่งสี
         private SpriteFont smallfonts, bigfonts;//กำหนดชื่อ font
         private Texture2D LogoPic, blackScreen;//กำหนด ภาพของหน้า splashscreen
