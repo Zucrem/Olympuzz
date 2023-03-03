@@ -13,7 +13,7 @@ namespace Olympuzz
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Vector2 position , size;
-        private Texture2D reddot,shooterTexture, baseTexture;
+        private Texture2D reddot,shooterTexture, sbaseTexture;
         private readonly Texture2D[] bubleAllTexture = new Texture2D[5];
         private Button b;
         private Shooter shooter;

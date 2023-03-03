@@ -16,7 +16,7 @@ namespace Olympuzz.GameScreen
     {
         private Vector2 fontSize;//ขนาด font ที่เอามา
         private Color color; //เพื่อupdate ค่าความโปร่งสี
-        private SpriteFont smallfonts, bigfonts;//กำหนดชื่อ font
+        private SpriteFont smallfonts, mediumfonts, bigfonts;//กำหนดชื่อ font
         private Texture2D LogoPic, blackScreen;//กำหนด ภาพของหน้า splashscreen
         private int alpha; // ค่าความโปร่งสี
         private int displayIndex; // order of index to display splash screen
@@ -37,6 +37,7 @@ namespace Olympuzz.GameScreen
             base.LoadContent();
             smallfonts = content.Load<SpriteFont>("Alagard");
             bigfonts = content.Load<SpriteFont>("AlagardBig");
+            mediumfonts = content.Load<SpriteFont>("AlagardMedium");
             LogoPic = content.Load<Texture2D>("GameLogo");
             blackScreen = content.Load<Texture2D>("blackScreen");
         }
@@ -107,8 +108,8 @@ namespace Olympuzz.GameScreen
                     spriteBatch.Draw(LogoPic, new Vector2((Singleton.Instance.Dimensions.X - LogoPic.Width) / 2, 200), color);
                     break;
                 case 2:
-                    fontSize = bigfonts.MeasureString("The Best Bubble Shooter Game Ever");
-                    spriteBatch.DrawString(bigfonts, "The Best Bubble Shooter Game Ever", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 550), color);
+                    fontSize = mediumfonts.MeasureString("The Best Bubble Shooter Game Ever");
+                    spriteBatch.DrawString(mediumfonts, "The Best Bubble Shooter Game Ever", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 550), color);
                     break;
                 case 3:
                     spriteBatch.Draw(blackScreen, Vector2.Zero, color);

@@ -23,12 +23,10 @@ namespace Olympuzz.GameObjects
         private bool isPressed;
         private bool cantHover = false;
 
+        //sound
         private SoundEffectInstance clickSound, whileHoveringSound;
 
         private const int MAX_CLICK_DELAY_MS = 200;
-
-        //sound
-        //private SoundEffectInstance soundClickButton, soundEnterGame, soundSelectButton;
 
         public Button(Texture2D texture, Vector2 position , Vector2 size)
         {
@@ -43,8 +41,8 @@ namespace Olympuzz.GameObjects
         {
             ContentManager content = new ContentManager(ScreenManager.Instance.Content.ServiceProvider, "Content"); ;
             // Sounds
-            //clickSound = content.Load<SoundEffect>("Sounds/clicksound").CreateInstance();
-            //whileHoveringSound = content.Load<SoundEffect>("Sounds/whilehoveringsound").CreateInstance();
+            clickSound = content.Load<SoundEffect>("Sounds/clickSound").CreateInstance();
+            whileHoveringSound = content.Load<SoundEffect>("Sounds/hoveringSound").CreateInstance();
         }
 
         public void Update(GameTime gameTime)
