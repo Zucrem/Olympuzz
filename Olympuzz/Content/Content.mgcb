@@ -199,6 +199,18 @@
 /processorParam:TextureFormat=Color
 /build:PlayScreen/Wind.png
 
+#begin Sounds/clickSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/clickSound.wav
+
+#begin Sounds/hoveringSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/hoveringSound.wav
+
 #begin Stag_1/board.jpg
 /importer:TextureImporter
 /processor:TextureProcessor

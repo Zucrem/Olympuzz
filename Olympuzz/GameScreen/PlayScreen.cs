@@ -100,11 +100,11 @@ namespace Olympuzz.GameScreen
             //all button
             pauseButton = new Button(pauseButtonPic, new Vector2(15, 20), new Vector2(300, 70));//create button object on playscreen
             //create button on pause and win or lose screen
-            continueButton = new Button(continueButtonPic, new Vector2(490, 239), new Vector2(300, 70));
-            settingButton = new Button(settingButtonPic, new Vector2(490, 389), new Vector2(300, 70));
-            exitButton = new Button(exitButtonPic, new Vector2(490, 600), new Vector2(300, 70));
-            restartButton = new Button(restartButtonPic, new Vector2(490, 490), new Vector2(300, 70));
-            nextButton = new Button(nextButtonPic, new Vector2(490, 239), new Vector2(300, 70));//create Button after win
+            continueButton = new Button(continueButtonPic, new Vector2(490, 250), new Vector2(300, 70));
+            restartButton = new Button(restartButtonPic, new Vector2(490, 360), new Vector2(300, 70));
+            settingButton = new Button(settingButtonPic, new Vector2(490, 470), new Vector2(300, 70));
+            exitButton = new Button(exitButtonPic, new Vector2(490, 580), new Vector2(300, 70));
+            nextButton = new Button(nextButtonPic, new Vector2(490, 250), new Vector2(300, 70));//create Button after win
 
             //setting button
             bgmMuteSoundButton = new Button(bgmMuteSoundPic, new Vector2(475, 250), new Vector2(175, 50));
@@ -618,20 +618,22 @@ namespace Olympuzz.GameScreen
                     //only for if still playing
                     if (pauseEvent)
                     {
+                        fontSize = bigfonts.MeasureString("Pause");
+                        spriteBatch.DrawString(bigfonts, "Pause", new Vector2(555, 130), color);
                         continueButton.Draw(spriteBatch);
                     }
                     //only if gameover
                     else if (gameOver)
                     {
-                        fontSize = bigfonts.MeasureString("GameOver !!");
-                        spriteBatch.DrawString(bigfonts, "GameOver !!", Singleton.Instance.Dimensions / 2 - fontSize / 2, color);
+                        fontSize = bigfonts.MeasureString("GameOver");
+                        spriteBatch.DrawString(bigfonts, "GameOver", new Vector2(547, 93), color);
                     }
                     //only if gamewin
                     else if (gameWin)
                     {
                         nextButton.Draw(spriteBatch);
-                        fontSize = bigfonts.MeasureString("GameWin !!");
-                        spriteBatch.DrawString(bigfonts, "GameWin !!", Singleton.Instance.Dimensions / 2 - fontSize / 2, color);
+                        fontSize = bigfonts.MeasureString("GameWin");
+                        spriteBatch.DrawString(bigfonts, "GameWin", new Vector2(547, 93), color);
                     }
                 }
             }
