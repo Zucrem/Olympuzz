@@ -17,13 +17,21 @@ namespace Olympuzz
         public bool Shooting = false;
         public List<Vector2> removeBubble = new();
         public bool cmdExit = false;
-        public bool IsFullScreen;
         public int speed = -700;
         public int lastClickTime = 0;
+        public AudioState bgmState = AudioState.FULL;
+        public AudioState sfxState = AudioState.FULL;
 
         public MouseState MousePrevious, MouseCurrent;
 
         private static Singleton instance;
+
+        public enum AudioState
+        {
+            MUTE,
+            MEDIUM,
+            FULL
+        }
         public static Singleton Instance
         {
             get

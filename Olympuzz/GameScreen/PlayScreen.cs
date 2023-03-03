@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Media;
+using static Olympuzz.Singleton;
 
 namespace Olympuzz.GameScreen
 {
@@ -21,13 +22,14 @@ namespace Olympuzz.GameScreen
     {
         //all pictures
         private Texture2D bgLevel1, blackScreenPic, shooterTexture, baseTexture, pauseButtonPic, board, settingButtonPic, continueButtonPic, restartButtonPic, nextButtonPic, exitButtonPic;
-        private Texture2D bgmMuteSoundPic, bgmMediumSoundPic, bgmFullSoundPic, sfxMuteSoundPic, sfxMediumSoundPic, sfxFullSoundPic, back;
+        private Texture2D bgmMuteSoundPic, bgmMediumSoundPic, bgmFullSoundPic, sfxMuteSoundPic, sfxMediumSoundPic, sfxFullSoundPic, backPic;
+        private Texture2D bgmMuteSoundPic2, bgmMediumSoundPic2, bgmFullSoundPic2, sfxMuteSoundPic2, sfxMediumSoundPic2, sfxFullSoundPic2;//for setting button not hovering
         private readonly Texture2D[] bubleAllTexture = new Texture2D[5];
 
         private Color color;
 
-        //private SpriteFont Alagan;
-        private SpriteFont smallfonts, bigfonts;//กำหนดชื่อ font
+        //private SpriteFont Alagan
+        private SpriteFont smallfonts, mediumfonts, bigfonts;//กำหนดชื่อ font
         private Vector2 fontSize;
 
         //all playscreen
@@ -49,6 +51,7 @@ namespace Olympuzz.GameScreen
 
         //song and sfx
         private Song poseidonTheme;
+
         private SoundEffectInstance BubbleSFX_stick, BubbleSFX_dead;
         private SoundEffectInstance Click;
 
@@ -106,7 +109,8 @@ namespace Olympuzz.GameScreen
             sfxMuteSoundButton = new Button(sfxMuteSoundPic, new Vector2(475, 430), new Vector2(175, 50));
             sfxMediumSoundButton = new Button(sfxMediumSoundPic, new Vector2(650, 430), new Vector2(175, 50));
             sfxFullSoundButton = new Button(sfxFullSoundPic, new Vector2(825, 430), new Vector2(175, 50));
-            backButton = new Button(back, new Vector2(490, 609), new Vector2(300, 70));
+
+            backButton = new Button(backPic, new Vector2(490, 609), new Vector2(300, 70));
 
             shooter = new Shooter(shooterTexture, bubleAllTexture, baseTexture)
             {
@@ -170,11 +174,19 @@ namespace Olympuzz.GameScreen
             sfxMuteSoundPic = content.Load<Texture2D>("PlayScreen/Fire");
             sfxMediumSoundPic = content.Load<Texture2D>("PlayScreen/Wind");
             sfxFullSoundPic = content.Load<Texture2D>("PlayScreen/Earth");
-            back = content.Load<Texture2D>("PlayScreen/Water");
+            backPic = content.Load<Texture2D>("PlayScreen/Water");
 
+            //if it cant hovering
+            bgmMuteSoundPic2 = content.Load<Texture2D>("PlayScreen/Water");
+            bgmMediumSoundPic2 = content.Load<Texture2D>("PlayScreen/Water");
+            bgmFullSoundPic2 = content.Load<Texture2D>("PlayScreen/Water");
+            sfxMuteSoundPic2 = content.Load<Texture2D>("PlayScreen/Water");
+            sfxMediumSoundPic2 = content.Load<Texture2D>("PlayScreen/Water");
+            sfxFullSoundPic2 = content.Load<Texture2D>("PlayScreen/Water");
 
             // Fonts
             smallfonts = content.Load<SpriteFont>("Alagard");
+            mediumfonts = content.Load<SpriteFont>("AlagardMedium");
             bigfonts = content.Load<SpriteFont>("AlagardBig");
 
             //song and sfx
@@ -351,12 +363,15 @@ namespace Olympuzz.GameScreen
                         {
                             masterBGM = 0f;
                             Singleton.Instance.bgMusicVolume = masterBGM;
+                            Singleton.Instance.bgmState = AudioState.MUTE;
                         }
                     }
                     else if (bgmMediumSoundButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                     {
                         masterBGM = 0.5f;
                         Singleton.Instance.bgMusicVolume = masterBGM;
+                        Singleton.Instance.bgmState = AudioState.MEDIUM;
+
                     }
                     else if (bgmFullSoundButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                     {
@@ -364,6 +379,7 @@ namespace Olympuzz.GameScreen
                         {
                             masterBGM = 1f;
                             Singleton.Instance.bgMusicVolume = masterBGM;
+                            Singleton.Instance.bgmState = AudioState.FULL;
                         }
                     }
 
@@ -374,12 +390,14 @@ namespace Olympuzz.GameScreen
                         {
                             masterSFX = 0f;
                             Singleton.Instance.soundMasterVolume = masterSFX;
+                            Singleton.Instance.sfxState = AudioState.MUTE;
                         }
                     }
                     else if (sfxMediumSoundButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                     {
                         masterSFX = 0.5f;
                         Singleton.Instance.soundMasterVolume = masterSFX;
+                        Singleton.Instance.sfxState = AudioState.MEDIUM;
                     }
                     else if (sfxFullSoundButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                     {
@@ -387,6 +405,7 @@ namespace Olympuzz.GameScreen
                         {
                             masterSFX = 1f;
                             Singleton.Instance.soundMasterVolume = masterSFX;
+                            Singleton.Instance.sfxState = AudioState.FULL;
                         }
                     }
 
@@ -472,10 +491,21 @@ namespace Olympuzz.GameScreen
                     color.A = (byte)alpha;
                 }
             }
-            
+
+            //all update
+            //set sound status everytime
+            setSoundStatus();
 
             shooter.Update(gameTime, bubble);
 
+            //update button
+            bgmMuteSoundButton.Update(gameTime);
+            bgmMediumSoundButton.Update(gameTime);
+            bgmFullSoundButton.Update(gameTime);
+            sfxMuteSoundButton.Update(gameTime);
+            sfxMediumSoundButton.Update(gameTime);
+            sfxFullSoundButton.Update(gameTime);
+            backButton.Update(gameTime);
             base.Update(gameTime);
         }
         public override void Draw(SpriteBatch spriteBatch)
@@ -520,17 +550,17 @@ namespace Olympuzz.GameScreen
                 if (settingEvent)
                 {
                     backButton.Draw(spriteBatch);
-                    spriteBatch.DrawString(bigfonts, "Setting", new Vector2(513, 93), Color.White);
+                    spriteBatch.DrawString(bigfonts, "Setting", new Vector2(513, 93), Color.Yellow);
 
                     //BGM
-                    spriteBatch.DrawString(smallfonts, "BGM Volume", new Vector2(279, 290), Color.White);
+                    spriteBatch.DrawString(mediumfonts, "Musics", new Vector2(276, 257), Color.Yellow);
 
                     bgmMuteSoundButton.Draw(spriteBatch);
                     bgmMediumSoundButton.Draw(spriteBatch);
                     bgmFullSoundButton.Draw(spriteBatch);
 
                     //SFX
-                    spriteBatch.DrawString(smallfonts, "SFX Volume", new Vector2(279, 430), Color.White);
+                    spriteBatch.DrawString(mediumfonts, "Sounds", new Vector2(276, 437), Color.Yellow);
 
                     sfxMuteSoundButton.Draw(spriteBatch);
                     sfxMediumSoundButton.Draw(spriteBatch);
@@ -567,6 +597,70 @@ namespace Olympuzz.GameScreen
             if (!fadeFinish)
             {
                 spriteBatch.Draw(blackScreenPic, Vector2.Zero, color);
+            }
+        }
+        public void setSoundStatus()
+        {
+            switch (Singleton.Instance.bgmState)
+            {
+                case AudioState.MUTE:
+                    bgmMuteSoundButton.setTexture(bgmMuteSoundPic2);
+                    bgmMediumSoundButton.setTexture(bgmMediumSoundPic);
+                    bgmFullSoundButton.setTexture(bgmFullSoundPic);
+
+                    bgmMuteSoundButton.setCantHover(true);
+                    bgmMediumSoundButton.setCantHover(false);
+                    bgmFullSoundButton.setCantHover(false);
+                    break;
+                case AudioState.MEDIUM:
+                    bgmMuteSoundButton.setCantHover(false);
+                    bgmMediumSoundButton.setCantHover(true);
+                    bgmFullSoundButton.setCantHover(false);
+
+                    bgmMuteSoundButton.setTexture(bgmMuteSoundPic);
+                    bgmMediumSoundButton.setTexture(bgmMediumSoundPic2);
+                    bgmFullSoundButton.setTexture(bgmFullSoundPic);
+                    break;
+                case AudioState.FULL:
+                    bgmMuteSoundButton.setCantHover(false);
+                    bgmMediumSoundButton.setCantHover(false);
+                    bgmFullSoundButton.setCantHover(true);
+
+                    bgmMuteSoundButton.setTexture(bgmMuteSoundPic);
+                    bgmMediumSoundButton.setTexture(bgmMediumSoundPic);
+                    bgmFullSoundButton.setTexture(bgmFullSoundPic2);
+                    break;
+            }
+
+            switch (Singleton.Instance.sfxState)
+            {
+                case AudioState.MUTE:
+                    sfxMuteSoundButton.setCantHover(true);
+                    sfxMediumSoundButton.setCantHover(false);
+                    sfxFullSoundButton.setCantHover(false);
+
+                    sfxMuteSoundButton.setTexture(sfxMuteSoundPic2);
+                    sfxMediumSoundButton.setTexture(sfxMediumSoundPic);
+                    sfxFullSoundButton.setTexture(sfxFullSoundPic);
+                    break;
+                case AudioState.MEDIUM:
+                    sfxMuteSoundButton.setCantHover(false);
+                    sfxMediumSoundButton.setCantHover(true);
+                    sfxFullSoundButton.setCantHover(false);
+
+                    sfxMuteSoundButton.setTexture(sfxMuteSoundPic);
+                    sfxMediumSoundButton.setTexture(sfxMediumSoundPic2);
+                    sfxFullSoundButton.setTexture(sfxFullSoundPic);
+                    break;
+                case AudioState.FULL:
+                    sfxMuteSoundButton.setCantHover(false);
+                    sfxMediumSoundButton.setCantHover(false);
+                    sfxFullSoundButton.setCantHover(true);
+
+                    sfxMuteSoundButton.setTexture(sfxMuteSoundPic);
+                    sfxMediumSoundButton.setTexture(sfxMediumSoundPic);
+                    sfxFullSoundButton.setTexture(sfxFullSoundPic2);
+                    break;
             }
         }
     }

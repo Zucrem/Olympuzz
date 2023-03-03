@@ -57,7 +57,6 @@ namespace Olympuzz
         protected override void Update(GameTime gameTime)
         {
             ScreenManager.Instance.Update(gameTime);
-            Singleton.Instance.IsFullScreen = _graphics.IsFullScreen;
 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {

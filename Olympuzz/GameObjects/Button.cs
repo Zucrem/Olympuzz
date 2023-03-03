@@ -21,6 +21,7 @@ namespace Olympuzz.GameObjects
         private Rectangle bounds;
         private bool isHovered;
         private bool isPressed;
+        private bool cantHover = false;
 
         private SoundEffectInstance clickSound, whileHoveringSound;
 
@@ -42,15 +43,15 @@ namespace Olympuzz.GameObjects
         {
             ContentManager content = new ContentManager(ScreenManager.Instance.Content.ServiceProvider, "Content"); ;
             // Sounds
-            clickSound = content.Load<SoundEffect>("Sounds/clicksound").CreateInstance();
-            whileHoveringSound = content.Load<SoundEffect>("Sounds/whilehoveringsound").CreateInstance();
+            //clickSound = content.Load<SoundEffect>("Sounds/clicksound").CreateInstance();
+            //whileHoveringSound = content.Load<SoundEffect>("Sounds/whilehoveringsound").CreateInstance();
         }
 
         public void Update(GameTime gameTime)
         {
             //click sound
-            clickSound.Volume = Singleton.Instance.soundMasterVolume;
-            whileHoveringSound.Volume = Singleton.Instance.soundMasterVolume;
+            //clickSound.Volume = Singleton.Instance.soundMasterVolume;
+            //whileHoveringSound.Volume = Singleton.Instance.soundMasterVolume;
         }
 
         public bool isWhileHovering(MouseState mouseState)
@@ -61,7 +62,6 @@ namespace Olympuzz.GameObjects
         }
         public bool IsClicked(MouseState mouseState, GameTime gameTime)
         {
-            clickSound.Play();
             bool wasPressed = isPressed;
 
             // bound.Contains use to active only if mouse is in Position && check if mouse was left click
@@ -77,7 +77,7 @@ namespace Olympuzz.GameObjects
                 if (elapsedMs > MAX_CLICK_DELAY_MS)
                 {
                     //lastclickTime = TotalTime of program that time
-                    //soundClickButton.Play();
+                    //clickSound.Play();
                     Singleton.Instance.lastClickTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
                     return true;
                 }
@@ -88,15 +88,32 @@ namespace Olympuzz.GameObjects
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (isWhileHovering(Singleton.Instance.MouseCurrent))
+            if (!cantHover)
             {
-                //soundHoverButton.Play();
-                spriteBatch.Draw(texture, bounds, Color.LightGray);
+                if (isWhileHovering(Singleton.Instance.MouseCurrent))
+                {
+                    //soundHoverButton.Play();
+                    spriteBatch.Draw(texture, bounds, Color.LightGray);
+                }
+                else
+                {
+                    spriteBatch.Draw(texture, bounds, Color.White);
+                }
             }
             else
             {
                 spriteBatch.Draw(texture, bounds, Color.White);
             }
+        }
+
+        public void setTexture(Texture2D texture)
+        {
+            this.texture = texture;
+        }
+
+        public void setCantHover(bool bol)
+        {
+            this.cantHover = bol;
         }
     }
 }

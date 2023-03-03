@@ -30,6 +30,13 @@
 /processorParam:TextureFormat=Compressed
 /build:AlagardBig.spritefont
 
+#begin AlagardMedium.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:AlagardMedium.spritefont
+
 #begin blackScreen.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -192,18 +199,6 @@
 /processorParam:TextureFormat=Color
 /build:PlayScreen/Wind.png
 
-#begin Sounds/clicksound.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sounds/clicksound.wav
-
-#begin Sounds/whilehoveringsound.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sounds/whilehoveringsound.wav
-
 #begin Stag_1/board.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -251,5 +246,4 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Stag_1/score.jpg
-
 
