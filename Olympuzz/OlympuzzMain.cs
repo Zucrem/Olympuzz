@@ -88,7 +88,6 @@ namespace Olympuzz
         protected override void Update(GameTime gameTime)
         {
             ScreenManager.Instance.Update(gameTime);
-            Singleton.Instance.IsFullScreen = _graphics.IsFullScreen;
             //MediaPlayer.Volume = Singleton.Instance.bgMusicVolume;
 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))

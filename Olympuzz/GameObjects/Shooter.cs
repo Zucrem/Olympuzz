@@ -35,9 +35,11 @@ namespace Olympuzz.GameObjects
             Singleton.Instance.MousePrevious = Singleton.Instance.MouseCurrent;//เก็บสถานะmouseก่อนหน้า
             Singleton.Instance.MouseCurrent = Mouse.GetState();//เก็บสถานะmouseปัจจุบัน
 
+            Vector2 rotationPoint = new Vector2(583f, 702f);
+
             if (Singleton.Instance.MouseCurrent.Y < 702 && Singleton.Instance.MouseCurrent.Y > 52 && Singleton.Instance.MouseCurrent.X > 363 && Singleton.Instance.MouseCurrent.X < 807)//mouseต้องสูงกว่าขนาดเท่านี้
             {
-                angle = (float)Math.Atan2(Singleton.Instance.MouseCurrent.Y - 702, Singleton.Instance.MouseCurrent.X - 583);//มุม = ตำแหน่งที่ยิง - สถานะmouse x y
+                angle = (float)Math.Atan2(Singleton.Instance.MouseCurrent.Y - rotationPoint.Y, Singleton.Instance.MouseCurrent.X - rotationPoint.X);//มุม = ตำแหน่งที่ยิง - สถานะmouse x y
                 //ถ้าไม่ได้ยิง และ กดเม้าซ้าย และเม้าก่อนหน้าปล่อยอยู่
                 if (!Singleton.Instance.Shooting && Singleton.Instance.MouseCurrent.LeftButton == ButtonState.Pressed && Singleton.Instance.MousePrevious.LeftButton == ButtonState.Released)
                 {
