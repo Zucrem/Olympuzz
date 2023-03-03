@@ -13,6 +13,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using Microsoft.Xna.Framework.Media;
 
 namespace Olympuzz.GameScreen
 {
@@ -46,6 +47,8 @@ namespace Olympuzz.GameScreen
         private float tickPerUpdate = 30f;
         private int alpha = 255;
 
+        //song and sfx
+        private Song poseidonTheme;
         private SoundEffectInstance BubbleSFX_stick, BubbleSFX_dead;
         private SoundEffectInstance Click;
 
@@ -99,7 +102,6 @@ namespace Olympuzz.GameScreen
             arrowLsfxButton = new Button(ArrowLeftSFX, new Vector2(700, 315), new Vector2(70, 50));
             arrowRsfxButton = new Button(ArrowRightSFX, new Vector2(900, 315), new Vector2(70, 50));
             applySettingButton = new Button(apply, new Vector2(745, 510), new Vector2(300, 70));
-
 
 
             shooter = new Shooter(shooterTexture, bubleAllTexture, baseTexture)
@@ -167,6 +169,19 @@ namespace Olympuzz.GameScreen
             // Fonts
             smallfonts = content.Load<SpriteFont>("Alagard");
             bigfonts = content.Load<SpriteFont>("AlagardBig");
+
+            //song and sfx
+            poseidonTheme = content.Load<Song>("Stag_1/PoseidonTheme");
+            MediaPlayer.Volume = Singleton.Instance.bgMusicVolume;
+            MediaPlayer.IsRepeating = true;
+
+            switch (level)
+            {
+                case 1:
+                    MediaPlayer.Play(poseidonTheme);
+                    break;
+            }
+
             Initial();
             
         }
@@ -199,7 +214,7 @@ namespace Olympuzz.GameScreen
                         gameOver = true; 
                         notPlay = true;
                         pauseEvent = false;
-                        Debug.WriteLine("loser");
+                        MediaPlayer.Stop();
                         //Singleton.Instance.BestScore = Singleton.Instance.Score.ToString();
                         //Singleton.Instance.BestTime = Timer.ToString("F");
                     }
@@ -208,6 +223,7 @@ namespace Olympuzz.GameScreen
                 {
                     notPlay = true;
                     pauseEvent = true;
+                    MediaPlayer.Pause();
                 }
                 //Check ball flying
                 //for (int i = 1; i < 9; i++)
@@ -260,6 +276,7 @@ namespace Olympuzz.GameScreen
                                 notPlay = true;
                                 gameOver = true;
                                 pauseEvent = false;
+                                MediaPlayer.Stop();
                                 //Singleton.Instance.BestScore = Singleton.Instance.Score.ToString();
                                 //Singleton.Instance.BestTime = Timer.ToString("F");
                             }
@@ -335,6 +352,7 @@ namespace Olympuzz.GameScreen
                         {
                             notPlay = false;
                             pauseEvent = false;
+                            MediaPlayer.Resume();
                         }
                     }
                     else
@@ -348,6 +366,7 @@ namespace Olympuzz.GameScreen
                                 pauseEvent = false;
                                 settingEvent = false;
                                 level += 1;
+                                MediaPlayer.Stop();
                                 ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
                             }
 
@@ -367,6 +386,7 @@ namespace Olympuzz.GameScreen
                         notPlay = false;
                         pauseEvent = false;
                         settingEvent = false;
+                        MediaPlayer.Stop();
                         ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
                     }
 
@@ -377,6 +397,7 @@ namespace Olympuzz.GameScreen
                         notPlay = false;
                         pauseEvent = false;
                         settingEvent = false;
+                        MediaPlayer.Stop();
                         ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.MenuScreen);
                     }
                 }
