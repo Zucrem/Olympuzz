@@ -1,10 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Olympuzz.Managers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,6 +21,8 @@ namespace Olympuzz.GameObjects
         private Rectangle bounds;
         private bool isHovered;
         private bool isPressed;
+
+        private SoundEffectInstance clickSound, whileHoveringSound;
 
         private const int MAX_CLICK_DELAY_MS = 200;
 
@@ -32,23 +38,30 @@ namespace Olympuzz.GameObjects
             this.isPressed = false;
         }
 
-        //click sound
-        /*soundHoverButton.Volume = Singleton.Instance.soundMasterVolume;
-        soundClickButton.Volume = Singleton.Instance.soundMasterVolume;*/
+        public void LoadContent()
+        {
+            ContentManager content = new ContentManager(ScreenManager.Instance.Content.ServiceProvider, "Content"); ;
+            // Sounds
+            clickSound = content.Load<SoundEffect>("Sounds/clicksound").CreateInstance();
+            whileHoveringSound = content.Load<SoundEffect>("Sounds/whilehoveringsound").CreateInstance();
+        }
 
-
-        // Sounds
-        /*soundClickButton = content.Load<SoundEffect>("Audios/UI_SoundPack8_Error_v1").CreateInstance();
-        soundHoverButton = content.Load<SoundEffect>("Audios/transition t07 two-step 007").CreateInstance();*/
+        public void Update(GameTime gameTime)
+        {
+            //click sound
+            clickSound.Volume = Singleton.Instance.soundMasterVolume;
+            whileHoveringSound.Volume = Singleton.Instance.soundMasterVolume;
+        }
 
         public bool isWhileHovering(MouseState mouseState)
         {
+            //whileHoveringSound.Play();
             isHovered = bounds.Contains(mouseState.Position);
             return isHovered;
         }
         public bool IsClicked(MouseState mouseState, GameTime gameTime)
         {
-            //soundClickButton.Play();
+            clickSound.Play();
             bool wasPressed = isPressed;
 
             // bound.Contains use to active only if mouse is in Position && check if mouse was left click

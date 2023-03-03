@@ -8,6 +8,7 @@ using Olympuzz.GameObjects;
 using System.Threading;
 using System.Timers;
 using Microsoft.Xna.Framework.Media;
+using System.Diagnostics;
 
 namespace Olympuzz.GameScreen
 {
@@ -17,14 +18,13 @@ namespace Olympuzz.GameScreen
         private Color _Color = new Color(250, 250, 250, 0);
         private Texture2D backgroundPic, blackScreenPic;//background
         //all picture
-        private Texture2D logoPic, startPic, settingPic, exitPic, checkBoxBGM, checkBoxSFX, apply, back, ArrowLeftBGM, ArrowRightBGM, ArrowLeftSFX, ArrowRightSFX;
+        private Texture2D logoPic, startPic, settingPic, exitPic, bgmMuteSoundPic, bgmMediumSoundPic, bgmFullSoundPic, sfxMuteSoundPic, sfxMediumSoundPic, sfxFullSoundPic, back;
 
         //all button
-        private Button startButton, settingButton, exitButton, backButton, applySettingButton, arrowLbgmButton, arrowRbgmButton, arrowLsfxButton, arrowRsfxButton;
+        private Button startButton, settingButton, exitButton, bgmMuteSoundButton, bgmMediumSoundButton, bgmFullSoundButton, sfxMuteSoundButton, sfxMediumSoundButton, sfxFullSoundButton, backButton;
 
         //private SpriteFont Alagan;
-        private SpriteFont smallfonts, bigfonts;//กำหนดชื่อ font
-        private Vector2 fontSize;
+        private SpriteFont smallfonts, mediumfonts, bigfonts;//กำหนดชื่อ font
 
         //bg and sfx song
         private Song MainmenuTheme;
@@ -41,8 +41,8 @@ namespace Olympuzz.GameScreen
         private int alpha = 255;
 
         //ตัวแปรของหน้า Option
-        private int masterBGM  = Singleton.Instance.bgMusicVolume;
-        private int masterSFX = Convert.ToInt32(Singleton.Instance.soundMasterVolume * 100);
+        private float masterBGM = Singleton.Instance.bgMusicVolume;
+        private float masterSFX = Singleton.Instance.soundMasterVolume;
 
         public void Initial()
         {
@@ -51,13 +51,14 @@ namespace Olympuzz.GameScreen
             settingButton = new Button(settingPic, new Vector2(293, 410), new Vector2(300, 70));
             exitButton = new Button(exitPic, new Vector2(293, 505), new Vector2(300, 70));
 
-            //setting and how2play button
+            //setting button
+            bgmMuteSoundButton = new Button(bgmMuteSoundPic, new Vector2(475, 250), new Vector2(175, 50));
+            bgmMediumSoundButton = new Button(bgmMediumSoundPic, new Vector2(650, 250), new Vector2(175, 50));
+            bgmFullSoundButton = new Button(bgmFullSoundPic, new Vector2(825, 250), new Vector2(175, 50));
+            sfxMuteSoundButton = new Button(sfxMuteSoundPic, new Vector2(475, 430), new Vector2(175, 50));
+            sfxMediumSoundButton = new Button(sfxMediumSoundPic, new Vector2(650, 430), new Vector2(175, 50));
+            sfxFullSoundButton = new Button(sfxFullSoundPic, new Vector2(825, 430), new Vector2(175, 50));
             backButton = new Button(back, new Vector2(490, 609), new Vector2(300, 70));
-            arrowLbgmButton = new Button(ArrowLeftBGM, new Vector2(700, 240), new Vector2(70, 50));
-            arrowRbgmButton = new Button(ArrowRightBGM, new Vector2(900, 240), new Vector2(70, 50));
-            arrowLsfxButton = new Button(ArrowLeftSFX, new Vector2(700, 315), new Vector2(70, 50));
-            arrowRsfxButton = new Button(ArrowRightSFX, new Vector2(900, 315), new Vector2(70, 50));
-            applySettingButton = new Button(apply, new Vector2(745, 510), new Vector2(300, 70));
         }
         public override void LoadContent()
         {
@@ -73,15 +74,14 @@ namespace Olympuzz.GameScreen
             startPic = content.Load<Texture2D>("MenuScreen/PlayButton");
             settingPic = content.Load<Texture2D>("MenuScreen/SettingButton");
             exitPic = content.Load<Texture2D>("MenuScreen/ExitButton");
-            //setting and how2play button
-            /*checkBoxBGM = content.Load<Texture2D>("Fire");
-            checkBoxSFX = content.Load<Texture2D>("Fire");*/
-            apply = content.Load<Texture2D>("PlayScreen/Fire");
-            back = content.Load<Texture2D>("PlayScreen/Fire");
-            ArrowLeftBGM = content.Load<Texture2D>("PlayScreen/Wind");
-            ArrowRightBGM = content.Load<Texture2D>("PlayScreen/Earth");
-            ArrowLeftSFX = content.Load<Texture2D>("PlayScreen/Wind");
-            ArrowRightSFX = content.Load<Texture2D>("PlayScreen/Earth");
+            //setting button
+            bgmMuteSoundPic = content.Load<Texture2D>("PlayScreen/Fire");
+            bgmMediumSoundPic = content.Load<Texture2D>("PlayScreen/Wind");
+            bgmFullSoundPic = content.Load<Texture2D>("PlayScreen/Earth");
+            sfxMuteSoundPic = content.Load<Texture2D>("PlayScreen/Fire");
+            sfxMediumSoundPic = content.Load<Texture2D>("PlayScreen/Wind");
+            sfxFullSoundPic = content.Load<Texture2D>("PlayScreen/Earth");
+            back = content.Load<Texture2D>("PlayScreen/Water");
 
             // Fonts
             smallfonts = content.Load<SpriteFont>("Alagard");
@@ -89,7 +89,6 @@ namespace Olympuzz.GameScreen
 
             //song and sfx
             MainmenuTheme = content.Load<Song>("MenuScreen/MainmenuTheme");
-            MediaPlayer.Volume = Singleton.Instance.bgMusicVolume;
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(MainmenuTheme);
 
@@ -103,84 +102,91 @@ namespace Olympuzz.GameScreen
         public override void Update(GameTime gameTime)
         {
             //click sound
+            MediaPlayer.Volume = Singleton.Instance.bgMusicVolume;
             /*soundSelectButton.Volume = Singleton.Instance.soundMasterVolume;
             soundClickButton.Volume = Singleton.Instance.soundMasterVolume;
             soundEnterGame.Volume = Singleton.Instance.soundMasterVolume;*/
 
             Singleton.Instance.MousePrevious = Singleton.Instance.MouseCurrent;
             Singleton.Instance.MouseCurrent = Mouse.GetState();
-            int elapsedMs = (int)gameTime.TotalGameTime.TotalMilliseconds - Singleton.Instance.lastClickTime;
-            //if (elapsedMs > 300)
-            //{
-                if (mainScreen)
+            if (mainScreen)
+            {
+                // Click start game
+                if (startButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                 {
-                    // Click start game
-                    if (startButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
+                    mainScreen = false;
+                }
+                // Click setting
+                if (settingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                {
+                    showSetting = true;
+                    mainScreen = false;
+                }
+                // Click Exit
+                if (exitButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                {
+                    Singleton.Instance.cmdExit = true;
+                }
+            }
+            else
+            {
+                if (showSetting)
+                {
+                    // Click Arrow BGM button
+                    if (bgmMuteSoundButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                     {
-                        ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
-                        mainScreen = false;
+                        if (masterBGM > 0f)
+                        {
+                            masterBGM = 0f;
+                            Singleton.Instance.bgMusicVolume = masterBGM ;
+                        }
                     }
-                    // Click setting
-                    if (settingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    else if (bgmMediumSoundButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                     {
-                        showSetting = true;
-                        mainScreen = false;
+                        masterBGM = 0.5f;
+                        Singleton.Instance.bgMusicVolume = masterBGM;
                     }
-                    // Click Exit
-                    if (exitButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    else if (bgmFullSoundButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                     {
-                        Singleton.Instance.cmdExit = true;
+                        if (masterBGM < 1f)
+                        {
+                            masterBGM = 1f;
+                            Singleton.Instance.bgMusicVolume = masterBGM;
+                        }
+                    }
+
+                    // Click Arrow SFX button
+                    if (sfxMuteSoundButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        if (masterSFX > 0f)
+                        {
+                            masterSFX = 0f;
+                            Singleton.Instance.soundMasterVolume = masterSFX;
+                        }
+                    }
+                    else if (sfxMediumSoundButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                            masterSFX = 0.5f;
+                            Singleton.Instance.soundMasterVolume = masterSFX;
+                    }
+                    else if (sfxFullSoundButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        if (masterSFX < 1f)
+                        {
+                            masterSFX = 1f;
+                            Singleton.Instance.soundMasterVolume = masterSFX;
+                        }
+                    }
+
+                    // Click Back
+                    if (backButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        mainScreen = true;
+                        showSetting = false;
                     }
                 }
-                else
-                {
-                    if (showSetting)
-                    {
-                        // Click Arrow BGM Left and RIght
-                        if (applySettingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                        {
-                            if (masterBGM > 0)
-                            {
-                                masterBGM -= 5;
-                            }
-                        }
-                        else if (applySettingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                        {
-                            if (masterBGM < 100)
-                            {
-                                masterBGM += 5;
-                            }
-                        }
-                        // Click Arrow SFX Left and RIght
-                        if (applySettingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                        {
-                            if (masterSFX > 0)
-                            {
-                                masterSFX -= 5;
-                            }
-                        }
-                        else if (applySettingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                        {
-                            if (masterSFX < 100)
-                            {
-                                masterSFX += 5;
-                            }
-                        }
-                        // Apply setting to Game (this is real changing to apply to singleton)
-                        if (applySettingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                        {
-                            /*Singleton.Instance.bgMusicVolume = masterBGM ;
-                            Singleton.Instance.soundMasterVolume = masterSFX / 100f;*/
-                        }
-                        // Click Back
-                        if (backButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                        {
-                            mainScreen = true;
-                            showSetting = false;
-                        }
-                    }
-                }
-           // }
+            }
 
             // fade out
             if (!fadeFinish)
@@ -197,6 +203,18 @@ namespace Olympuzz.GameScreen
                     _Color.A = (byte)alpha;
                 }
             }
+
+            //update button
+            startButton.Update(gameTime);
+            settingButton.Update(gameTime);
+            exitButton.Update(gameTime);
+            bgmMuteSoundButton.Update(gameTime);
+            bgmMediumSoundButton.Update(gameTime);
+            bgmFullSoundButton.Update(gameTime);
+            sfxMuteSoundButton.Update(gameTime);
+            sfxMediumSoundButton.Update(gameTime);
+            sfxFullSoundButton.Update(gameTime);
+            backButton.Update(gameTime);
             base.Update(gameTime);
         }
         public override void Draw(SpriteBatch spriteBatch)
@@ -218,30 +236,21 @@ namespace Olympuzz.GameScreen
                 // Draw Option Screen
                 if (showSetting)
                 {
-                    fontSize = bigfonts.MeasureString("Setting");
-                    spriteBatch.DrawString(bigfonts, "Setting", new Vector2(Singleton.Instance.Dimensions.X / 2 - fontSize.X / 2, 125), Color.White);
-                    /*
-                    //BGM
-                    spriteBatch.DrawString(Arcanista, "BGM Volume", new Vector2(300, 250), Color.White);
-                    spriteBatch.Draw(Arrow, new Vector2(700, 240), null, Color.White, 0, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
-                    spriteBatch.DrawString(Arcanista, masterBGM .ToString(), new Vector2(800, 250), Color.White);
-                    spriteBatch.Draw(Arrow, new Vector2(900, 240), Color.White);
-
-                    //SFX
-                    spriteBatch.DrawString(Arcanista, "SFX Volume", new Vector2(300, 325), Color.White);
-                    spriteBatch.Draw(Arrow, new Vector2(700, 315), null, Color.White, 0, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
-                    spriteBatch.DrawString(Arcanista, masterSFX.ToString(), new Vector2(800, 325), Color.White);
-                    spriteBatch.Draw(Arrow, new Vector2(900, 315), Color.White);*/
+                    spriteBatch.DrawString(bigfonts, "Setting", new Vector2(513, 93), Color.White);
 
                     //BGM
-                    arrowLbgmButton.Draw(spriteBatch);
-                    arrowRbgmButton.Draw(spriteBatch);
+                    spriteBatch.DrawString(smallfonts, "BGM Volume", new Vector2(279, 290), Color.White);
+
+                    bgmMuteSoundButton.Draw(spriteBatch);
+                    bgmMediumSoundButton.Draw(spriteBatch);
+                    bgmFullSoundButton.Draw(spriteBatch);
 
                     //SFX
-                    arrowLsfxButton.Draw(spriteBatch);
-                    arrowRsfxButton.Draw(spriteBatch);
+                    spriteBatch.DrawString(smallfonts, "SFX Volume", new Vector2(279, 430), Color.White);
 
-                    applySettingButton.Draw(spriteBatch);
+                    sfxMuteSoundButton.Draw(spriteBatch);
+                    sfxMediumSoundButton.Draw(spriteBatch);
+                    sfxFullSoundButton.Draw(spriteBatch);
                 }
             }
 

@@ -54,18 +54,6 @@
 /processorParam:TextureFormat=Color
 /build:GameLogo.png
 
-#begin gud room.jpg
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:gud room.jpg
-
 #begin MenuScreen/ExitButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -204,6 +192,18 @@
 /processorParam:TextureFormat=Color
 /build:PlayScreen/Wind.png
 
+#begin Sounds/clicksound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/clicksound.wav
+
+#begin Sounds/whilehoveringsound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/whilehoveringsound.wav
+
 #begin Stag_1/board.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -252,9 +252,4 @@
 /processorParam:TextureFormat=Color
 /build:Stag_1/score.jpg
 
-#begin Stag_1/The Kraken.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:Stag_1/The Kraken.mp3;Stag_1/PoseidonTheme.mp3
 
