@@ -294,7 +294,7 @@ namespace Olympuzz.GameScreen
                 //    }
                 //}
                 
-                _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond * 100;
                 if (_scrollTime >= tickPerUpdate)
                 {
                     // Check game over before scroll
@@ -444,6 +444,23 @@ namespace Olympuzz.GameScreen
                         confirmExit = false;
                     }
                 }
+                else if(gameWin)
+                {
+                    //if go next level
+                    if (nextButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        if (level < 4)
+                        {
+                            notPlay = false;
+                            pauseEvent = false;
+                            settingEvent = false;
+                            level += 1;
+                            MediaPlayer.Stop();
+                            ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
+                        }
+
+                    }
+                }
                 else
                 {
                     //if still not win or lose
@@ -456,23 +473,6 @@ namespace Olympuzz.GameScreen
                             pauseButton.setCantHover(false);
                             pauseEvent = false;
                             MediaPlayer.Resume();
-                        }
-                    }
-                    else
-                    {
-                        //if go next level
-                        if (nextButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                        {
-                            if (level < 4)
-                            {
-                                notPlay = false;
-                                pauseEvent = false;
-                                settingEvent = false;
-                                level += 1;
-                                MediaPlayer.Stop();
-                                ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
-                            }
-
                         }
                     }
 
@@ -583,7 +583,7 @@ namespace Olympuzz.GameScreen
                 if (settingEvent)
                 {
                     backButton.Draw(spriteBatch);
-                    spriteBatch.DrawString(bigfonts, "Setting", new Vector2(513, 93), Color.Yellow);
+                    spriteBatch.DrawString(bigfonts, "Setting", new Vector2(((Singleton.Instance.Dimensions.X - fontSize.X) / 2)+50, 93), Color.Yellow);
 
                     //BGM
                     spriteBatch.DrawString(mediumfonts, "Musics", new Vector2(276, 257), Color.Yellow);
@@ -601,10 +601,10 @@ namespace Olympuzz.GameScreen
                 }
                 else if (confirmExit)
                 {
-                    fontSize = smallfonts.MeasureString("Are you sure");
-                    spriteBatch.DrawString(bigfonts, "Are you sure", new Vector2(((Singleton.Instance.Dimensions.X - fontSize.X) / 2) - 90, 165), Color.White);
-                    fontSize = smallfonts.MeasureString("you want to Exit?");
-                    spriteBatch.DrawString(bigfonts, "you want to Exit?", new Vector2(((Singleton.Instance.Dimensions.X - fontSize.X) / 2) - 100, 260), Color.White);
+                    fontSize = bigfonts.MeasureString("Are you sure");
+                    spriteBatch.DrawString(bigfonts, "Are you sure", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 165), Color.White);
+                    fontSize = bigfonts.MeasureString("you want to Exit?");
+                    spriteBatch.DrawString(bigfonts, "you want to Exit?", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 260), Color.White);
 
                     noConfirmButton.Draw(spriteBatch);
                     yesConfirmButton.Draw(spriteBatch);
@@ -626,14 +626,14 @@ namespace Olympuzz.GameScreen
                     else if (gameOver)
                     {
                         fontSize = bigfonts.MeasureString("GameOver");
-                        spriteBatch.DrawString(bigfonts, "GameOver", new Vector2(547, 130), color);
+                        spriteBatch.DrawString(bigfonts, "GameOver", new Vector2(((Singleton.Instance.Dimensions.X - fontSize.X) / 2), 130), color);
                     }
                     //only if gamewin
                     else if (gameWin)
                     {
                         nextButton.Draw(spriteBatch);
                         fontSize = bigfonts.MeasureString("GameWin");
-                        spriteBatch.DrawString(bigfonts, "GameWin", new Vector2(547, 130), color);
+                        spriteBatch.DrawString(bigfonts, "GameWin", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 130), color);
                     }
                 }
             }
