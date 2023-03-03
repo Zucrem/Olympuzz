@@ -70,8 +70,8 @@ namespace Olympuzz.GameScreen
             backButton = new Button(backPic, new Vector2(490, 609), new Vector2(300, 70));
 
             //confirm Exit button
-            yesButton = new Button(backPic, new Vector2(315, 420), new Vector2(300, 70));
-            noButton = new Button(backPic, new Vector2(685, 420), new Vector2(300, 70));
+            yesButton = new Button(yesPic, new Vector2(315, 420), new Vector2(300, 70));
+            noButton = new Button(noPic, new Vector2(685, 420), new Vector2(300, 70));
         }
         public override void LoadContent()
         {
@@ -107,7 +107,6 @@ namespace Olympuzz.GameScreen
             //confirmQuit pic
             yesPic = content.Load<Texture2D>("PlayScreen/Fire");
             noPic = content.Load<Texture2D>("PlayScreen/Wind");
-
 
             // Fonts
             smallfonts = content.Load<SpriteFont>("Alagard");
@@ -318,6 +317,7 @@ namespace Olympuzz.GameScreen
                 spriteBatch.Draw(blackScreenPic, Vector2.Zero, _Color);
             }
         }
+        //set Audio Button for Setting
         public void setSoundStatus()
         {
             switch (Singleton.Instance.bgmState)

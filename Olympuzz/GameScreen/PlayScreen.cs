@@ -24,6 +24,7 @@ namespace Olympuzz.GameScreen
         private Texture2D bgLevel1, blackScreenPic, shooterTexture, baseTexture, pauseButtonPic, board, settingButtonPic, continueButtonPic, restartButtonPic, nextButtonPic, exitButtonPic;
         private Texture2D bgmMuteSoundPic, bgmMediumSoundPic, bgmFullSoundPic, sfxMuteSoundPic, sfxMediumSoundPic, sfxFullSoundPic, backPic;
         private Texture2D bgmMuteSoundPic2, bgmMediumSoundPic2, bgmFullSoundPic2, sfxMuteSoundPic2, sfxMediumSoundPic2, sfxFullSoundPic2;//for setting button not hovering
+        private Texture2D noConfirmPic, yesConfirmPic;
         private readonly Texture2D[] bubleAllTexture = new Texture2D[5];
 
         private Color color;
@@ -40,6 +41,8 @@ namespace Olympuzz.GameScreen
         private Button settingButton, continueButton, restartButton, nextButton, exitButton;
         //button for setting
         private Button bgmMuteSoundButton, bgmMediumSoundButton, bgmFullSoundButton, sfxMuteSoundButton, sfxMediumSoundButton, sfxFullSoundButton, backButton;
+        //button for confirm exit
+        private Button noConfirmButton, yesConfirmButton;
 
         //timer
         private float _timer = 0f;
@@ -62,6 +65,7 @@ namespace Olympuzz.GameScreen
         private bool fadeFinish = false;
         private bool gameOver = false;
         private bool gameWin = false;
+        private bool confirmExit = false;
 
         //check if go setting
         private bool settingEvent = false;
@@ -111,6 +115,10 @@ namespace Olympuzz.GameScreen
             sfxFullSoundButton = new Button(sfxFullSoundPic, new Vector2(825, 430), new Vector2(175, 50));
 
             backButton = new Button(backPic, new Vector2(490, 609), new Vector2(300, 70));
+
+            //confirm exit button
+            yesConfirmButton = new Button(yesConfirmPic, new Vector2(315, 420), new Vector2(300, 70));
+            noConfirmButton = new Button(noConfirmPic, new Vector2(685, 420), new Vector2(300, 70));
 
             shooter = new Shooter(shooterTexture, bubleAllTexture, baseTexture)
             {
@@ -183,6 +191,10 @@ namespace Olympuzz.GameScreen
             sfxMuteSoundPic2 = content.Load<Texture2D>("PlayScreen/Water");
             sfxMediumSoundPic2 = content.Load<Texture2D>("PlayScreen/Water");
             sfxFullSoundPic2 = content.Load<Texture2D>("PlayScreen/Water");
+
+            //confirmExit pic
+            yesConfirmPic = content.Load<Texture2D>("PlayScreen/Fire");
+            noConfirmPic = content.Load<Texture2D>("PlayScreen/Wind");
 
             // Fonts
             smallfonts = content.Load<SpriteFont>("Alagard");
@@ -282,7 +294,7 @@ namespace Olympuzz.GameScreen
                 //    }
                 //}
                 
-                _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond * 100;
                 if (_scrollTime >= tickPerUpdate)
                 {
                     // Check game over before scroll
@@ -353,6 +365,7 @@ namespace Olympuzz.GameScreen
             //if in pause, gameover , gamewin
             if (notPlay)
             {
+                pauseButton.setCantHover(true);
                 Singleton.Instance.Shooting = false;
                 if (settingEvent)
                 {
@@ -415,7 +428,24 @@ namespace Olympuzz.GameScreen
                         settingEvent = false;
                     }
                 }
-                else {
+                else if (confirmExit)
+                {
+                    if (yesConfirmButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        Singleton.Instance.Score = 0;
+                        notPlay = false;
+                        pauseEvent = false;
+                        settingEvent = false;
+                        MediaPlayer.Stop();
+                        ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.MenuScreen);
+                    }
+                    else if (noConfirmButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        confirmExit = false;
+                    }
+                }
+                else
+                {
                     //if still not win or lose
                     if (!gameOver && !gameWin)
                     {
@@ -423,6 +453,7 @@ namespace Olympuzz.GameScreen
                         if (continueButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                         {
                             notPlay = false;
+                            pauseButton.setCantHover(false);
                             pauseEvent = false;
                             MediaPlayer.Resume();
                         }
@@ -465,12 +496,9 @@ namespace Olympuzz.GameScreen
                     //if click exit
                     if (exitButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                     {
-                        Singleton.Instance.Score = 0;
-                        notPlay = false;
-                        pauseEvent = false;
-                        settingEvent = false;
-                        MediaPlayer.Stop();
-                        ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.MenuScreen);
+                        //settingEvent = false;
+                        confirmExit = true;
+                        MediaPlayer.Pause();
                     }
                 }
             }
@@ -499,6 +527,11 @@ namespace Olympuzz.GameScreen
             shooter.Update(gameTime, bubble);
 
             //update button
+            continueButton.Update(gameTime);
+            nextButton.Update(gameTime);
+            settingButton.Update(gameTime);
+            restartButton.Update(gameTime);
+            exitButton.Update(gameTime);
             bgmMuteSoundButton.Update(gameTime);
             bgmMediumSoundButton.Update(gameTime);
             bgmFullSoundButton.Update(gameTime);
@@ -566,6 +599,16 @@ namespace Olympuzz.GameScreen
                     sfxMediumSoundButton.Draw(spriteBatch);
                     sfxFullSoundButton.Draw(spriteBatch);
                 }
+                else if (confirmExit)
+                {
+                    fontSize = smallfonts.MeasureString("Are you sure");
+                    spriteBatch.DrawString(bigfonts, "Are you sure", new Vector2(((Singleton.Instance.Dimensions.X - fontSize.X) / 2) - 90, 165), Color.White);
+                    fontSize = smallfonts.MeasureString("you want to Exit?");
+                    spriteBatch.DrawString(bigfonts, "you want to Exit?", new Vector2(((Singleton.Instance.Dimensions.X - fontSize.X) / 2) - 100, 260), Color.White);
+
+                    noConfirmButton.Draw(spriteBatch);
+                    yesConfirmButton.Draw(spriteBatch);
+                }
                 else
                 {
                     //normal for pause
@@ -578,13 +621,13 @@ namespace Olympuzz.GameScreen
                         continueButton.Draw(spriteBatch);
                     }
                     //only if gameover
-                    if (gameOver)
+                    else if (gameOver)
                     {
                         fontSize = bigfonts.MeasureString("GameOver !!");
                         spriteBatch.DrawString(bigfonts, "GameOver !!", Singleton.Instance.Dimensions / 2 - fontSize / 2, color);
                     }
                     //only if gamewin
-                    if (gameWin)
+                    else if (gameWin)
                     {
                         nextButton.Draw(spriteBatch);
                         fontSize = bigfonts.MeasureString("GameWin !!");
@@ -599,6 +642,8 @@ namespace Olympuzz.GameScreen
                 spriteBatch.Draw(blackScreenPic, Vector2.Zero, color);
             }
         }
+
+        //set Audio Button for Setting
         public void setSoundStatus()
         {
             switch (Singleton.Instance.bgmState)
