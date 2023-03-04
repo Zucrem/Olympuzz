@@ -85,12 +85,6 @@
 /processorParam:TextureFormat=Color
 /build:MenuScreen/MainMenuBG.jpg
 
-#begin MenuScreen/MainmenuTheme.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:MenuScreen/MainmenuTheme.mp3
-
 #begin MenuScreen/PlayButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -258,6 +252,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sounds/hoveringSound.wav
+
+#begin Sounds/MainmenuTheme.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/MainmenuTheme.mp3
+
+#begin Sounds/PoseidonTheme.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/PoseidonTheme.mp3
 
 #begin Stag_1/board.jpg
 /importer:TextureImporter

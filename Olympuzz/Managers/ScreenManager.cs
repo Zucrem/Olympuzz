@@ -17,7 +17,6 @@ namespace Olympuzz.Managers
         public enum GameScreenName
         {
             MenuScreen,
-            SelectLevelScreen,
             PlayScreen
         }
         //object gamescreen

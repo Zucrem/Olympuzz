@@ -19,9 +19,18 @@ namespace Olympuzz
         public bool cmdExit = false;
         public int speed = -700;
         public int lastClickTime = 0;
+
+        //Audio State
         public AudioState bgmState = AudioState.FULL;
         public AudioState sfxState = AudioState.FULL;
 
+        //Level State
+        public LevelState levelState = LevelState.NULL;
+
+        //Char State
+        public CharState charState = CharState.NULL;
+
+        //Mouse State
         public MouseState MousePrevious, MouseCurrent;
 
         private static Singleton instance;
@@ -32,6 +41,28 @@ namespace Olympuzz
             MEDIUM,
             FULL
         }
+        public enum LevelState
+        {
+            NULL,
+            POSEIDON,
+            HADES,
+            ZEUS,
+            ENDLESS
+        }
+        public enum CharState
+        {
+            NULL,
+            ATHENA,
+            HERMES,
+            DIONYSUS,
+            HEPHAESTUS
+        }
+        /*public enum SkillState
+        {
+            MUTE,
+            MEDIUM,
+            FULL
+        }*/
         public static Singleton Instance
         {
             get
