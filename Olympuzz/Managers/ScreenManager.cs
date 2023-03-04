@@ -17,6 +17,7 @@ namespace Olympuzz.Managers
         public enum GameScreenName
         {
             MenuScreen,
+            SelectLevelScreen,
             PlayScreen
         }
         //object gamescreen
@@ -35,6 +36,10 @@ namespace Olympuzz.Managers
                 case GameScreenName.MenuScreen:
                     currentScreen = new MenuScreen();
                     break;
+                //ถ้าไปหน้าเลือกด่าย
+                /*case GameScreenName.SelectLevelScreen:
+                    currentScreen = new SelectLevelScreen();
+                    break;*/
                 //ถ้าไปหน้าเล่นเกม
                 case GameScreenName.PlayScreen:
                     currentScreen = new PlayScreen();

@@ -301,7 +301,6 @@ namespace Olympuzz.GameScreen
 
                 
                 _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
-
                 if (_scrollTime >= tickPerUpdate)
                 {
                     // Check game over before scroll
@@ -465,7 +464,6 @@ namespace Olympuzz.GameScreen
                             MediaPlayer.Stop();
                             ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
                         }
-
                     }
                 }
                 else
