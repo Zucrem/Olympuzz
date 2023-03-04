@@ -17,8 +17,9 @@ namespace Olympuzz
         public bool Shooting = false;
         public List<Vector2> removeBubble = new();
         public bool cmdExit = false;
-        public int speed = -700;
+        public int speed = -700; // -700
         public int lastClickTime = 0;
+
 
         //Audio State
         public AudioState bgmState = AudioState.FULL;

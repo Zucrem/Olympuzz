@@ -301,6 +301,12 @@
 /processorParam:TextureFormat=Color
 /build:Stag_1/Poseidon Stage.png
 
+#begin Stag_1/PoseidonTheme.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Stag_1/PoseidonTheme.mp3
+
 #begin Stag_1/score.jpg
 /importer:TextureImporter
 /processor:TextureProcessor

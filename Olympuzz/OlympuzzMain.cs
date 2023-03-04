@@ -57,7 +57,7 @@ namespace Olympuzz
         protected override void Update(GameTime gameTime)
         {
             ScreenManager.Instance.Update(gameTime);
-
+            
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 Exit();
