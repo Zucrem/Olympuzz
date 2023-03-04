@@ -21,6 +21,7 @@ namespace Olympuzz.GameObjects
         private Rectangle bounds;
         private bool isHovered;
         private bool isPressed;
+        private int sizeX, sizeY;
         private bool cantHover = false;
 
         //sound
@@ -32,7 +33,9 @@ namespace Olympuzz.GameObjects
         {
             this.texture = texture;
             this.position = position;
-            this.bounds = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
+            this.sizeX = (int)size.X;
+            this.sizeY = (int)size.Y;
+            this.bounds = new Rectangle((int)position.X, (int)position.Y, sizeX, sizeY);
             isHovered = false;
             this.isPressed = false;
         }
@@ -112,6 +115,10 @@ namespace Olympuzz.GameObjects
         public void setCantHover(bool bol)
         {
             this.cantHover = bol;
+        }
+        public void setPosition(Vector2 position)
+        {
+            this.bounds = new Rectangle((int)position.X, (int)position.Y, sizeX, sizeY); ;
         }
     }
 }
