@@ -35,6 +35,7 @@ namespace Olympuzz.GameScreen
 
         //all playscreen
         private Bubble[,] bubble = new Bubble[15, 10];
+
         private Shooter shooter;
         private Button pauseButton;
         //button at pause screen
@@ -50,6 +51,7 @@ namespace Olympuzz.GameScreen
         private float Timer = 0f;
         private float timerPerUpdate = 0.05f;
         private float tickPerUpdate = 30f;
+        private float bubbleAngle = 0f;
         private int alpha = 255;
 
         //song and sfx
@@ -245,6 +247,7 @@ namespace Olympuzz.GameScreen
                         gameOver = true; 
                         notPlay = true;
                         pauseEvent = false;
+                        Singleton.Instance.lastClickTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
                         MediaPlayer.Stop();
                         //Singleton.Instance.BestScore = Singleton.Instance.Score.ToString();
                         //Singleton.Instance.BestTime = Timer.ToString("F");
@@ -256,6 +259,8 @@ namespace Olympuzz.GameScreen
                     pauseEvent = true;
                     MediaPlayer.Pause();
                 }
+
+
                 //Check ball flying
                 //for (int i = 1; i < 9; i++)
                 //{
@@ -293,6 +298,7 @@ namespace Olympuzz.GameScreen
                 //        }
                 //    }
                 //}
+
                 
                 _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                 if (_scrollTime >= tickPerUpdate)
@@ -636,7 +642,7 @@ namespace Olympuzz.GameScreen
                     }
                 }
             }
-
+            
             // Draw fade out
             if (!fadeFinish)
             {
