@@ -130,20 +130,21 @@ namespace Olympuzz.GameScreen
             };
         }
 
-        public bool CheckWin(Bubble[,] bubble)
-        {
-            for (int i = 0; i < 9; i++)
-            {
-                for (int j = 0; j < 8 - (i % 2); j++)
-                {
-                    if (bubble[i, j] != null)
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
+        //public bool CheckWin(Bubble[,] bubble)
+        //{
+        //    for (int i = 0; i < 9; i++)
+        //    {
+        //        for (int j = 0; j < 8 - (i % 2); j++)
+        //        {
+        //            if (bubble[i, j] != null)
+        //            {
+        //                return false;
+        //            }
+        //        }
+        //    }
+        //    return true;
+        //}
+
         public override void LoadContent()
         {
             base.LoadContent();
@@ -250,45 +251,61 @@ namespace Olympuzz.GameScreen
                     MediaPlayer.Pause();
                 }
 
+                for (int i = 1; i <= 11; i++)
+                {
+                    for (int j = 1; j < ((bubble[i, j] != null && bubble[i, j].isEven) ? 9 : 8); j++)
+                    {
+                        if (bubble[i, j] != null)
+                        {
+                            bubble[i, j].marked = false;
+                        }
+                    }
+                }
 
-                //Check ball flying
-                //for (int i = 1; i < 9; i++)
+                ////Check ball floating alone
+                //for (int i = 1; i <= 11; i++)
                 //{
-                //    for (int j = 1; j < 7 - (i % 2); j++)
+                //    for (int j = 1; j < ((bubble[i, j] != null && bubble[i, j].isEven) ? 9 : 8); j++)
                 //    {
-                //        if (i % 2 != 0)
+                //        if (bubble[i, j] != null && bubble[i, j].isEven && !bubble[i, j].marked)
                 //        {
-                //            if (bubble[i - 1, j] == null && bubble[i - 1, j + 1] == null)
+                //            if ((bubble[i - 1, j - 1] == null || bubble[i - 1, j - 1].marked) && (bubble[i - 1, j] == null || bubble[i - 1, j].marked) && (bubble[i, j + 1] == null || bubble[i, j + 1].marked) && (bubble[i, j - 1] == null || bubble[i, j - 1].marked))
                 //            {
                 //                bubble[i, j] = null;
                 //            }
-                //            if (bubble[i, 1] == null && bubble[i - 1, 0] == null && bubble[i - 1, 1] == null)
+                //            if ((bubble[i - 1, 0] == null || bubble[i - 1, 0].marked) && (bubble[i, 1] == null || bubble[i, 1].marked))
                 //            {
                 //                bubble[i, 0] = null;
                 //            }
-                //            if (bubble[i, 5] == null && bubble[i - 1, 7] == null && bubble[i - 1, 6] == null)
+                //            if ((bubble[i - 1, 8] == null || bubble[i - 1, 8].marked) && (bubble[i, 8] == null || bubble[i, 8].marked))
                 //            {
-                //                bubble[i, 6] = null;
+                //                bubble[i, 9] = null;
                 //            }
+
                 //        }
-                //        else
+                //        else 
                 //        {
-                //            if (bubble[i - 1, j - 1] == null && bubble[i - 1, j] == null)
+                //            if ((bubble[i - 1, j] == null || bubble[i - 1, j].marked) && (bubble[i - 1, j + 1] == null || bubble[i - 1, j + 1].marked) && (bubble[i, j + 1] == null || bubble[i, j + 1].marked) && (bubble[i, j - 1] == null || bubble[i, j - 1].marked))
                 //            {
                 //                bubble[i, j] = null;
                 //            }
-                //            if (bubble[i - 1, 0] == null && bubble[i, 1] == null)
+                //            if ((bubble[i, 1] == null || bubble[i, 1].marked) && (bubble[i - 1, 0] == null || bubble[i - 1, 0].marked) && (bubble[i - 1, 1] == null || bubble[i - 1, 1].marked))
                 //            {
                 //                bubble[i, 0] = null;
                 //            }
-                //            if (bubble[i - 1, 6] == null && bubble[i, 6] == null)
+                //            if ((bubble[i, 7] == null || bubble[i, 7].marked) && (bubble[i - 1, 9] == null || bubble[i - 1, 9].marked) && (bubble[i - 1, 8] == null || bubble[i - 1, 8].marked))
                 //            {
-                //                bubble[i, 7] = null;
+                //                bubble[i, 8] = null;
                 //            }
                 //        }
+
+                //        if (bubble[i, j] != null)
+                //        {
+                //            bubble[i, j].marked = true;
+                //        }
+
                 //    }
                 //}
-
                 
                 _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                 if (_scrollTime >= tickPerUpdate)
