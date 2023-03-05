@@ -66,9 +66,9 @@ namespace Olympuzz.GameScreen
         public void Initial()
         {
             //main menu button
-            startButton = new Button(startPic, new Vector2(293, 293), new Vector2(160, 80));
-            settingButton = new Button(settingPic, new Vector2(293, 410), new Vector2(160, 60));
-            exitButton = new Button(exitPic, new Vector2(293, 505), new Vector2(100, 45));
+            startButton = new Button(startPic, new Vector2(273, 293), new Vector2(160, 80));
+            settingButton = new Button(settingPic, new Vector2(273, 410), new Vector2(160, 60));
+            exitButton = new Button(exitPic, new Vector2(273, 505), new Vector2(100, 45));
 
             //setting button
             arrowLeftBGButton = new Button(arrowLeftBGPic, new Vector2(525, 320), new Vector2(40, 40));
@@ -93,7 +93,7 @@ namespace Olympuzz.GameScreen
             char3Button = new Button(char3Pic1, new Vector2(790, 200), new Vector2(275, 350));
             char4Button = new Button(char4Pic1, new Vector2(790, 200), new Vector2(275, 350));
             arrowLeftCharButton = new Button(arrowLeftCharPic, new Vector2(121, 337), new Vector2(75, 75));
-            arrowRightCharButton = new Button(arrowLeftCharPic, new Vector2(1092, 337), new Vector2(75, 75));
+            arrowRightCharButton = new Button(arrowRightCharPic, new Vector2(1092, 337), new Vector2(75, 75));
             backSelectCharButton = new Button(backSelectCharPic, new Vector2(215, 610), new Vector2(300, 70));
             selectCharButton = new Button(selectCharPic, new Vector2(765, 610), new Vector2(300, 70));
 
@@ -150,7 +150,7 @@ namespace Olympuzz.GameScreen
             char3Pic2 = content.Load<Texture2D>("PlayScreen/Thunder");
             char4Pic2 = content.Load<Texture2D>("PlayScreen/Thunder");
             arrowLeftCharPic = content.Load<Texture2D>("PlayScreen/Water");
-            arrowLeftCharPic = content.Load<Texture2D>("PlayScreen/Water");
+            arrowRightCharPic = content.Load<Texture2D>("PlayScreen/Water");
             backSelectCharPic = content.Load<Texture2D>("PlayScreen/Fire");
             selectCharPic = content.Load<Texture2D>("PlayScreen/Wind");
 
@@ -460,46 +460,18 @@ namespace Olympuzz.GameScreen
                     Singleton.Instance.soundMasterVolume = masterSFX;
                     break;
                 case AudioState.MEDIUM:
-                    masterSFX = 0.5f;
+                    masterSFX = 0.1f;
                     Singleton.Instance.soundMasterVolume = masterSFX;
                     break;
                 case AudioState.FULL:
-                    masterSFX = 1f;
+                    masterSFX = 0.6f;
                     Singleton.Instance.soundMasterVolume = masterSFX;
                     break;
             }
             //update
             setStageButtonStatus();
             setCharButtonStatus();
-            //update button
-            startButton.Update(gameTime);
-            settingButton.Update(gameTime);
-            exitButton.Update(gameTime);
 
-            stage1Button.Update(gameTime);
-            stage2Button.Update(gameTime);
-            stage3Button.Update(gameTime);
-            stageEndlessButton.Update(gameTime);
-            //howToPlayButton.Update(gameTime);
-            backSelectLevelButton.Update(gameTime);
-            selectStageButton.Update(gameTime);
-
-            char1Button.Update(gameTime);
-            char2Button.Update(gameTime);
-            char3Button.Update(gameTime);
-            char4Button.Update(gameTime);
-            selectCharButton.Update(gameTime);
-            backSelectCharButton.Update(gameTime);
-            arrowLeftCharButton.Update(gameTime);
-            arrowRightCharButton.Update(gameTime);
-
-            backHowToPlayButton.Update(gameTime);
-
-            arrowLeftBGButton.Update(gameTime);
-            arrowRightBGButton.Update(gameTime);
-            arrowLeftSFXButton.Update(gameTime);
-            arrowRightSFXButton.Update(gameTime);
-            backSettingButton.Update(gameTime);
             base.Update(gameTime);
         }
         public override void Draw(SpriteBatch spriteBatch)

@@ -12,9 +12,6 @@ namespace Olympuzz
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Vector2 position , size;
-        private Texture2D reddot,shooterTexture, sbaseTexture;
-        private readonly Texture2D[] bubleAllTexture = new Texture2D[5];
         private Button b;
         private Shooter shooter;
 
@@ -31,8 +28,6 @@ namespace Olympuzz
             IsMouseVisible = true;
             Content.RootDirectory = "Content";
             Window.IsBorderless = true;// make window borderless
-            position = new Vector2(100, 100);//use to set position of reddot button
-            size = new Vector2(100, 100);//use to set size of reddot button
             
             _graphics.ApplyChanges();
         }

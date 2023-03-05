@@ -12,7 +12,7 @@ namespace Olympuzz
     {
         public Vector2 Dimensions = new(1280, 720);
         public float bgMusicVolume = 1f;
-        public float soundMasterVolume = 1f;
+        public float soundMasterVolume = 0.6f;
         public int Score = 0;
         public bool Shooting = false;
         public List<Vector2> removeBubble = new();
@@ -68,12 +68,10 @@ namespace Olympuzz
         {
             get
             {
-#pragma warning disable IDE0074 // Use compound assignment
                 if (instance == null)
                 {
                     instance = new Singleton();
                 }
-#pragma warning restore IDE0074 // Use compound assignment
                 return instance;
             }
         }
