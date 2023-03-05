@@ -22,10 +22,11 @@ namespace Olympuzz.GameObjects
         private bool isHovered;
         private bool isPressed;
         private int sizeX, sizeY;
-        private bool cantHover = false;
+        private bool cantHover = false;//button cant hover
+        private bool noHover = false;//check for only 1 time using hover sound
 
         //sound
-        private SoundEffectInstance clickSound, whileHoveringSound;
+        private SoundEffect clickSound, whileHoveringSound;
 
         private const int MAX_CLICK_DELAY_MS = 200;
 
@@ -38,26 +39,18 @@ namespace Olympuzz.GameObjects
             this.bounds = new Rectangle((int)position.X, (int)position.Y, sizeX, sizeY);
             isHovered = false;
             this.isPressed = false;
+            LoadContent();
         }
 
         public void LoadContent()
         {
             ContentManager content = new ContentManager(ScreenManager.Instance.Content.ServiceProvider, "Content"); ;
             // Sounds
-            clickSound = content.Load<SoundEffect>("Sounds/clickSound").CreateInstance();
-            whileHoveringSound = content.Load<SoundEffect>("Sounds/hoveringSound").CreateInstance();
+            clickSound = content.Load<SoundEffect>("Sounds/clickSound");
+            whileHoveringSound = content.Load<SoundEffect>("Sounds/hoverSound");
         }
-
-        public void Update(GameTime gameTime)
-        {
-            //click sound
-            //clickSound.Volume = Singleton.Instance.soundMasterVolume;
-            //whileHoveringSound.Volume = Singleton.Instance.soundMasterVolume;
-        }
-
         public bool isWhileHovering(MouseState mouseState)
         {
-            //whileHoveringSound.Play();
             isHovered = bounds.Contains(mouseState.Position);
             return isHovered;
         }
@@ -77,8 +70,8 @@ namespace Olympuzz.GameObjects
                 // if pass max click delay time since LastClickTime then lastClickTime was that Time
                 if (elapsedMs > MAX_CLICK_DELAY_MS)
                 {
+                    clickSound.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
                     //lastclickTime = TotalTime of program that time
-                    //clickSound.Play();
                     Singleton.Instance.lastClickTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
                     return true;
                 }
@@ -93,11 +86,42 @@ namespace Olympuzz.GameObjects
             {
                 if (isWhileHovering(Singleton.Instance.MouseCurrent))
                 {
-                    //soundHoverButton.Play();
+                    if (!noHover)
+                    {
+                        whileHoveringSound.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
+                        noHover = true;
+                    }
                     spriteBatch.Draw(texture, bounds, Color.LightGray);
                 }
                 else
                 {
+                    noHover = false; ;
+                    spriteBatch.Draw(texture, bounds, Color.White);
+                }
+            }
+            else
+            {
+                spriteBatch.Draw(texture, bounds, Color.White);
+            }
+        }
+
+        //for button that want new texture when hover
+        public void Draw(SpriteBatch spriteBatch, Texture2D hoverTexture)
+        {
+            if (!cantHover)
+            {
+                if (isWhileHovering(Singleton.Instance.MouseCurrent))
+                {
+                    if (!noHover)
+                    {
+                        whileHoveringSound.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
+                        noHover = true;
+                    }
+                    spriteBatch.Draw(hoverTexture, bounds, Color.White);
+                }
+                else
+                {
+                    noHover = false; ;
                     spriteBatch.Draw(texture, bounds, Color.White);
                 }
             }
