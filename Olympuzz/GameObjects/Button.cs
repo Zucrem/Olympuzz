@@ -70,7 +70,10 @@ namespace Olympuzz.GameObjects
                 // if pass max click delay time since LastClickTime then lastClickTime was that Time
                 if (elapsedMs > MAX_CLICK_DELAY_MS)
                 {
-                    clickSound.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
+                    if (noHover)
+                    {
+                        clickSound.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
+                    }
                     //lastclickTime = TotalTime of program that time
                     Singleton.Instance.lastClickTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
                     return true;

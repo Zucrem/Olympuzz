@@ -25,7 +25,7 @@ namespace Olympuzz.GameScreen
         private Texture2D stage1Pic1, stage2Pic1, stage3Pic1, stageEndlessPic1, stage1Pic2, stage2Pic2, stage3Pic2, stageEndlessPic2, howToPlayPic, backSelectLevelPic;//select level pic
         private Texture2D char1Pic1, char1Pic2, char2Pic1, char3Pic1, char4Pic1, char2Pic2, char3Pic2, char4Pic2, selectCharPic, backSelectCharPic, arrowLeftCharPic, arrowRightCharPic;//select character pic
         private Texture2D backHowToPlayPic;
-        private Texture2D yesPic, noPic;//exit confirmed pic
+        private Texture2D confirmQuitPopUpPic, yesConfirmQuitPic1, noConfirmQuitPic1, yesConfirmQuitPic2, noConfirmQuitPic2;//exit confirmed pic
 
         //all button
         private Button startButton, settingButton, exitButton;//mainmenu button
@@ -84,7 +84,7 @@ namespace Olympuzz.GameScreen
             stage3Button = new Button(stage3Pic1, new Vector2(790, 200), new Vector2(275, 275));
             stageEndlessButton = new Button(stageEndlessPic1, new Vector2(215, 497), new Vector2(850, 70));
             backSelectLevelButton = new Button(backSelectLevelPic, new Vector2(215, 610), new Vector2(300, 70));
-            //howToPlayButton = new Button(howToPlayPic, new Vector2(765, 610), new Vector2(300, 70));
+            howToPlayButton = new Button(howToPlayPic, new Vector2(53, 53), new Vector2(300, 70));
             selectStageButton = new Button(selectCharPic, new Vector2(765, 610), new Vector2(300, 70));
 
             //select charactor button
@@ -101,8 +101,8 @@ namespace Olympuzz.GameScreen
             backHowToPlayButton = new Button(selectCharPic, new Vector2(490, 610), new Vector2(300, 70));
 
             //confirm Exit button
-            yesButton = new Button(yesPic, new Vector2(315, 420), new Vector2(300, 70));
-            noButton = new Button(noPic, new Vector2(685, 420), new Vector2(300, 70));
+            yesButton = new Button(yesConfirmQuitPic1, new Vector2(495, 390), new Vector2(120, 60));
+            noButton = new Button(noConfirmQuitPic1, new Vector2(660, 390), new Vector2(120, 60));
         }
         public override void LoadContent()
         {
@@ -158,8 +158,11 @@ namespace Olympuzz.GameScreen
             backHowToPlayPic = content.Load<Texture2D>("PlayScreen/Wind");
 
             //confirmQuit pic
-            yesPic = content.Load<Texture2D>("PlayScreen/Fire");
-            noPic = content.Load<Texture2D>("PlayScreen/Wind");
+            confirmQuitPopUpPic = content.Load<Texture2D>("ConfirmExit/ConfirmQuitPopUp");
+            yesConfirmQuitPic1 = content.Load<Texture2D>("ConfirmExit/Yes");
+            noConfirmQuitPic1 = content.Load<Texture2D>("ConfirmExit/No");
+            yesConfirmQuitPic2 = content.Load<Texture2D>("ConfirmExit/YesGlow");
+            noConfirmQuitPic2 = content.Load<Texture2D>("ConfirmExit/NoGlow");
 
             // Fonts
             smallfonts = content.Load<SpriteFont>("Alagard");
@@ -194,8 +197,16 @@ namespace Olympuzz.GameScreen
                 // Click start game
                 if (startButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                 {
-                    selectStageScreen = true;
                     mainScreen = false;
+                    if (Singleton.Instance.firsttime)
+                    {
+                        howToPlayScreen = true;
+                        Singleton.Instance.firsttime = false;
+                    }
+                    else
+                    {
+                        selectStageScreen = true;
+                    }
                 }
                 // Click setting
                 if (settingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
@@ -249,11 +260,11 @@ namespace Olympuzz.GameScreen
                     }
                 }
                 //how to play
-                /*if (howToPlayButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                if (howToPlayButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                 {
                     selectStageScreen = false;
                     howToPlayScreen = true;
-                }*/
+                }
             }
             if (selectCharScreen)
             {
@@ -314,10 +325,11 @@ namespace Olympuzz.GameScreen
             if (howToPlayScreen)
             {
                 //click continue
-                if (selectCharButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                if (backHowToPlayButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                 {
                     howToPlayScreen = false;
-                    mainScreen = true;
+                    selectStageScreen = true;
+                    Singleton.Instance.levelState = LevelState.NULL;
                 }
             }
             else
@@ -460,7 +472,7 @@ namespace Olympuzz.GameScreen
                     Singleton.Instance.soundMasterVolume = masterSFX;
                     break;
                 case AudioState.MEDIUM:
-                    masterSFX = 0.1f;
+                    masterSFX = 0.3f;
                     Singleton.Instance.soundMasterVolume = masterSFX;
                     break;
                 case AudioState.FULL:
@@ -477,7 +489,7 @@ namespace Olympuzz.GameScreen
         public override void Draw(SpriteBatch spriteBatch)
         {
             //draw bg
-            if (mainScreen || selectStageScreen || selectCharScreen)
+            if (mainScreen || selectStageScreen || selectCharScreen || howToPlayScreen)
             {
                 spriteBatch.Draw(backgroundPic, Vector2.Zero, Color.White);
             }
@@ -497,7 +509,7 @@ namespace Olympuzz.GameScreen
                 stage2Button.Draw(spriteBatch);
                 stage3Button.Draw(spriteBatch);
                 stageEndlessButton.Draw(spriteBatch);
-                //howToPlayButton.Draw(spriteBatch); 
+                howToPlayButton.Draw(spriteBatch); 
                 selectStageButton.Draw(spriteBatch);
                 backSelectLevelButton.Draw(spriteBatch);
             }
@@ -521,6 +533,12 @@ namespace Olympuzz.GameScreen
                 }
                 selectCharButton.Draw(spriteBatch);
                 backSelectCharButton.Draw(spriteBatch);
+            }
+            if (howToPlayScreen)
+            {
+                fontSize = bigfonts.MeasureString("How to play");
+                spriteBatch.DrawString(bigfonts, "How to play", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 93), Color.Yellow);
+                backHowToPlayButton.Draw(spriteBatch);
             }
             // Draw UI when is NOT MainMenu
             else
@@ -573,13 +591,14 @@ namespace Olympuzz.GameScreen
                 else if (confirmQuit)
                 {
                     spriteBatch.Draw(blackScreenPic, Vector2.Zero, new Color(255, 255, 255, 210));
-                    fontSize = bigfonts.MeasureString("Are you sure");
-                    spriteBatch.DrawString(bigfonts, "Are you sure", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 165), Color.White);
-                    fontSize = bigfonts.MeasureString("you want to quit?");
-                    spriteBatch.DrawString(bigfonts, "you want to quit?", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 260), Color.White);
+                    spriteBatch.Draw(confirmQuitPopUpPic, new Vector2((Singleton.Instance.Dimensions.X - confirmQuitPopUpPic.Width) / 2, (Singleton.Instance.Dimensions.Y - confirmQuitPopUpPic.Height) / 2), new Color(255, 255, 255, 255));
+                    fontSize = mediumfonts.MeasureString("Are you sure");
+                    spriteBatch.DrawString(mediumfonts, "Are you sure", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 255), Color.DarkGray);
+                    fontSize = mediumfonts.MeasureString("you want to quit?");
+                    spriteBatch.DrawString(mediumfonts, "you want to quit?", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 310), Color.DarkGray);
 
-                    noButton.Draw(spriteBatch);
-                    yesButton.Draw(spriteBatch);
+                    noButton.Draw(spriteBatch, noConfirmQuitPic2);
+                    yesButton.Draw(spriteBatch, yesConfirmQuitPic2);
                 }
             }
 
