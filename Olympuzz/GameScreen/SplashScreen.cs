@@ -96,6 +96,7 @@ namespace Olympuzz.GameScreen
             }
             base.Update(gameTime);
         }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             switch (displayIndex)

@@ -56,7 +56,6 @@ namespace Olympuzz.GameScreen
         protected float tickPerUpdate = 30f;
         protected float bubbleAngle = 0f;
         protected int alpha = 255;
-
         protected SoundEffectInstance BubbleSFX_stick, BubbleSFX_dead;
         protected SoundEffectInstance Click;
 
@@ -243,62 +242,6 @@ namespace Olympuzz.GameScreen
                     MediaPlayer.Pause();
                 }
 
-                for (int i = 1; i <= 11; i++)
-                {
-                    for (int j = 1; j < ((bubble[i, j] != null && bubble[i, j].isEven) ? 9 : 8); j++)
-                    {
-                        if (bubble[i, j] != null)
-                        {
-                            bubble[i, j].marked = false;
-                        }
-                    }
-                }
-
-                ////Check ball floating alone
-                //for (int i = 1; i <= 11; i++)
-                //{
-                //    for (int j = 1; j < ((bubble[i, j] != null && bubble[i, j].isEven) ? 9 : 8); j++)
-                //    {
-                //        if (bubble[i, j] != null && bubble[i, j].isEven && !bubble[i, j].marked)
-                //        {
-                //            if ((bubble[i - 1, j - 1] == null || bubble[i - 1, j - 1].marked) && (bubble[i - 1, j] == null || bubble[i - 1, j].marked) && (bubble[i, j + 1] == null || bubble[i, j + 1].marked) && (bubble[i, j - 1] == null || bubble[i, j - 1].marked))
-                //            {
-                //                bubble[i, j] = null;
-                //            }
-                //            if ((bubble[i - 1, 0] == null || bubble[i - 1, 0].marked) && (bubble[i, 1] == null || bubble[i, 1].marked))
-                //            {
-                //                bubble[i, 0] = null;
-                //            }
-                //            if ((bubble[i - 1, 8] == null || bubble[i - 1, 8].marked) && (bubble[i, 8] == null || bubble[i, 8].marked))
-                //            {
-                //                bubble[i, 9] = null;
-                //            }
-
-                //        }
-                //        else 
-                //        {
-                //            if ((bubble[i - 1, j] == null || bubble[i - 1, j].marked) && (bubble[i - 1, j + 1] == null || bubble[i - 1, j + 1].marked) && (bubble[i, j + 1] == null || bubble[i, j + 1].marked) && (bubble[i, j - 1] == null || bubble[i, j - 1].marked))
-                //            {
-                //                bubble[i, j] = null;
-                //            }
-                //            if ((bubble[i, 1] == null || bubble[i, 1].marked) && (bubble[i - 1, 0] == null || bubble[i - 1, 0].marked) && (bubble[i - 1, 1] == null || bubble[i - 1, 1].marked))
-                //            {
-                //                bubble[i, 0] = null;
-                //            }
-                //            if ((bubble[i, 7] == null || bubble[i, 7].marked) && (bubble[i - 1, 9] == null || bubble[i - 1, 9].marked) && (bubble[i - 1, 8] == null || bubble[i - 1, 8].marked))
-                //            {
-                //                bubble[i, 8] = null;
-                //            }
-                //        }
-
-                //        if (bubble[i, j] != null)
-                //        {
-                //            bubble[i, j].marked = true;
-                //        }
-
-                //    }
-                //}
-                
                 _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                 if (_scrollTime >= tickPerUpdate)
                 {
