@@ -12,7 +12,7 @@ namespace Olympuzz.GameScreen
     class Stage4Screen : PlayScreen
     {
         //song and sfx
-        protected Song poseidonTheme;
+        protected Song endlessTheme;
         public override void LoadContent()
         {
             base.LoadContent();
@@ -22,8 +22,8 @@ namespace Olympuzz.GameScreen
             boardBGPic = content.Load<Texture2D>("Stag_1/board");
 
             //bg music
-            poseidonTheme = content.Load<Song>("Sounds/PoseidonTheme");
-            MediaPlayer.Play(poseidonTheme);
+            endlessTheme = content.Load<Song>("Sounds/PoseidonTheme");
+            MediaPlayer.Play(endlessTheme);
         }
         public override void UnloadContent()
         {

@@ -49,7 +49,7 @@ namespace Olympuzz.GameObjects
             clickSound = content.Load<SoundEffect>("Sounds/clickSound");
             whileHoveringSound = content.Load<SoundEffect>("Sounds/hoverSound");
         }
-        public bool isWhileHovering(MouseState mouseState)
+        public bool IsWhileHovering(MouseState mouseState)
         {
             isHovered = bounds.Contains(mouseState.Position);
             return isHovered;
@@ -70,7 +70,11 @@ namespace Olympuzz.GameObjects
                 // if pass max click delay time since LastClickTime then lastClickTime was that Time
                 if (elapsedMs > MAX_CLICK_DELAY_MS)
                 {
-                    clickSound.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
+                    //after hovering it will not hover anymore, so it could create sound when click, but when it cant hovering at the start = no sound
+                    if (noHover)
+                    {
+                        clickSound.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
+                    }
                     //lastclickTime = TotalTime of program that time
                     Singleton.Instance.lastClickTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
                     return true;
@@ -80,11 +84,12 @@ namespace Olympuzz.GameObjects
             return false;
         }
 
+        //for texture that does not need new texture while hover
         public void Draw(SpriteBatch spriteBatch)
         {
             if (!cantHover)
             {
-                if (isWhileHovering(Singleton.Instance.MouseCurrent))
+                if (IsWhileHovering(Singleton.Instance.MouseCurrent))
                 {
                     if (!noHover)
                     {
@@ -110,7 +115,7 @@ namespace Olympuzz.GameObjects
         {
             if (!cantHover)
             {
-                if (isWhileHovering(Singleton.Instance.MouseCurrent))
+                if (IsWhileHovering(Singleton.Instance.MouseCurrent))
                 {
                     if (!noHover)
                     {
@@ -131,16 +136,19 @@ namespace Olympuzz.GameObjects
             }
         }
 
-        public void setTexture(Texture2D texture)
+        //for set Texture that change picture after click
+        public void SetTexture(Texture2D texture)
         {
             this.texture = texture;
         }
 
-        public void setCantHover(bool bol)
+        //set button cant hover no more
+        public void SetCantHover(bool bol)
         {
             this.cantHover = bol;
         }
-        public void setPosition(Vector2 position)
+        //set new position for button
+        public void SetPosition(Vector2 position)
         {
             this.bounds = new Rectangle((int)position.X, (int)position.Y, sizeX, sizeY); ;
         }

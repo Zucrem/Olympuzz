@@ -19,6 +19,7 @@ namespace Olympuzz
         public bool cmdExit = false;
         public int speed = -700; // -700
         public int lastClickTime = 0;
+        public bool firsttime = true;//not first time play
 
 
         //Audio State
