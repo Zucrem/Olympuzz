@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Olympuzz.GameScreen;
 using System.Diagnostics;
+using static Olympuzz.Singleton;
 
 namespace Olympuzz.Managers
 {
@@ -35,13 +36,23 @@ namespace Olympuzz.Managers
                 case GameScreenName.MenuScreen:
                     currentScreen = new MenuScreen();
                     break;
-                //ถ้าไปหน้าเลือกด่าย
-                /*case GameScreenName.SelectLevelScreen:
-                    currentScreen = new SelectLevelScreen();
-                    break;*/
-                //ถ้าไปหน้าเล่นเกม
+                //ถ้าไปหน้าเล่นเกมด่านต่างๆ
                 case GameScreenName.PlayScreen:
-                    currentScreen = new PlayScreen();
+                    switch (Singleton.Instance.levelState)
+                    {
+                        case LevelState.POSEIDON:
+                            currentScreen = new Stage1Screen();
+                            break;
+                        case LevelState.HADES:
+                            currentScreen = new Stage2Screen();
+                            break;
+                        case LevelState.ZEUS:
+                            currentScreen = new Stage3Screen();
+                            break;
+                        case LevelState.ENDLESS:
+                            currentScreen = new Stage4Screen();
+                            break;
+                    }
                     break;
             }
             currentScreen.LoadContent();

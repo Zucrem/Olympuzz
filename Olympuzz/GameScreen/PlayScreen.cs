@@ -21,61 +21,56 @@ namespace Olympuzz.GameScreen
     class PlayScreen : _GameScreen
     {
         //all pictures
-        private Texture2D bgLevel1, blackScreenPic, shooterTexture, baseTexture, pauseButtonPic, board, settingButtonPic, continueButtonPic, restartButtonPic, nextButtonPic, exitButtonPic;
-        private Texture2D arrowLeftBGPic, arrowRightBGPic, arrowLeftSFXPic, arrowRightSFXPic, backSettingPic;//setting pic
-        private Texture2D noConfirmPic, yesConfirmPic;
-        private readonly Texture2D[] bubleAllTexture = new Texture2D[5];
+        protected Texture2D stageBGPic, blackScreenPic, shooterTexture, baseTexture, pauseButtonPic, boardBGPic;
+        protected Texture2D arrowLeftBGPic, arrowRightBGPic, arrowLeftSFXPic, arrowRightSFXPic;//sound pic
+        protected Texture2D pausePopUpPic, continueButtonPic, restartButtonPic, exitButtonPic, continueButtonPic2, restartButtonPic2, exitButtonPic2;//for pause setting hovering
+        protected Texture2D restartWLPic, nextButtonPic, backWLPic, DefeatSignPic, VictorySignPic;//win or lose
+        protected Texture2D confirmExitPopUpPic, noConfirmPic1, yesConfirmPic1, noConfirmPic2, yesConfirmPic2;//for confirm
+        protected readonly Texture2D[] bubleAllTexture = new Texture2D[5];
 
-        private Color color;
+        protected Color color;
 
-        //private SpriteFont Alagan
-        private SpriteFont smallfonts, mediumfonts, bigfonts;//กำหนดชื่อ font
-        private Vector2 fontSize;
+        //protected SpriteFont Alagan
+        protected SpriteFont smallfonts, mediumfonts, bigfonts;//กำหนดชื่อ font
+        protected Vector2 fontSize;
 
         //all playscreen
-        private Bubble[,] bubble = new Bubble[15, 10];
+        protected Bubble[,] bubble = new Bubble[15, 10];
 
-        private Shooter shooter;
-        private Button pauseButton;
+        protected Shooter shooter;
+        protected Button pauseButton;
         //button at pause screen
-        private Button settingButton, continueButton, restartButton, nextButton, exitButton;
+        protected Button continueButton, restartButton, exitButton;
         //button for setting
-        private Button arrowLeftBGButton, arrowRightBGButton, arrowLeftSFXButton, arrowRightSFXButton, backSettingButton;//setting button
+        protected Button arrowLeftBGButton, arrowRightBGButton, arrowLeftSFXButton, arrowRightSFXButton;//setting button
         //button for confirm exit
-        private Button noConfirmButton, yesConfirmButton;
+        protected Button noConfirmButton, yesConfirmButton;
+        //button for win lose
+        protected Button nextButton, restartWLButton, exitWLButton;
 
         //timer
-        private float _timer = 0f;
-        private float _scrollTime = 0f;
-        private float Timer = 0f;
-        private float timerPerUpdate = 0.05f;
-        private float tickPerUpdate = 30f;
-        private float bubbleAngle = 0f;
-        private int alpha = 255;
+        protected float _timer = 0f;
+        protected float _scrollTime = 0f;
+        protected float Timer = 0f;
+        protected float timerPerUpdate = 0.05f;
+        protected float tickPerUpdate = 30f;
+        protected float bubbleAngle = 0f;
+        protected int alpha = 255;
+        protected SoundEffectInstance BubbleSFX_stick, BubbleSFX_dead;
+        protected SoundEffectInstance Click;
 
-        //song and sfx
-        private Song poseidonTheme;
-
-        private SoundEffectInstance BubbleSFX_stick, BubbleSFX_dead;
-        private SoundEffectInstance Click;
-         
         //check if go next page or fade finish
-        private bool notPlay = false;
-        private bool pauseEvent = false;
-        private bool isEven = true;
-        private bool fadeFinish = false;
-        private bool gameOver = false;
-        private bool gameWin = false;
-        private bool confirmExit = false;
+        protected bool notPlay = false;
+        protected bool pauseEvent = false;
+        protected bool isEven = true;
+        protected bool fadeFinish = false;
+        protected bool gameOver = false;
+        protected bool gameWin = false;
+        protected bool confirmExit = false;
 
-        //check if go setting
-        private bool settingEvent = false;
         //ตัวแปรของ sound
-        private float masterBGM = Singleton.Instance.bgMusicVolume;
-        private float masterSFX = Singleton.Instance.soundMasterVolume;
-
-        //select level
-        private int level = 1;
+        protected float masterBGM = Singleton.Instance.bgMusicVolume;
+        protected float masterSFX = Singleton.Instance.soundMasterVolume;
 
         public void Initial()
         {
@@ -86,7 +81,7 @@ namespace Olympuzz.GameScreen
                 {
                     bubble[i, j] = new Bubble(bubleAllTexture)
                     {
-                        Name = "Bubble", 
+                        Name = "Bubble",
                         Position = new Vector2((j * 49) + (isEven ? 363 : 388), (i * 42) + 79), // what x cordition is the best 414 or 415
                         isEven = isEven,
                         IsActive = false,
@@ -100,25 +95,25 @@ namespace Olympuzz.GameScreen
 
             //all button
             pauseButton = new Button(pauseButtonPic, new Vector2(15, 20), new Vector2(300, 70));//create button object on playscreen
-            //create button on pause and win or lose screen
-            continueButton = new Button(continueButtonPic, new Vector2(490, 250), new Vector2(300, 70));
-            restartButton = new Button(restartButtonPic, new Vector2(490, 360), new Vector2(300, 70));
-            settingButton = new Button(settingButtonPic, new Vector2(490, 470), new Vector2(300, 70));
-            exitButton = new Button(exitButtonPic, new Vector2(490, 580), new Vector2(300, 70));
-            nextButton = new Button(nextButtonPic, new Vector2(490, 250), new Vector2(300, 70));//create Button after win
+            //create button on pause
+            continueButton = new Button(continueButtonPic, new Vector2((Singleton.Instance.Dimensions.X / 2) - 107, 370), new Vector2(215, 50));
+            restartButton = new Button(restartButtonPic, new Vector2((Singleton.Instance.Dimensions.X / 2) - 82, 455), new Vector2(165, 50));
+            exitButton = new Button(exitButtonPic, new Vector2((Singleton.Instance.Dimensions.X / 2) - 50, 540), new Vector2(100, 50));
 
+            //create button win or lose screen
+            nextButton = new Button(nextButtonPic, new Vector2((Singleton.Instance.Dimensions.X / 2) - 50, 370), new Vector2(200, 60));//create Button after win
+            restartWLButton = new Button(restartWLPic, new Vector2((Singleton.Instance.Dimensions.X / 2) - 50, 370), new Vector2(200, 60));//create Button after win
+            exitWLButton = new Button(backWLPic, new Vector2((Singleton.Instance.Dimensions.X / 2) - 50, 370), new Vector2(200, 60));//create Button after win
 
             //setting button
-            arrowLeftBGButton = new Button(arrowLeftBGPic, new Vector2(525, 320), new Vector2(40, 40));
-            arrowRightBGButton = new Button(arrowRightBGPic, new Vector2(705, 320), new Vector2(40, 40));
-            arrowLeftSFXButton = new Button(arrowLeftSFXPic, new Vector2(525, 440), new Vector2(40, 40));
-            arrowRightSFXButton = new Button(arrowRightSFXPic, new Vector2(705, 440), new Vector2(40, 40));
-
-            backSettingButton = new Button(backSettingPic, new Vector2(980, 570), new Vector2(150, 60));
+            arrowLeftBGButton = new Button(arrowLeftBGPic, new Vector2(570, 200), new Vector2(40, 40));
+            arrowRightBGButton = new Button(arrowRightBGPic, new Vector2(675, 200), new Vector2(40, 40));
+            arrowLeftSFXButton = new Button(arrowLeftSFXPic, new Vector2(570, 305), new Vector2(40, 40));
+            arrowRightSFXButton = new Button(arrowRightSFXPic, new Vector2(675, 305), new Vector2(40, 40));
 
             //confirm exit button
-            yesConfirmButton = new Button(yesConfirmPic, new Vector2(315, 420), new Vector2(300, 70));
-            noConfirmButton = new Button(noConfirmPic, new Vector2(685, 420), new Vector2(300, 70));
+            yesConfirmButton = new Button(yesConfirmPic1, new Vector2(495, 390), new Vector2(120, 60));
+            noConfirmButton = new Button(noConfirmPic1, new Vector2(660, 390), new Vector2(120, 60));
 
             shooter = new Shooter(shooterTexture, bubleAllTexture, baseTexture)
             {
@@ -148,11 +143,8 @@ namespace Olympuzz.GameScreen
         public override void LoadContent()
         {
             base.LoadContent();
-            //bgLevel1 picture add
+            //stageBGPic picture add
             blackScreenPic = content.Load<Texture2D>("blackScreen");
-            //lvl 1 map
-            bgLevel1 = content.Load<Texture2D>("Stag_1/Poseidon Stage");
-            board = content.Load<Texture2D>("Stag_1/board");
 
             //all object
             shooterTexture = content.Load<Texture2D>("PlayScreen/bow");
@@ -166,27 +158,35 @@ namespace Olympuzz.GameScreen
            
             //all button on playscreen
             pauseButtonPic = content.Load<Texture2D>("Stag_1/pause but");
-            
-            //all button on pausescreen or lose or win
-            continueButtonPic = content.Load<Texture2D>("PlayScreen/Earth");
-            settingButtonPic = content.Load<Texture2D>("PlayScreen/Wind");
-            exitButtonPic = content.Load<Texture2D>("PlayScreen/Water");
-            restartButtonPic = content.Load<Texture2D>("PlayScreen/Fire");
-            
-            //add button when win
-            nextButtonPic = content.Load<Texture2D>("PlayScreen/Fire");
 
-            //setting pic
-            backSettingPic = content.Load<Texture2D>("SettingScreen/DoneButton");
+            //pause screen
+            pausePopUpPic = content.Load<Texture2D>("Pause/pausePopUpBG");
+            //all button on pausescreen
+            continueButtonPic = content.Load<Texture2D>("Pause/Continue");
+            exitButtonPic = content.Load<Texture2D>("Pause/Exit");
+            restartButtonPic = content.Load<Texture2D>("Pause/Restart");
+            continueButtonPic2 = content.Load<Texture2D>("Pause/ContinueGlow");
+            exitButtonPic2 = content.Load<Texture2D>("Pause/ExitGlow");
+            restartButtonPic2 = content.Load<Texture2D>("Pause/RestartGlow");
 
             arrowLeftBGPic = content.Load<Texture2D>("SettingScreen/ArrowButton");
             arrowRightBGPic = content.Load<Texture2D>("SettingScreen/ArrowRButton");
             arrowLeftSFXPic = content.Load<Texture2D>("SettingScreen/ArrowButton");
             arrowRightSFXPic = content.Load<Texture2D>("SettingScreen/ArrowRButton");
 
+            //add button when win or lose
+            nextButtonPic = content.Load<Texture2D>("WinLoseScreen/Next");
+            restartWLPic = content.Load<Texture2D>("WinLoseScreen/Restart");
+            backWLPic = content.Load<Texture2D>("WinLoseScreen/Mainmenu");
+            DefeatSignPic = content.Load<Texture2D>("WinLoseScreen/DefeatSign");
+            VictorySignPic = content.Load<Texture2D>("WinLoseScreen/VictorySign");
+
             //confirmExit pic
-            yesConfirmPic = content.Load<Texture2D>("PlayScreen/Fire");
-            noConfirmPic = content.Load<Texture2D>("PlayScreen/Wind");
+            confirmExitPopUpPic = content.Load<Texture2D>("ConfirmExit/ConfirmExitPopUp");
+            yesConfirmPic1 = content.Load<Texture2D>("ConfirmExit/Yes");
+            noConfirmPic1 = content.Load<Texture2D>("ConfirmExit/No");
+            yesConfirmPic2 = content.Load<Texture2D>("ConfirmExit/YesGlow");
+            noConfirmPic2 = content.Load<Texture2D>("ConfirmExit/NoGlow");
 
             // Fonts
             smallfonts = content.Load<SpriteFont>("Alagard");
@@ -194,16 +194,7 @@ namespace Olympuzz.GameScreen
             bigfonts = content.Load<SpriteFont>("AlagardBig");
 
             //song and sfx
-            poseidonTheme = content.Load<Song>("Sounds/PoseidonTheme");
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(poseidonTheme);
-
-            switch (level)
-            {
-                case 1:
-                    MediaPlayer.Play(poseidonTheme);
-                    break;
-            }
 
             Initial();
             
@@ -250,62 +241,6 @@ namespace Olympuzz.GameScreen
                     pauseEvent = true;
                     MediaPlayer.Pause();
                 }
-
-
-
-                //for (int i = 1; i <= 11; i++)
-                //{
-                //    for (int j = 1; j < ((bubble[i, j] != null && bubble[i, j].isEven) ? 9 : 8); j++)
-                //    {
-                //        if (bubble[i, j] != null)
-                //        {
-                //            bubble[i, j].marked = false;
-                //        }
-                //    }
-                //}
-
-                ////Check ball floating alone
-                //for (int i = 11; i >= 1; i--)
-                //{
-                //    for (int j = 1; j < ((bubble[i, j] != null && bubble[i, j].isEven) ? 9 : 8); j++)
-                //    {
-                //        if (bubble[i, j] != null && bubble[i, j].isEven && !bubble[i, j].marked)
-                //        {
-                //            if ((bubble[i - 1, j - 1] == null || bubble[i - 1, j - 1].marked) && (bubble[i - 1, j] == null || bubble[i - 1, j].marked) && (bubble[i, j + 1] == null || bubble[i, j + 1].marked) && (bubble[i, j - 1] == null || bubble[i, j - 1].marked) && (bubble[i + 1, j - 1] == null || bubble[i + 1, j - 1].marked) && (bubble[i + 1, j] == null || bubble[i + 1, j].marked))
-                //            {
-                //                bubble[i, j] = null;
-                //            }
-                //            if ((bubble[i - 1, 0] == null || bubble[i - 1, 0].marked) && (bubble[i, 1] == null || bubble[i, 1].marked))
-                //            {
-                //                bubble[i, 0] = null;
-                //            }
-                //            if ((bubble[i - 1, 8] == null || bubble[i - 1, 8].marked) && (bubble[i, 8] == null || bubble[i, 8].marked))
-                //            {
-                //                bubble[i, 9] = null;
-                //            }
-                //        }
-                //        else if (bubble[i, j] != null)
-                //        {
-                //            if ((bubble[i - 1, j] == null || bubble[i - 1, j].marked) && (bubble[i - 1, j + 1] == null || bubble[i - 1, j + 1].marked) && (bubble[i, j + 1] == null || bubble[i, j + 1].marked) && (bubble[i, j - 1] == null || bubble[i, j - 1].marked) && (bubble[i + 1, j + 1] == null || bubble[i + 1, j + 1].marked) && (bubble[i + 1, j] == null || bubble[i + 1, j].marked))
-                //            {
-                //                bubble[i, j] = null;
-                //            }
-                //            if ((bubble[i, 1] == null || bubble[i, 1].marked) && (bubble[i - 1, 0] == null || bubble[i - 1, 0].marked) && (bubble[i - 1, 1] == null || bubble[i - 1, 1].marked))
-                //            {
-                //                bubble[i, 0] = null;
-                //            }
-                //            if ((bubble[i, 7] == null || bubble[i, 7].marked) && (bubble[i - 1, 9] == null || bubble[i - 1, 9].marked) && (bubble[i - 1, 8] == null || bubble[i - 1, 8].marked))
-                //            {
-                //                bubble[i, 8] = null;
-                //            }
-                //        }
-
-                //        if (bubble[i, j] != null && bubble[i, 0] != null && bubble[0, 0] != null)
-                //        {
-                //            bubble[i, j].marked = true;
-                //        }
-                //    }
-                //}
 
                 _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                 if (_scrollTime >= tickPerUpdate)
@@ -378,97 +313,152 @@ namespace Olympuzz.GameScreen
             //if in pause, gameover , gamewin
             if (notPlay)
             {
-                pauseButton.setCantHover(true);
+                pauseButton.SetCantHover(true);
                 Singleton.Instance.Shooting = false;
-                if (settingEvent)
+
+                if (!confirmExit)
                 {
-                    // Click Arrow BGM button
-                    switch (Singleton.Instance.bgmState)
+                    // Click Arrow BGM buttonif (pauseEvent)
+                    if (pauseEvent)
                     {
-                        case AudioState.MUTE:
-                            if (arrowLeftBGButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                            {
-                                Singleton.Instance.bgmState = AudioState.FULL;
-                                //setSoundStatus();
-                            }
-                            else if (arrowRightBGButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                            {
-                                Singleton.Instance.bgmState = AudioState.MEDIUM;
-                                //setSoundStatus();
-                            }
-                            break;
-                        case AudioState.MEDIUM:
-                            if (arrowLeftBGButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                            {
-                                Singleton.Instance.bgmState = AudioState.MUTE;
-                                //setSoundStatus();
-                            }
-                            else if (arrowRightBGButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                            {
-                                Singleton.Instance.bgmState = AudioState.FULL;
-                                //setSoundStatus();
-                            }
-                            break;
-                        case AudioState.FULL:
-                            if (arrowLeftBGButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                            {
-                                Singleton.Instance.bgmState = AudioState.MEDIUM;
-                                //setSoundStatus();
-                            }
-                            else if (arrowRightBGButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                            {
-                                Singleton.Instance.bgmState = AudioState.MUTE;
-                                //setSoundStatus();
-                            }
-                            break;
+                        //if click back
+                        if (continueButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                        {
+                            notPlay = false;
+                            pauseButton.SetCantHover(false);
+                            pauseEvent = false;
+                            MediaPlayer.Resume();
+                        }
+
+                        //if click restart
+                        if (restartButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                        {
+                            Singleton.Instance.Score = 0;
+                            notPlay = false;
+                            pauseEvent = false;
+                            MediaPlayer.Stop();
+                            ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
+                        }
+
+                        //if click exit
+                        if (exitButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                        {
+                            confirmExit = true;
+                            MediaPlayer.Pause();
+                        }
+
+                        switch (Singleton.Instance.bgmState)
+                        {
+                            case AudioState.MUTE:
+                                if (arrowLeftBGButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                                {
+                                    Singleton.Instance.bgmState = AudioState.FULL;
+                                }
+                                else if (arrowRightBGButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                                {
+                                    Singleton.Instance.bgmState = AudioState.MEDIUM;
+                                }
+                                break;
+                            case AudioState.MEDIUM:
+                                if (arrowLeftBGButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                                {
+                                    Singleton.Instance.bgmState = AudioState.MUTE;
+                                }
+                                else if (arrowRightBGButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                                {
+                                    Singleton.Instance.bgmState = AudioState.FULL;
+                                }
+                                break;
+                            case AudioState.FULL:
+                                if (arrowLeftBGButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                                {
+                                    Singleton.Instance.bgmState = AudioState.MEDIUM;
+                                }
+                                else if (arrowRightBGButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                                {
+                                    Singleton.Instance.bgmState = AudioState.MUTE;
+                                }
+                                break;
+                        }
+                        // Click Arrow SFX button
+                        switch (Singleton.Instance.sfxState)
+                        {
+                            case AudioState.MUTE:
+                                if (arrowLeftSFXButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                                {
+                                    Singleton.Instance.sfxState = AudioState.FULL;
+                                }
+                                else if (arrowRightSFXButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                                {
+                                    Singleton.Instance.sfxState = AudioState.MEDIUM;
+                                }
+                                break;
+                            case AudioState.MEDIUM:
+                                if (arrowLeftSFXButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                                {
+                                    Singleton.Instance.sfxState = AudioState.MUTE;
+                                }
+                                else if (arrowRightSFXButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                                {
+                                    Singleton.Instance.sfxState = AudioState.FULL;
+                                }
+                                break;
+                            case AudioState.FULL:
+                                if (arrowLeftSFXButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                                {
+                                    Singleton.Instance.sfxState = AudioState.MEDIUM;
+                                }
+                                else if (arrowRightSFXButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                                {
+                                    Singleton.Instance.sfxState = AudioState.MUTE;
+                                }
+                                break;
+                        }
                     }
-                    // Click Arrow SFX button
-                    switch (Singleton.Instance.sfxState)
+                    //only if gamewin
+                    if (gameWin)
                     {
-                        case AudioState.MUTE:
-                            if (arrowLeftSFXButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                        //if go next level
+                        if (nextButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                        {
+                            notPlay = false;
+                            pauseEvent = false;
+                            MediaPlayer.Stop();
+                            switch (Singleton.Instance.levelState)
                             {
-                                Singleton.Instance.sfxState = AudioState.FULL;
-                                //setSoundStatus();
+                                case LevelState.POSEIDON:
+                                    Singleton.Instance.levelState = LevelState.HADES;
+                                    break;
+                                case LevelState.HADES:
+                                    Singleton.Instance.levelState = LevelState.ZEUS;
+                                    break;
                             }
-                            else if (arrowRightSFXButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                            {
-                                Singleton.Instance.sfxState = AudioState.MEDIUM;
-                                //setSoundStatus();
-                            }
-                            break;
-                        case AudioState.MEDIUM:
-                            if (arrowLeftSFXButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                            {
-                                Singleton.Instance.sfxState = AudioState.MUTE;
-                                //setSoundStatus();
-                            }
-                            else if (arrowRightSFXButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                            {
-                                Singleton.Instance.sfxState = AudioState.FULL;
-                                //setSoundStatus();
-                            }
-                            break;
-                        case AudioState.FULL:
-                            if (arrowLeftSFXButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                            {
-                                Singleton.Instance.sfxState = AudioState.MEDIUM;
-                                //setSoundStatus();
-                            }
-                            else if (arrowRightSFXButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                            {
-                                Singleton.Instance.sfxState = AudioState.MUTE;
-                                //setSoundStatus();
-                            }
-                            break;
+                            ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
+                        }
                     }
 
-                    // Click back
-                    if (backSettingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    if (gameWin || gameOver)
                     {
-                        settingEvent = false;
+
+                        //if click restart
+                        if (restartWLButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                        {
+                            Singleton.Instance.Score = 0;
+                            notPlay = false;
+                            pauseEvent = false;
+                            MediaPlayer.Stop();
+                            ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
+                        }
+
+                        //if click exit
+                        if (exitWLButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                        {
+                            confirmExit = true;
+                            MediaPlayer.Pause();
+                        }
                     }
                 }
+
                 else if (confirmExit)
                 {
                     if (yesConfirmButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
@@ -476,69 +466,12 @@ namespace Olympuzz.GameScreen
                         Singleton.Instance.Score = 0;
                         notPlay = false;
                         pauseEvent = false;
-                        settingEvent = false;
                         MediaPlayer.Stop();
                         ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.MenuScreen);
                     }
                     else if (noConfirmButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                     {
                         confirmExit = false;
-                    }
-                }
-                else if(gameWin)
-                {
-                    //if go next level
-                    if (nextButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                    {
-                        if (level < 4)
-                        {
-                            notPlay = false;
-                            pauseEvent = false;
-                            settingEvent = false;
-                            level += 1;
-                            MediaPlayer.Stop();
-                            ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
-                        }
-                    }
-                }
-                else
-                {
-                    //if still not win or lose
-                    if (!gameOver && !gameWin)
-                    {
-                        //if click back
-                        if (continueButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                        {
-                            notPlay = false;
-                            pauseButton.setCantHover(false);
-                            pauseEvent = false;
-                            MediaPlayer.Resume();
-                        }
-                    }
-
-                    //if click seting
-                    if (settingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                    {
-                        settingEvent = true;
-                    }
-
-                    //if click restart
-                    if (restartButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                    {
-                        Singleton.Instance.Score = 0;
-                        notPlay = false;
-                        pauseEvent = false;
-                        settingEvent = false;
-                        MediaPlayer.Stop();
-                        ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
-                    }
-
-                    //if click exit
-                    if (exitButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                    {
-                        //settingEvent = false;
-                        confirmExit = true;
-                        MediaPlayer.Pause();
                     }
                 }
             }
@@ -583,11 +516,11 @@ namespace Olympuzz.GameScreen
                     Singleton.Instance.soundMasterVolume = masterSFX;
                     break;
                 case AudioState.MEDIUM:
-                    masterSFX = 0.5f;
+                    masterSFX = 0.3f;
                     Singleton.Instance.soundMasterVolume = masterSFX;
                     break;
                 case AudioState.FULL:
-                    masterSFX = 1f;
+                    masterSFX = 0.6f;
                     Singleton.Instance.soundMasterVolume = masterSFX;
                     break;
             }
@@ -595,36 +528,12 @@ namespace Olympuzz.GameScreen
             //all update
             shooter.Update(gameTime, bubble);
 
-            //update button
-            continueButton.Update(gameTime);
-            nextButton.Update(gameTime);
-            settingButton.Update(gameTime);
-            restartButton.Update(gameTime);
-            exitButton.Update(gameTime);
-            arrowLeftBGButton.Update(gameTime);
-            arrowRightBGButton.Update(gameTime);
-            arrowLeftSFXButton.Update(gameTime);
-            arrowRightSFXButton.Update(gameTime);
-            backSettingButton.Update(gameTime);
             base.Update(gameTime);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            switch (level)
-            {
-                case 1://bgLevel1
-                    spriteBatch.Draw(board, new Vector2(336, 54), Color.White);
-                    spriteBatch.Draw(bgLevel1, Vector2.Zero, Color.White);
-                    break;
-                case 2://bgLevel2
-                    //spriteBatch.Draw(board, new Vector2(336, 54), Color.White);
-                    //spriteBatch.Draw(bgLevel1, Vector2.Zero, Color.White);
-                    break;
-                case 3://bgLevel3
-                    //spriteBatch.Draw(board, new Vector2(336, 54), Color.White);
-                    //spriteBatch.Draw(bgLevel1, Vector2.Zero, Color.White);
-                    break;
-            }
+            spriteBatch.Draw(boardBGPic, new Vector2(336, 54), Color.White);
+            spriteBatch.Draw(stageBGPic, Vector2.Zero, Color.White);
 
             for (int i = 0; i < 15; i++) // Line of bubble
             {
@@ -647,88 +556,104 @@ namespace Olympuzz.GameScreen
             if (notPlay)
             {
                 spriteBatch.Draw(blackScreenPic, Vector2.Zero, new Color(255, 255, 255, 210));
-                if (settingEvent)
+
+                //only for if still playing
+                if (!confirmExit)
                 {
-                    backSettingButton.Draw(spriteBatch);
-                    spriteBatch.DrawString(bigfonts, "Setting", new Vector2(550, 165), Color.Yellow);
 
-                    //BGM
-                    spriteBatch.DrawString(mediumfonts, "Musics", new Vector2(300, 324), Color.Yellow);
-
-                    arrowLeftBGButton.Draw(spriteBatch);
-                    arrowRightBGButton.Draw(spriteBatch);
-
-                    //SFX
-                    spriteBatch.DrawString(mediumfonts, "Sounds", new Vector2(300, 444), Color.Yellow);
-
-                    arrowLeftSFXButton.Draw(spriteBatch);
-                    arrowRightSFXButton.Draw(spriteBatch);
-                    // Click Arrow BGM button
-                    switch (Singleton.Instance.bgmState)
+                    if (pauseEvent)
                     {
-                        case AudioState.MUTE:
-                            spriteBatch.DrawString(mediumfonts, "MUTE", new Vector2(585, 324), Color.Yellow);
-                            break;
-                        case AudioState.MEDIUM:
-                            spriteBatch.DrawString(mediumfonts, "MED", new Vector2(585, 324), Color.Yellow);
-                            break;
-                        case AudioState.FULL:
-                            spriteBatch.DrawString(mediumfonts, "FULL", new Vector2(585, 324), Color.Yellow);
-                            break;
+                        spriteBatch.Draw(pausePopUpPic, new Vector2((Singleton.Instance.Dimensions.X - pausePopUpPic.Width) / 2, (Singleton.Instance.Dimensions.Y - pausePopUpPic.Height) / 2), new Color(255, 255, 255, 255)); 
+                        fontSize = mediumfonts.MeasureString("Pause");
+                        spriteBatch.DrawString(mediumfonts, "Pause", new Vector2(((Singleton.Instance.Dimensions.X - fontSize.X) / 2), 70), new Color(33, 35, 60, 255));
+                        //BGM
+                        fontSize = mediumfonts.MeasureString("Musics");
+                        spriteBatch.DrawString(mediumfonts, "Musics", new Vector2(((Singleton.Instance.Dimensions.X - fontSize.X) / 2), 155), Color.Gray);
+
+                        arrowLeftBGButton.Draw(spriteBatch);
+                        arrowRightBGButton.Draw(spriteBatch);
+
+                        //SFX
+                        fontSize = mediumfonts.MeasureString("Sounds");
+                        spriteBatch.DrawString(mediumfonts, "Sounds", new Vector2(((Singleton.Instance.Dimensions.X - fontSize.X) / 2), 255), Color.Gray);
+
+                        arrowLeftSFXButton.Draw(spriteBatch);
+                        arrowRightSFXButton.Draw(spriteBatch);
+
+                        continueButton.Draw(spriteBatch, continueButtonPic2);// Click Arrow BGM button
+                        restartButton.Draw(spriteBatch, restartButtonPic2);
+                        exitButton.Draw(spriteBatch, exitButtonPic2);
+                        switch (Singleton.Instance.bgmState)
+                        {
+                            case AudioState.MUTE:
+                                fontSize = smallfonts.MeasureString("MUTE");
+                                spriteBatch.DrawString(smallfonts, "MUTE", new Vector2(((Singleton.Instance.Dimensions.X - fontSize.X) / 2) + 5, 208), Color.Gray);
+                                break;
+                            case AudioState.MEDIUM:
+                                fontSize = smallfonts.MeasureString("MED");
+                                spriteBatch.DrawString(smallfonts, "MED", new Vector2(((Singleton.Instance.Dimensions.X - fontSize.X) / 2) + 5, 208), Color.Gray);
+                                break;
+                            case AudioState.FULL:
+                                fontSize = smallfonts.MeasureString("FULL");
+                                spriteBatch.DrawString(smallfonts, "FULL", new Vector2(((Singleton.Instance.Dimensions.X - fontSize.X) / 2) + 5, 208), Color.Gray);
+                                break;
+                        }
+                        // Click Arrow SFX button
+                        switch (Singleton.Instance.sfxState)
+                        {
+                            case AudioState.MUTE:
+                                fontSize = smallfonts.MeasureString("MUTE");
+                                spriteBatch.DrawString(smallfonts, "MUTE", new Vector2(((Singleton.Instance.Dimensions.X - fontSize.X) / 2) + 5, 313), Color.Gray);
+                                break;
+                            case AudioState.MEDIUM:
+                                fontSize = smallfonts.MeasureString("MED");
+                                spriteBatch.DrawString(smallfonts, "MED", new Vector2(((Singleton.Instance.Dimensions.X - fontSize.X) / 2) + 5, 313), Color.Gray);
+                                break;
+                            case AudioState.FULL:
+                                fontSize = smallfonts.MeasureString("FULL");
+                                spriteBatch.DrawString(smallfonts, "FULL", new Vector2(((Singleton.Instance.Dimensions.X - fontSize.X) / 2) + 5, 313), Color.Gray);
+                                break;
+                        }
                     }
-                    // Click Arrow SFX button
-                    switch (Singleton.Instance.sfxState)
+                    //only if gameover
+                    if (gameOver)
                     {
-                        case AudioState.MUTE:
-                            spriteBatch.DrawString(mediumfonts, "MUTE", new Vector2(580, 444), Color.Yellow);
-                            break;
-                        case AudioState.MEDIUM:
-                            spriteBatch.DrawString(mediumfonts, "MED", new Vector2(580, 444), Color.Yellow);
-                            break;
-                        case AudioState.FULL:
-                            spriteBatch.DrawString(mediumfonts, "FULL", new Vector2(580, 445), Color.Yellow);
-                            break;
+                        restartWLButton.SetPosition(new Vector2(540, 430));
+                        exitWLButton.SetPosition(new Vector2(540, 510));
+                        spriteBatch.Draw(DefeatSignPic, new Vector2(190, 82), new Color(255, 255, 255, 255));
+                    }
+                    //only if gamewin
+                    if (gameWin)
+                    {
+                        spriteBatch.Draw(VictorySignPic, new Vector2(190, 82), new Color(255, 255, 255, 255));
+                        //draw only for Stage1 and Stage2
+                        if (Singleton.Instance.levelState == LevelState.POSEIDON || Singleton.Instance.levelState == LevelState.HADES)
+                        {
+                            nextButton.Draw(spriteBatch);
+                            restartWLButton.SetPosition(new Vector2(540, 430));
+                            exitWLButton.SetPosition(new Vector2(540, 510));
+                        }
+                    }
+                    if (gameWin || gameOver)
+                    {
+                        restartWLButton.Draw(spriteBatch);
+                        exitWLButton.Draw(spriteBatch);
                     }
                 }
                 else if (confirmExit)
                 {
-                    fontSize = bigfonts.MeasureString("Are you sure");
-                    spriteBatch.DrawString(bigfonts, "Are you sure", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 165), Color.White);
-                    fontSize = bigfonts.MeasureString("you want to exit?");
-                    spriteBatch.DrawString(bigfonts, "you want to exit?", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 260), Color.White);
+                    spriteBatch.Draw(confirmExitPopUpPic, new Vector2((Singleton.Instance.Dimensions.X - confirmExitPopUpPic.Width) / 2, (Singleton.Instance.Dimensions.Y - confirmExitPopUpPic.Height) / 2), new Color(255, 255, 255, 255));
+                    fontSize = mediumfonts.MeasureString("Exit");
+                    spriteBatch.DrawString(mediumfonts, "Exit", new Vector2(((Singleton.Instance.Dimensions.X - fontSize.X) / 2), 190), new Color(33, 35, 60, 255));
+                    fontSize = mediumfonts.MeasureString("Are you sure");
+                    spriteBatch.DrawString(mediumfonts, "Are you sure", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 270), Color.DarkGray);
+                    fontSize = mediumfonts.MeasureString("you want to exit?");
+                    spriteBatch.DrawString(mediumfonts, "you want to exit?", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 325), Color.DarkGray);
 
-                    noConfirmButton.Draw(spriteBatch);
-                    yesConfirmButton.Draw(spriteBatch);
-                }
-                else
-                {
-                    //normal for pause
-                    restartButton.Draw(spriteBatch);
-                    settingButton.Draw(spriteBatch);
-                    exitButton.Draw(spriteBatch);
-                    //only for if still playing
-                    if (pauseEvent)
-                    {
-                        fontSize = bigfonts.MeasureString("Pause");
-                        spriteBatch.DrawString(bigfonts, "Pause", new Vector2(((Singleton.Instance.Dimensions.X - fontSize.X) / 2), 130), color);
-                        continueButton.Draw(spriteBatch);
-                    }
-                    //only if gameover
-                    else if (gameOver)
-                    {
-                        fontSize = bigfonts.MeasureString("GameOver");
-                        spriteBatch.DrawString(bigfonts, "GameOver", new Vector2(((Singleton.Instance.Dimensions.X - fontSize.X) / 2), 130), color);
-                    }
-                    //only if gamewin
-                    else if (gameWin)
-                    {
-                        nextButton.Draw(spriteBatch);
-                        fontSize = bigfonts.MeasureString("GameWin");
-                        spriteBatch.DrawString(bigfonts, "GameWin", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 130), color);
-                    }
+                    noConfirmButton.Draw(spriteBatch,noConfirmPic2);
+                    yesConfirmButton.Draw(spriteBatch,yesConfirmPic2); 
                 }
             }
-
             // Draw fade out
             if (!fadeFinish)
             {

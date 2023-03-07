@@ -19,13 +19,13 @@ namespace Olympuzz.GameScreen
         private Color _Color = new Color(250, 250, 250, 0);
 
         //all picture
-        private Texture2D backgroundPic, blackScreenPic, settingScreenPic;//background
+        private Texture2D backgroundPic, blackScreenPic, settingScreenPic, StageBGPic, CharBGPic , howToPlayBGPic;//background
         private Texture2D logoPic, startPic, settingPic, exitPic;//mainmenu pic
         private Texture2D arrowLeftBGPic, arrowRightBGPic, arrowLeftSFXPic, arrowRightSFXPic, backSettingPic, selectStagePic;//setting pic
         private Texture2D stage1Pic1, stage2Pic1, stage3Pic1, stageEndlessPic1, stage1Pic2, stage2Pic2, stage3Pic2, stageEndlessPic2, howToPlayPic, backSelectLevelPic;//select level pic
         private Texture2D char1Pic1, char1Pic2, char2Pic1, char3Pic1, char4Pic1, char2Pic2, char3Pic2, char4Pic2, selectCharPic, backSelectCharPic, arrowLeftCharPic, arrowRightCharPic;//select character pic
         private Texture2D backHowToPlayPic;
-        private Texture2D yesPic, noPic;//exit confirmed pic
+        private Texture2D confirmQuitPopUpPic, yesConfirmQuitPic1, noConfirmQuitPic1, yesConfirmQuitPic2, noConfirmQuitPic2;//exit confirmed pic
 
         //all button
         private Button startButton, settingButton, exitButton;//mainmenu button
@@ -66,9 +66,9 @@ namespace Olympuzz.GameScreen
         public void Initial()
         {
             //main menu button
-            startButton = new Button(startPic, new Vector2(293, 293), new Vector2(160, 80));
-            settingButton = new Button(settingPic, new Vector2(293, 410), new Vector2(160, 60));
-            exitButton = new Button(exitPic, new Vector2(293, 505), new Vector2(100, 45));
+            startButton = new Button(startPic, new Vector2(273, 293), new Vector2(160, 80));
+            settingButton = new Button(settingPic, new Vector2(273, 410), new Vector2(160, 60));
+            exitButton = new Button(exitPic, new Vector2(273, 505), new Vector2(100, 45));
 
             //setting button
             arrowLeftBGButton = new Button(arrowLeftBGPic, new Vector2(525, 320), new Vector2(40, 40));
@@ -79,13 +79,13 @@ namespace Olympuzz.GameScreen
             backSettingButton = new Button(backSettingPic, new Vector2(980, 570), new Vector2(150, 60));
 
             //select level button
-            stage1Button = new Button(stage1Pic1, new Vector2(215, 200), new Vector2(275, 275));
-            stage2Button = new Button(stage2Pic1, new Vector2(502, 200), new Vector2(275, 275));
-            stage3Button = new Button(stage3Pic1, new Vector2(790, 200), new Vector2(275, 275));
-            stageEndlessButton = new Button(stageEndlessPic1, new Vector2(215, 497), new Vector2(850, 70));
-            backSelectLevelButton = new Button(backSelectLevelPic, new Vector2(215, 610), new Vector2(300, 70));
-            //howToPlayButton = new Button(howToPlayPic, new Vector2(765, 610), new Vector2(300, 70));
-            selectStageButton = new Button(selectCharPic, new Vector2(765, 610), new Vector2(300, 70));
+            stage1Button = new Button(stage1Pic1, new Vector2(38, 58), new Vector2(130, 235));
+            stage2Button = new Button(stage2Pic1, new Vector2(182, 58), new Vector2(130, 235));
+            stage3Button = new Button(stage3Pic1, new Vector2(332, 58), new Vector2(130, 235));
+            stageEndlessButton = new Button(stageEndlessPic1, new Vector2(483, 58), new Vector2(130, 235));
+            backSelectLevelButton = new Button(backSelectLevelPic, new Vector2(30, 25), new Vector2(46, 12));
+            howToPlayButton = new Button(howToPlayPic, new Vector2(215, 610), new Vector2(300, 70));
+            selectStageButton = new Button(selectStagePic, new Vector2(525, 615), new Vector2(85, 18));
 
             //select charactor button
             char1Button = new Button(char1Pic1, new Vector2(215, 200), new Vector2(275, 350));
@@ -93,16 +93,16 @@ namespace Olympuzz.GameScreen
             char3Button = new Button(char3Pic1, new Vector2(790, 200), new Vector2(275, 350));
             char4Button = new Button(char4Pic1, new Vector2(790, 200), new Vector2(275, 350));
             arrowLeftCharButton = new Button(arrowLeftCharPic, new Vector2(121, 337), new Vector2(75, 75));
-            arrowRightCharButton = new Button(arrowLeftCharPic, new Vector2(1092, 337), new Vector2(75, 75));
+            arrowRightCharButton = new Button(arrowRightCharPic, new Vector2(1092, 337), new Vector2(75, 75));
             backSelectCharButton = new Button(backSelectCharPic, new Vector2(215, 610), new Vector2(300, 70));
             selectCharButton = new Button(selectCharPic, new Vector2(765, 610), new Vector2(300, 70));
 
             //howtoplay button
-            backHowToPlayButton = new Button(selectCharPic, new Vector2(490, 610), new Vector2(300, 70));
+            backHowToPlayButton = new Button(backHowToPlayPic, new Vector2(490, 610), new Vector2(300, 70));
 
             //confirm Exit button
-            yesButton = new Button(yesPic, new Vector2(315, 420), new Vector2(300, 70));
-            noButton = new Button(noPic, new Vector2(685, 420), new Vector2(300, 70));
+            yesButton = new Button(yesConfirmQuitPic1, new Vector2(495, 390), new Vector2(120, 60));
+            noButton = new Button(noConfirmQuitPic1, new Vector2(660, 390), new Vector2(120, 60));
         }
         public override void LoadContent()
         {
@@ -128,19 +128,21 @@ namespace Olympuzz.GameScreen
             arrowRightSFXPic = content.Load<Texture2D>("SettingScreen/ArrowRButton");
 
             //select level pic
-            stage1Pic1 = content.Load<Texture2D>("PlayScreen/Earth");
-            stage2Pic1 = content.Load<Texture2D>("PlayScreen/Earth");
-            stage3Pic1 = content.Load<Texture2D>("PlayScreen/Earth");
-            stageEndlessPic1 = content.Load<Texture2D>("PlayScreen/Earth");
+            StageBGPic = content.Load<Texture2D>("SelectStage/StageSelectScreen");
+            stage1Pic1 = content.Load<Texture2D>("SelectStage/PoseidonStage");
+            stage2Pic1 = content.Load<Texture2D>("SelectStage/HadesStage");
+            stage3Pic1 = content.Load<Texture2D>("SelectStage/PoseidonStage");
+            stageEndlessPic1 = content.Load<Texture2D>("SelectStage/PoseidonStage");
             stage1Pic2 = content.Load<Texture2D>("PlayScreen/Water");
             stage2Pic2 = content.Load<Texture2D>("PlayScreen/Water");
             stage3Pic2 = content.Load<Texture2D>("PlayScreen/Water");
             stageEndlessPic2 = content.Load<Texture2D>("PlayScreen/Water");
-            backSelectLevelPic = content.Load<Texture2D>("PlayScreen/Fire");
+            backSelectLevelPic = content.Load<Texture2D>("SelectStage/BackToMainmenu");
             howToPlayPic = content.Load<Texture2D>("PlayScreen/Wind");
-            selectStagePic = content.Load<Texture2D>("PlayScreen/Thunder");
+            selectStagePic = content.Load<Texture2D>("SelectStage/SelectThatStage");
 
             //select charactor pic
+            CharBGPic = content.Load<Texture2D>("blackScreen");
             char1Pic1 = content.Load<Texture2D>("PlayScreen/Earth");
             char2Pic1 = content.Load<Texture2D>("PlayScreen/Wind");
             char3Pic1 = content.Load<Texture2D>("PlayScreen/Water");
@@ -150,16 +152,20 @@ namespace Olympuzz.GameScreen
             char3Pic2 = content.Load<Texture2D>("PlayScreen/Thunder");
             char4Pic2 = content.Load<Texture2D>("PlayScreen/Thunder");
             arrowLeftCharPic = content.Load<Texture2D>("PlayScreen/Water");
-            arrowLeftCharPic = content.Load<Texture2D>("PlayScreen/Water");
+            arrowRightCharPic = content.Load<Texture2D>("PlayScreen/Water");
             backSelectCharPic = content.Load<Texture2D>("PlayScreen/Fire");
             selectCharPic = content.Load<Texture2D>("PlayScreen/Wind");
 
             //howtoplay pic
+            howToPlayBGPic = content.Load<Texture2D>("blackScreen");
             backHowToPlayPic = content.Load<Texture2D>("PlayScreen/Wind");
 
             //confirmQuit pic
-            yesPic = content.Load<Texture2D>("PlayScreen/Fire");
-            noPic = content.Load<Texture2D>("PlayScreen/Wind");
+            confirmQuitPopUpPic = content.Load<Texture2D>("ConfirmExit/ConfirmQuitPopUp");
+            yesConfirmQuitPic1 = content.Load<Texture2D>("ConfirmExit/Yes");
+            noConfirmQuitPic1 = content.Load<Texture2D>("ConfirmExit/No");
+            yesConfirmQuitPic2 = content.Load<Texture2D>("ConfirmExit/YesGlow");
+            noConfirmQuitPic2 = content.Load<Texture2D>("ConfirmExit/NoGlow");
 
             // Fonts
             smallfonts = content.Load<SpriteFont>("Alagard");
@@ -194,8 +200,16 @@ namespace Olympuzz.GameScreen
                 // Click start game
                 if (startButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                 {
-                    selectStageScreen = true;
                     mainScreen = false;
+                    if (Singleton.Instance.firsttime)
+                    {
+                        howToPlayScreen = true;
+                        Singleton.Instance.firsttime = false;
+                    }
+                    else
+                    {
+                        selectStageScreen = true;
+                    }
                 }
                 // Click setting
                 if (settingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
@@ -249,11 +263,11 @@ namespace Olympuzz.GameScreen
                     }
                 }
                 //how to play
-                /*if (howToPlayButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                if (howToPlayButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                 {
                     selectStageScreen = false;
                     howToPlayScreen = true;
-                }*/
+                }
             }
             if (selectCharScreen)
             {
@@ -277,17 +291,17 @@ namespace Olympuzz.GameScreen
                 //click arrow
                 if (arrowRightCharButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                 {
-                    char1Button.setPosition(new Vector2(0, 0));
-                    char2Button.setPosition(new Vector2(215, 200));
-                    char3Button.setPosition(new Vector2(502, 200));
+                    char1Button.SetPosition(new Vector2(0, 0));
+                    char2Button.SetPosition(new Vector2(215, 200));
+                    char3Button.SetPosition(new Vector2(502, 200));
                     charSlide = 2;
                     Singleton.Instance.charState = CharState.NULL;
                 }
                 if (arrowLeftCharButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                 {
-                    char1Button.setPosition(new Vector2(215, 200));
-                    char2Button.setPosition(new Vector2(502, 200));
-                    char3Button.setPosition(new Vector2(790, 200));
+                    char1Button.SetPosition(new Vector2(215, 200));
+                    char2Button.SetPosition(new Vector2(502, 200));
+                    char3Button.SetPosition(new Vector2(790, 200));
                     charSlide = 1;
                     Singleton.Instance.charState = CharState.NULL;
                 }
@@ -314,10 +328,11 @@ namespace Olympuzz.GameScreen
             if (howToPlayScreen)
             {
                 //click continue
-                if (selectCharButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                if (backHowToPlayButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                 {
                     howToPlayScreen = false;
-                    mainScreen = true;
+                    selectStageScreen = true;
+                    Singleton.Instance.levelState = LevelState.NULL;
                 }
             }
             else
@@ -365,36 +380,30 @@ namespace Olympuzz.GameScreen
                             if (arrowLeftSFXButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                             {
                                 Singleton.Instance.sfxState = AudioState.FULL;
-                                //setSoundStatus();
                             }
                             else if (arrowRightSFXButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                             {
                                 Singleton.Instance.sfxState = AudioState.MEDIUM;
-                                //setSoundStatus();
                             }
                             break;
                         case AudioState.MEDIUM:
                             if (arrowLeftSFXButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                             {
                                 Singleton.Instance.sfxState = AudioState.MUTE;
-                                //setSoundStatus();
                             }
                             else if (arrowRightSFXButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                             {
                                 Singleton.Instance.sfxState = AudioState.FULL;
-                                //setSoundStatus();
                             }
                             break;
                         case AudioState.FULL:
                             if (arrowLeftSFXButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                             {
                                 Singleton.Instance.sfxState = AudioState.MEDIUM;
-                                //setSoundStatus();
                             }
                             else if (arrowRightSFXButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                             {
                                 Singleton.Instance.sfxState = AudioState.MUTE;
-                                //setSoundStatus();
                             }
                             break;
                     }
@@ -460,52 +469,24 @@ namespace Olympuzz.GameScreen
                     Singleton.Instance.soundMasterVolume = masterSFX;
                     break;
                 case AudioState.MEDIUM:
-                    masterSFX = 0.5f;
+                    masterSFX = 0.3f;
                     Singleton.Instance.soundMasterVolume = masterSFX;
                     break;
                 case AudioState.FULL:
-                    masterSFX = 1f;
+                    masterSFX = 0.6f;
                     Singleton.Instance.soundMasterVolume = masterSFX;
                     break;
             }
             //update
             setStageButtonStatus();
             setCharButtonStatus();
-            //update button
-            startButton.Update(gameTime);
-            settingButton.Update(gameTime);
-            exitButton.Update(gameTime);
 
-            stage1Button.Update(gameTime);
-            stage2Button.Update(gameTime);
-            stage3Button.Update(gameTime);
-            stageEndlessButton.Update(gameTime);
-            //howToPlayButton.Update(gameTime);
-            backSelectLevelButton.Update(gameTime);
-            selectStageButton.Update(gameTime);
-
-            char1Button.Update(gameTime);
-            char2Button.Update(gameTime);
-            char3Button.Update(gameTime);
-            char4Button.Update(gameTime);
-            selectCharButton.Update(gameTime);
-            backSelectCharButton.Update(gameTime);
-            arrowLeftCharButton.Update(gameTime);
-            arrowRightCharButton.Update(gameTime);
-
-            backHowToPlayButton.Update(gameTime);
-
-            arrowLeftBGButton.Update(gameTime);
-            arrowRightBGButton.Update(gameTime);
-            arrowLeftSFXButton.Update(gameTime);
-            arrowRightSFXButton.Update(gameTime);
-            backSettingButton.Update(gameTime);
             base.Update(gameTime);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
             //draw bg
-            if (mainScreen || selectStageScreen || selectCharScreen)
+            if (mainScreen)
             {
                 spriteBatch.Draw(backgroundPic, Vector2.Zero, Color.White);
             }
@@ -519,18 +500,18 @@ namespace Olympuzz.GameScreen
             }
             if (selectStageScreen)
             {
-                fontSize = bigfonts.MeasureString("Select Stage");
-                spriteBatch.DrawString(bigfonts, "Select Stage", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 93), Color.Yellow);
+                spriteBatch.Draw(StageBGPic, Vector2.Zero, Color.White);
                 stage1Button.Draw(spriteBatch);
                 stage2Button.Draw(spriteBatch);
                 stage3Button.Draw(spriteBatch);
                 stageEndlessButton.Draw(spriteBatch);
-                //howToPlayButton.Draw(spriteBatch); 
+                howToPlayButton.Draw(spriteBatch); 
                 selectStageButton.Draw(spriteBatch);
                 backSelectLevelButton.Draw(spriteBatch);
             }
             if (selectCharScreen)
             {
+                spriteBatch.Draw(CharBGPic, Vector2.Zero, Color.White);
                 fontSize = bigfonts.MeasureString("Select Your Character");
                 spriteBatch.DrawString(bigfonts, "Select Your Character", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 93), Color.Yellow);
                 if (charSlide == 1)
@@ -549,6 +530,13 @@ namespace Olympuzz.GameScreen
                 }
                 selectCharButton.Draw(spriteBatch);
                 backSelectCharButton.Draw(spriteBatch);
+            }
+            if (howToPlayScreen)
+            {
+                spriteBatch.Draw(howToPlayBGPic, Vector2.Zero, new Color(255, 255, 255, 210));
+                fontSize = bigfonts.MeasureString("How to play");
+                spriteBatch.DrawString(bigfonts, "How to play", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 93), Color.Yellow);
+                backHowToPlayButton.Draw(spriteBatch);
             }
             // Draw UI when is NOT MainMenu
             else
@@ -571,6 +559,7 @@ namespace Olympuzz.GameScreen
 
                     arrowLeftSFXButton.Draw(spriteBatch);
                     arrowRightSFXButton.Draw(spriteBatch);
+
                     // Click Arrow BGM button
                     switch (Singleton.Instance.bgmState)
                     {
@@ -601,13 +590,14 @@ namespace Olympuzz.GameScreen
                 else if (confirmQuit)
                 {
                     spriteBatch.Draw(blackScreenPic, Vector2.Zero, new Color(255, 255, 255, 210));
-                    fontSize = bigfonts.MeasureString("Are you sure");
-                    spriteBatch.DrawString(bigfonts, "Are you sure", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 165), Color.White);
-                    fontSize = bigfonts.MeasureString("you want to quit?");
-                    spriteBatch.DrawString(bigfonts, "you want to quit?", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 260), Color.White);
+                    spriteBatch.Draw(confirmQuitPopUpPic, new Vector2((Singleton.Instance.Dimensions.X - confirmQuitPopUpPic.Width) / 2, (Singleton.Instance.Dimensions.Y - confirmQuitPopUpPic.Height) / 2), new Color(255, 255, 255, 255));
+                    fontSize = mediumfonts.MeasureString("Are you sure");
+                    spriteBatch.DrawString(mediumfonts, "Are you sure", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 255), Color.DarkGray);
+                    fontSize = mediumfonts.MeasureString("you want to quit?");
+                    spriteBatch.DrawString(mediumfonts, "you want to quit?", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 310), Color.DarkGray);
 
-                    noButton.Draw(spriteBatch);
-                    yesButton.Draw(spriteBatch);
+                    noButton.Draw(spriteBatch, noConfirmQuitPic2);
+                    yesButton.Draw(spriteBatch, yesConfirmQuitPic2);
                 }
             }
 
@@ -622,64 +612,64 @@ namespace Olympuzz.GameScreen
             switch (Singleton.Instance.levelState)
             {
                 case LevelState.NULL:
-                    stage1Button.setTexture(stage1Pic1);
-                    stage2Button.setTexture(stage2Pic1);
-                    stage3Button.setTexture(stage1Pic1);
-                    stageEndlessButton.setTexture(stageEndlessPic1);
+                    stage1Button.SetTexture(stage1Pic1);
+                    stage2Button.SetTexture(stage2Pic1);
+                    stage3Button.SetTexture(stage3Pic1);
+                    stageEndlessButton.SetTexture(stageEndlessPic1);
 
-                    stage1Button.setCantHover(false);
-                    stage2Button.setCantHover(false);
-                    stage3Button.setCantHover(false);
-                    stageEndlessButton.setCantHover(false);
-                    selectStageButton.setCantHover(true);
+                    stage1Button.SetCantHover(false);
+                    stage2Button.SetCantHover(false);
+                    stage3Button.SetCantHover(false);
+                    stageEndlessButton.SetCantHover(false);
+                    selectStageButton.SetCantHover(true);
                     break;
                 case LevelState.POSEIDON:
-                    stage1Button.setTexture(stage1Pic2);
-                    stage2Button.setTexture(stage2Pic1);
-                    stage3Button.setTexture(stage1Pic1);
-                    stageEndlessButton.setTexture(stageEndlessPic1);
+                    stage1Button.SetTexture(stage1Pic2);
+                    stage2Button.SetTexture(stage2Pic1);
+                    stage3Button.SetTexture(stage3Pic1);
+                    stageEndlessButton.SetTexture(stageEndlessPic1);
 
-                    stage1Button.setCantHover(true);
-                    stage2Button.setCantHover(false);
-                    stage3Button.setCantHover(false);
-                    stageEndlessButton.setCantHover(false);
-                    selectStageButton.setCantHover(false);
+                    stage1Button.SetCantHover(true);
+                    stage2Button.SetCantHover(false);
+                    stage3Button.SetCantHover(false);
+                    stageEndlessButton.SetCantHover(false);
+                    selectStageButton.SetCantHover(false);
                     break;
                 case LevelState.HADES:
-                    stage1Button.setTexture(stage1Pic1);
-                    stage2Button.setTexture(stage2Pic2);
-                    stage3Button.setTexture(stage1Pic1);
-                    stageEndlessButton.setTexture(stageEndlessPic1);
+                    stage1Button.SetTexture(stage1Pic1);
+                    stage2Button.SetTexture(stage2Pic2);
+                    stage3Button.SetTexture(stage3Pic1);
+                    stageEndlessButton.SetTexture(stageEndlessPic1);
 
-                    stage1Button.setCantHover(false);
-                    stage2Button.setCantHover(true);
-                    stage3Button.setCantHover(false);
-                    stageEndlessButton.setCantHover(false);
-                    selectStageButton.setCantHover(false);
+                    stage1Button.SetCantHover(false);
+                    stage2Button.SetCantHover(true);
+                    stage3Button.SetCantHover(false);
+                    stageEndlessButton.SetCantHover(false);
+                    selectStageButton.SetCantHover(false);
                     break;
                 case LevelState.ZEUS:
-                    stage1Button.setTexture(stage1Pic1);
-                    stage2Button.setTexture(stage2Pic1);
-                    stage3Button.setTexture(stage1Pic2);
-                    stageEndlessButton.setTexture(stageEndlessPic1);
+                    stage1Button.SetTexture(stage1Pic1);
+                    stage2Button.SetTexture(stage2Pic1);
+                    stage3Button.SetTexture(stage3Pic2);
+                    stageEndlessButton.SetTexture(stageEndlessPic1);
 
-                    stage1Button.setCantHover(false);
-                    stage2Button.setCantHover(false);
-                    stage3Button.setCantHover(true);
-                    stageEndlessButton.setCantHover(false);
-                    selectStageButton.setCantHover(false);
+                    stage1Button.SetCantHover(false);
+                    stage2Button.SetCantHover(false);
+                    stage3Button.SetCantHover(true);
+                    stageEndlessButton.SetCantHover(false);
+                    selectStageButton.SetCantHover(false);
                     break;
                 case LevelState.ENDLESS:
-                    stage1Button.setTexture(stage1Pic1);
-                    stage2Button.setTexture(stage2Pic1);
-                    stage3Button.setTexture(stage1Pic1);
-                    stageEndlessButton.setTexture(stageEndlessPic2);
+                    stage1Button.SetTexture(stage1Pic1);
+                    stage2Button.SetTexture(stage2Pic1);
+                    stage3Button.SetTexture(stage3Pic1);
+                    stageEndlessButton.SetTexture(stageEndlessPic2);
 
-                    stage1Button.setCantHover(false);
-                    stage2Button.setCantHover(false);
-                    stage3Button.setCantHover(false);
-                    stageEndlessButton.setCantHover(true);
-                    selectStageButton.setCantHover(false);
+                    stage1Button.SetCantHover(false);
+                    stage2Button.SetCantHover(false);
+                    stage3Button.SetCantHover(false);
+                    stageEndlessButton.SetCantHover(true);
+                    selectStageButton.SetCantHover(false);
                     break;
             }
         }
@@ -688,64 +678,64 @@ namespace Olympuzz.GameScreen
             switch (Singleton.Instance.charState)
             {
                 case CharState.NULL:
-                    char1Button.setTexture(char1Pic1);
-                    char2Button.setTexture(char2Pic1);
-                    char3Button.setTexture(char3Pic1);
-                    char4Button.setTexture(char4Pic1);
+                    char1Button.SetTexture(char1Pic1);
+                    char2Button.SetTexture(char2Pic1);
+                    char3Button.SetTexture(char3Pic1);
+                    char4Button.SetTexture(char4Pic1);
 
-                    char1Button.setCantHover(false);
-                    char2Button.setCantHover(false);
-                    char3Button.setCantHover(false);
-                    char4Button.setCantHover(false);
-                    selectCharButton.setCantHover(true);
+                    char1Button.SetCantHover(false);
+                    char2Button.SetCantHover(false);
+                    char3Button.SetCantHover(false);
+                    char4Button.SetCantHover(false);
+                    selectCharButton.SetCantHover(true);
                     break;
                 case CharState.ATHENA:
-                    char1Button.setTexture(char1Pic2);
-                    char2Button.setTexture(char2Pic1);
-                    char3Button.setTexture(char3Pic1);
-                    char4Button.setTexture(char4Pic1);
+                    char1Button.SetTexture(char1Pic2);
+                    char2Button.SetTexture(char2Pic1);
+                    char3Button.SetTexture(char3Pic1);
+                    char4Button.SetTexture(char4Pic1);
 
-                    char1Button.setCantHover(true);
-                    char2Button.setCantHover(false);
-                    char3Button.setCantHover(false);
-                    char4Button.setCantHover(false);
-                    selectCharButton.setCantHover(false);
+                    char1Button.SetCantHover(true);
+                    char2Button.SetCantHover(false);
+                    char3Button.SetCantHover(false);
+                    char4Button.SetCantHover(false);
+                    selectCharButton.SetCantHover(false);
                     break;
                 case CharState.HERMES:
-                    char1Button.setTexture(char1Pic1);
-                    char2Button.setTexture(char2Pic2);
-                    char3Button.setTexture(char3Pic1);
-                    char4Button.setTexture(char4Pic1);
+                    char1Button.SetTexture(char1Pic1);
+                    char2Button.SetTexture(char2Pic2);
+                    char3Button.SetTexture(char3Pic1);
+                    char4Button.SetTexture(char4Pic1);
 
-                    char1Button.setCantHover(false);
-                    char2Button.setCantHover(true);
-                    char3Button.setCantHover(false);
-                    char4Button.setCantHover(false);
-                    selectCharButton.setCantHover(false);
+                    char1Button.SetCantHover(false);
+                    char2Button.SetCantHover(true);
+                    char3Button.SetCantHover(false);
+                    char4Button.SetCantHover(false);
+                    selectCharButton.SetCantHover(false);
                     break;
                 case CharState.DIONYSUS:
-                    char1Button.setTexture(char1Pic1);
-                    char2Button.setTexture(char2Pic1);
-                    char3Button.setTexture(char3Pic2);
-                    char4Button.setTexture(char4Pic1);
+                    char1Button.SetTexture(char1Pic1);
+                    char2Button.SetTexture(char2Pic1);
+                    char3Button.SetTexture(char3Pic2);
+                    char4Button.SetTexture(char4Pic1);
 
-                    char1Button.setCantHover(false);
-                    char2Button.setCantHover(false);
-                    char3Button.setCantHover(true);
-                    char4Button.setCantHover(false);
-                    selectCharButton.setCantHover(false);
+                    char1Button.SetCantHover(false);
+                    char2Button.SetCantHover(false);
+                    char3Button.SetCantHover(true);
+                    char4Button.SetCantHover(false);
+                    selectCharButton.SetCantHover(false);
                     break;
                 case CharState.HEPHAESTUS:
-                    char1Button.setTexture(char1Pic1);
-                    char2Button.setTexture(char2Pic1);
-                    char3Button.setTexture(char3Pic1);
-                    char4Button.setTexture(char4Pic2);
+                    char1Button.SetTexture(char1Pic1);
+                    char2Button.SetTexture(char2Pic1);
+                    char3Button.SetTexture(char3Pic1);
+                    char4Button.SetTexture(char4Pic2);
 
-                    char1Button.setCantHover(false);
-                    char2Button.setCantHover(false);
-                    char3Button.setCantHover(false);
-                    char4Button.setCantHover(true);
-                    selectCharButton.setCantHover(false);
+                    char1Button.SetCantHover(false);
+                    char2Button.SetCantHover(false);
+                    char3Button.SetCantHover(false);
+                    char4Button.SetCantHover(true);
+                    selectCharButton.SetCantHover(false);
                     break;
             }
         }
