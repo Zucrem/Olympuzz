@@ -82,7 +82,6 @@ namespace Olympuzz.GameObjects
 
         public static void nextBubble()
         {
-            Debug.WriteLine("dd");
             bubble = bubbleNext;
             bubble.Position = new Vector2(583, 645);
             canRotate = false;

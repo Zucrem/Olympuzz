@@ -58,7 +58,7 @@ namespace Olympuzz.GameScreen
 
         private SoundEffectInstance BubbleSFX_stick, BubbleSFX_dead;
         private SoundEffectInstance Click;
-
+         
         //check if go next page or fade finish
         private bool notPlay = false;
         private bool pauseEvent = false;
@@ -251,25 +251,27 @@ namespace Olympuzz.GameScreen
                     MediaPlayer.Pause();
                 }
 
-                for (int i = 1; i <= 11; i++)
-                {
-                    for (int j = 1; j < ((bubble[i, j] != null && bubble[i, j].isEven) ? 9 : 8); j++)
-                    {
-                        if (bubble[i, j] != null)
-                        {
-                            bubble[i, j].marked = false;
-                        }
-                    }
-                }
+
+
+                //for (int i = 1; i <= 11; i++)
+                //{
+                //    for (int j = 1; j < ((bubble[i, j] != null && bubble[i, j].isEven) ? 9 : 8); j++)
+                //    {
+                //        if (bubble[i, j] != null)
+                //        {
+                //            bubble[i, j].marked = false;
+                //        }
+                //    }
+                //}
 
                 ////Check ball floating alone
-                //for (int i = 1; i <= 11; i++)
+                //for (int i = 11; i >= 1; i--)
                 //{
                 //    for (int j = 1; j < ((bubble[i, j] != null && bubble[i, j].isEven) ? 9 : 8); j++)
                 //    {
                 //        if (bubble[i, j] != null && bubble[i, j].isEven && !bubble[i, j].marked)
                 //        {
-                //            if ((bubble[i - 1, j - 1] == null || bubble[i - 1, j - 1].marked) && (bubble[i - 1, j] == null || bubble[i - 1, j].marked) && (bubble[i, j + 1] == null || bubble[i, j + 1].marked) && (bubble[i, j - 1] == null || bubble[i, j - 1].marked))
+                //            if ((bubble[i - 1, j - 1] == null || bubble[i - 1, j - 1].marked) && (bubble[i - 1, j] == null || bubble[i - 1, j].marked) && (bubble[i, j + 1] == null || bubble[i, j + 1].marked) && (bubble[i, j - 1] == null || bubble[i, j - 1].marked) && (bubble[i + 1, j - 1] == null || bubble[i + 1, j - 1].marked) && (bubble[i + 1, j] == null || bubble[i + 1, j].marked))
                 //            {
                 //                bubble[i, j] = null;
                 //            }
@@ -281,11 +283,10 @@ namespace Olympuzz.GameScreen
                 //            {
                 //                bubble[i, 9] = null;
                 //            }
-
                 //        }
-                //        else 
+                //        else if (bubble[i, j] != null)
                 //        {
-                //            if ((bubble[i - 1, j] == null || bubble[i - 1, j].marked) && (bubble[i - 1, j + 1] == null || bubble[i - 1, j + 1].marked) && (bubble[i, j + 1] == null || bubble[i, j + 1].marked) && (bubble[i, j - 1] == null || bubble[i, j - 1].marked))
+                //            if ((bubble[i - 1, j] == null || bubble[i - 1, j].marked) && (bubble[i - 1, j + 1] == null || bubble[i - 1, j + 1].marked) && (bubble[i, j + 1] == null || bubble[i, j + 1].marked) && (bubble[i, j - 1] == null || bubble[i, j - 1].marked) && (bubble[i + 1, j + 1] == null || bubble[i + 1, j + 1].marked) && (bubble[i + 1, j] == null || bubble[i + 1, j].marked))
                 //            {
                 //                bubble[i, j] = null;
                 //            }
@@ -299,14 +300,13 @@ namespace Olympuzz.GameScreen
                 //            }
                 //        }
 
-                //        if (bubble[i, j] != null)
+                //        if (bubble[i, j] != null && bubble[i, 0] != null && bubble[0, 0] != null)
                 //        {
                 //            bubble[i, j].marked = true;
                 //        }
-
                 //    }
                 //}
-                
+
                 _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                 if (_scrollTime >= tickPerUpdate)
                 {
