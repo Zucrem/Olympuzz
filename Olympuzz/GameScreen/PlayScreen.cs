@@ -299,7 +299,7 @@ namespace Olympuzz.GameScreen
                 //    }
                 //}
                 
-                _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond * 100;
+                _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                 if (_scrollTime >= tickPerUpdate)
                 {
                     // Check game over before scroll
