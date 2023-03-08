@@ -101,9 +101,9 @@ namespace Olympuzz.GameScreen
             exitButton = new Button(exitButtonPic, new Vector2((Singleton.Instance.Dimensions.X / 2) - 50, 540), new Vector2(100, 50));
 
             //create button win or lose screen
-            nextButton = new Button(nextButtonPic, new Vector2((Singleton.Instance.Dimensions.X / 2) - 50, 370), new Vector2(200, 60));//create Button after win
-            restartWLButton = new Button(restartWLPic, new Vector2((Singleton.Instance.Dimensions.X / 2) - 50, 370), new Vector2(200, 60));//create Button after win
-            exitWLButton = new Button(backWLPic, new Vector2((Singleton.Instance.Dimensions.X / 2) - 50, 370), new Vector2(200, 60));//create Button after win
+            nextButton = new Button(nextButtonPic, new Vector2(540, 430), new Vector2(200, 60));//create Button after win
+            restartWLButton = new Button(restartWLPic, new Vector2(540, 510), new Vector2(200, 60));//create Button after win
+            exitWLButton = new Button(backWLPic, new Vector2(540, 591), new Vector2(200, 60));//create Button after win
 
             //setting button
             arrowLeftBGButton = new Button(arrowLeftBGPic, new Vector2(570, 200), new Vector2(40, 40));
@@ -630,8 +630,8 @@ namespace Olympuzz.GameScreen
                         if (Singleton.Instance.levelState == LevelState.POSEIDON || Singleton.Instance.levelState == LevelState.HADES)
                         {
                             nextButton.Draw(spriteBatch);
-                            restartWLButton.SetPosition(new Vector2(540, 430));
-                            exitWLButton.SetPosition(new Vector2(540, 510));
+                            restartWLButton.SetPosition(new Vector2(540, 510));
+                            exitWLButton.SetPosition(new Vector2(540, 591));
                         }
                     }
                     if (gameWin || gameOver)

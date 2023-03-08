@@ -22,7 +22,7 @@ namespace Olympuzz.GameScreen
             boardBGPic = content.Load<Texture2D>("Stag_1/board");
 
             //bg music
-            endlessTheme = content.Load<Song>("Sounds/PoseidonTheme");
+            endlessTheme = content.Load<Song>("Sounds/EndlessTheme");
             MediaPlayer.Play(endlessTheme);
         }
         public override void UnloadContent()
