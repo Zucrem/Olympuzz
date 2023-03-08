@@ -19,12 +19,12 @@ namespace Olympuzz.GameScreen
         private Color _Color = new Color(250, 250, 250, 0);
 
         //all picture
-        private Texture2D backgroundPic, blackScreenPic, settingScreenPic, StageBGPic, CharBGPic , howToPlayBGPic;//background
+        private Texture2D backgroundPic, blackScreenPic, settingScreenPic, StageBGPic, CharBGPic , howToPlayBG1Pic, howToPlayBG2Pic;//background
         private Texture2D logoPic, startPic, settingPic, exitPic;//mainmenu pic
         private Texture2D arrowLeftBGPic, arrowRightBGPic, arrowLeftSFXPic, arrowRightSFXPic, backSettingPic, selectStagePic;//setting pic
         private Texture2D stage1Pic1, stage2Pic1, stage3Pic1, stageEndlessPic1, stage1Pic2, stage2Pic2, stage3Pic2, stageEndlessPic2, howToPlayPic, backSelectLevelPic;//select level pic
         private Texture2D char1Pic1, char1Pic2, char2Pic1, char3Pic1, char4Pic1, char2Pic2, char3Pic2, char4Pic2, selectCharPic, backSelectCharPic, arrowLeftCharPic, arrowRightCharPic;//select character pic
-        private Texture2D backHowToPlayPic;
+        private Texture2D arrowLeftHowToPlayPic, arrowRightHowToPlayPic, backHowToPlayPic;//how to play pic
         private Texture2D confirmQuitPopUpPic, yesConfirmQuitPic1, noConfirmQuitPic1, yesConfirmQuitPic2, noConfirmQuitPic2;//exit confirmed pic
 
         //all button
@@ -32,7 +32,7 @@ namespace Olympuzz.GameScreen
         private Button arrowLeftBGButton, arrowRightBGButton, arrowLeftSFXButton, arrowRightSFXButton, backSettingButton;//setting button
         private Button stage1Button, stage2Button, stage3Button, stageEndlessButton, howToPlayButton, backSelectLevelButton, selectStageButton;//select level button
         private Button char1Button, char2Button, char3Button, char4Button, selectCharButton, backSelectCharButton, arrowLeftCharButton, arrowRightCharButton;//select charactor button
-        private Button backHowToPlayButton;
+        private Button arrowLeftHowToPlayButton, arrowRightHowToPlayButton, backHowToPlayButton;
         private Button yesButton, noButton;//exit confirmed pic
 
         //private SpriteFont Alagan
@@ -53,6 +53,8 @@ namespace Olympuzz.GameScreen
 
         //check if press arrow at selectCharScreen
         private int charSlide = 1;
+        //check if press arrow at howtoplay screen
+        private int howToPlaySlide = 1;
 
         //timer and alpha for fade out screen
         private float _timer = 0.0f;
@@ -79,26 +81,28 @@ namespace Olympuzz.GameScreen
             backSettingButton = new Button(backSettingPic, new Vector2(980, 570), new Vector2(150, 60));
 
             //select level button
-            stage1Button = new Button(stage1Pic1, new Vector2(38, 58), new Vector2(130, 235));
-            stage2Button = new Button(stage2Pic1, new Vector2(182, 58), new Vector2(130, 235));
-            stage3Button = new Button(stage3Pic1, new Vector2(332, 58), new Vector2(130, 235));
-            stageEndlessButton = new Button(stageEndlessPic1, new Vector2(483, 58), new Vector2(130, 235));
-            backSelectLevelButton = new Button(backSelectLevelPic, new Vector2(30, 25), new Vector2(46, 12));
-            howToPlayButton = new Button(howToPlayPic, new Vector2(215, 610), new Vector2(300, 70));
-            selectStageButton = new Button(selectStagePic, new Vector2(525, 615), new Vector2(85, 18));
+            stage1Button = new Button(stage1Pic1, new Vector2(146, 189), new Vector2(220, 342));
+            stage2Button = new Button(stage2Pic1, new Vector2(401, 189), new Vector2(220, 342));
+            stage3Button = new Button(stage3Pic1, new Vector2(656, 189), new Vector2(220, 342));
+            stageEndlessButton = new Button(stageEndlessPic1, new Vector2(911, 189), new Vector2(220, 342));
+            backSelectLevelButton = new Button(backSelectLevelPic, new Vector2(30, 40), new Vector2(100, 35));
+            howToPlayButton = new Button(howToPlayPic, new Vector2(100, 610), new Vector2(200, 70));
+            selectStageButton = new Button(selectStagePic, new Vector2(960, 610), new Vector2(130, 50));
 
             //select charactor button
-            char1Button = new Button(char1Pic1, new Vector2(215, 200), new Vector2(275, 350));
-            char2Button = new Button(char2Pic1, new Vector2(502, 200), new Vector2(275, 350));
-            char3Button = new Button(char3Pic1, new Vector2(790, 200), new Vector2(275, 350));
-            char4Button = new Button(char4Pic1, new Vector2(790, 200), new Vector2(275, 350));
-            arrowLeftCharButton = new Button(arrowLeftCharPic, new Vector2(121, 337), new Vector2(75, 75));
-            arrowRightCharButton = new Button(arrowRightCharPic, new Vector2(1092, 337), new Vector2(75, 75));
-            backSelectCharButton = new Button(backSelectCharPic, new Vector2(215, 610), new Vector2(300, 70));
-            selectCharButton = new Button(selectCharPic, new Vector2(765, 610), new Vector2(300, 70));
+            char1Button = new Button(char1Pic1, new Vector2(215, 165), new Vector2(248, 342));
+            char2Button = new Button(char2Pic1, new Vector2(502, 165), new Vector2(248, 342));
+            char3Button = new Button(char3Pic1, new Vector2(790, 165), new Vector2(248, 342));
+            char4Button = new Button(char4Pic1, new Vector2(790, 165), new Vector2(248, 342));
+            arrowLeftCharButton = new Button(arrowLeftCharPic, new Vector2(68, 302), new Vector2(64, 90));
+            arrowRightCharButton = new Button(arrowRightCharPic, new Vector2(1174, 302), new Vector2(64, 90));
+            backSelectCharButton = new Button(backSelectCharPic, new Vector2(26, 506), new Vector2(174, 72));
+            selectCharButton = new Button(selectCharPic, new Vector2(1086, 506), new Vector2(174, 72));
 
             //howtoplay button
-            backHowToPlayButton = new Button(backHowToPlayPic, new Vector2(490, 610), new Vector2(300, 70));
+            arrowLeftHowToPlayButton = new Button(arrowLeftHowToPlayPic, new Vector2(68, 302), new Vector2(64, 90));
+            arrowRightHowToPlayButton = new Button(arrowRightHowToPlayPic, new Vector2(1174, 302), new Vector2(64, 90));
+            backHowToPlayButton = new Button(backHowToPlayPic, new Vector2(490, 630), new Vector2(300, 70));
 
             //confirm Exit button
             yesButton = new Button(yesConfirmQuitPic1, new Vector2(495, 390), new Vector2(120, 60));
@@ -142,23 +146,26 @@ namespace Olympuzz.GameScreen
             selectStagePic = content.Load<Texture2D>("SelectStage/SelectThatStage");
 
             //select charactor pic
-            CharBGPic = content.Load<Texture2D>("blackScreen");
-            char1Pic1 = content.Load<Texture2D>("PlayScreen/Earth");
-            char2Pic1 = content.Load<Texture2D>("PlayScreen/Wind");
-            char3Pic1 = content.Load<Texture2D>("PlayScreen/Water");
-            char4Pic1 = content.Load<Texture2D>("PlayScreen/Earth");
-            char1Pic2 = content.Load<Texture2D>("PlayScreen/Thunder");
-            char2Pic2 = content.Load<Texture2D>("PlayScreen/Thunder");
-            char3Pic2 = content.Load<Texture2D>("PlayScreen/Thunder");
-            char4Pic2 = content.Load<Texture2D>("PlayScreen/Thunder");
-            arrowLeftCharPic = content.Load<Texture2D>("PlayScreen/Water");
-            arrowRightCharPic = content.Load<Texture2D>("PlayScreen/Water");
-            backSelectCharPic = content.Load<Texture2D>("PlayScreen/Fire");
-            selectCharPic = content.Load<Texture2D>("PlayScreen/Wind");
+            CharBGPic = content.Load<Texture2D>("SelectChar/SelectGodBG");
+            char1Pic1 = content.Load<Texture2D>("SelectChar/AthenaPickPic");
+            char2Pic1 = content.Load<Texture2D>("SelectChar/HermesPickPic");
+            char3Pic1 = content.Load<Texture2D>("SelectChar/DionysusPickPic");
+            char4Pic1 = content.Load<Texture2D>("SelectChar/HephaestusPickPic");
+            char1Pic2 = content.Load<Texture2D>("SelectChar/AthenaPic");
+            char2Pic2 = content.Load<Texture2D>("SelectChar/HermesPic");
+            char3Pic2 = content.Load<Texture2D>("SelectChar/DionysusPic");
+            char4Pic2 = content.Load<Texture2D>("SelectChar/HephaestusPic");
+            arrowLeftCharPic = content.Load<Texture2D>("SelectChar/ArrowLeft");
+            arrowRightCharPic = content.Load<Texture2D>("SelectChar/ArrowRight");
+            backSelectCharPic = content.Load<Texture2D>("SelectChar/BackButton");
+            selectCharPic = content.Load<Texture2D>("SelectChar/SelectButton");
 
             //howtoplay pic
-            howToPlayBGPic = content.Load<Texture2D>("blackScreen");
-            backHowToPlayPic = content.Load<Texture2D>("PlayScreen/Wind");
+            howToPlayBG1Pic = content.Load<Texture2D>("HowToPlayScreen/HowToPlayBG");
+            howToPlayBG2Pic = content.Load<Texture2D>("blackScreen");
+            arrowLeftHowToPlayPic = content.Load<Texture2D>("HowToPlayScreen/ArrowLeft");
+            arrowRightHowToPlayPic = content.Load<Texture2D>("HowToPlayScreen/ArrowRight");
+            backHowToPlayPic = content.Load<Texture2D>("HowToPlayScreen/ContinueButton");
 
             //confirmQuit pic
             confirmQuitPopUpPic = content.Load<Texture2D>("ConfirmExit/ConfirmQuitPopUp");
@@ -291,17 +298,11 @@ namespace Olympuzz.GameScreen
                 //click arrow
                 if (arrowRightCharButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                 {
-                    char1Button.SetPosition(new Vector2(0, 0));
-                    char2Button.SetPosition(new Vector2(215, 200));
-                    char3Button.SetPosition(new Vector2(502, 200));
                     charSlide = 2;
                     Singleton.Instance.charState = CharState.NULL;
                 }
                 if (arrowLeftCharButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                 {
-                    char1Button.SetPosition(new Vector2(215, 200));
-                    char2Button.SetPosition(new Vector2(502, 200));
-                    char3Button.SetPosition(new Vector2(790, 200));
                     charSlide = 1;
                     Singleton.Instance.charState = CharState.NULL;
                 }
@@ -309,6 +310,7 @@ namespace Olympuzz.GameScreen
                 //click back
                 if (backSelectCharButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                 {
+                    charSlide = 1;
                     selectCharScreen = false;
                     selectStageScreen = true;
                     Singleton.Instance.levelState = LevelState.NULL;
@@ -327,6 +329,15 @@ namespace Olympuzz.GameScreen
             }
             if (howToPlayScreen)
             {
+                //click arrow to change how to play
+                if (arrowRightHowToPlayButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                {
+                    howToPlaySlide = 2;
+                }
+                if (arrowLeftHowToPlayButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                {
+                    howToPlaySlide = 1;
+                }
                 //click continue
                 if (backHowToPlayButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                 {
@@ -512,31 +523,47 @@ namespace Olympuzz.GameScreen
             if (selectCharScreen)
             {
                 spriteBatch.Draw(CharBGPic, Vector2.Zero, Color.White);
-                fontSize = bigfonts.MeasureString("Select Your Character");
-                spriteBatch.DrawString(bigfonts, "Select Your Character", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 93), Color.Yellow);
-                if (charSlide == 1)
+
+                //draw if slide 1 or 2
+                switch (charSlide)
                 {
-                    char1Button.Draw(spriteBatch);
-                    char2Button.Draw(spriteBatch);
-                    char3Button.Draw(spriteBatch);
-                    arrowRightCharButton.Draw(spriteBatch);
-                }
-                if(charSlide == 2)
-                {
-                    char2Button.Draw(spriteBatch);
-                    char3Button.Draw(spriteBatch);
-                    char4Button.Draw(spriteBatch);
-                    arrowLeftCharButton.Draw(spriteBatch);
+                    case 1:
+                        char1Button.SetPosition(new Vector2(215, 165));
+                        char2Button.SetPosition(new Vector2(502, 165));
+                        char3Button.SetPosition(new Vector2(790, 165));
+                        char1Button.Draw(spriteBatch);
+                        char2Button.Draw(spriteBatch);
+                        char3Button.Draw(spriteBatch);
+                        arrowRightCharButton.Draw(spriteBatch);
+                        break;
+                    case 2:
+                        char1Button.SetPosition(new Vector2(0, 0));
+                        char2Button.SetPosition(new Vector2(215, 165));
+                        char3Button.SetPosition(new Vector2(502, 165));
+                        arrowLeftCharButton.Draw(spriteBatch);
+                        char2Button.Draw(spriteBatch);
+                        char3Button.Draw(spriteBatch);
+                        char4Button.Draw(spriteBatch);
+                        break;
                 }
                 selectCharButton.Draw(spriteBatch);
                 backSelectCharButton.Draw(spriteBatch);
             }
             if (howToPlayScreen)
             {
-                spriteBatch.Draw(howToPlayBGPic, Vector2.Zero, new Color(255, 255, 255, 210));
-                fontSize = bigfonts.MeasureString("How to play");
-                spriteBatch.DrawString(bigfonts, "How to play", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 93), Color.Yellow);
+                switch (howToPlaySlide)
+                {
+                    case 1:
+                        spriteBatch.Draw(howToPlayBG1Pic, Vector2.Zero, new Color(255, 255, 255, 210));
+                        arrowRightHowToPlayButton.Draw(spriteBatch);
+                        break;
+                    case 2:
+                        spriteBatch.Draw(howToPlayBG2Pic, Vector2.Zero, new Color(255, 255, 255, 210));
+                        arrowLeftHowToPlayButton.Draw(spriteBatch);
+                        break;
+                }
                 backHowToPlayButton.Draw(spriteBatch);
+
             }
             // Draw UI when is NOT MainMenu
             else
