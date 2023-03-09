@@ -137,9 +137,9 @@ namespace Olympuzz.GameObjects
         }
 
         //for set Texture that change picture after click
-        public void SetTexture(Texture2D texture)
+        public void SetTexture(Texture2D htexture)
         {
-            this.texture = texture;
+            this.texture = htexture;
         }
 
         //set button cant hover no more

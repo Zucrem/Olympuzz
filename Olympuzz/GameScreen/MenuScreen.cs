@@ -42,14 +42,18 @@ namespace Olympuzz.GameScreen
         //bg and sfx sound
         private Song MainmenuTheme;
 
-        //check if go next page or fade finish
+        //check if go next screen or fade finish
         private bool fadeFinish = false;
-        private bool mainScreen = true;
-        private bool showSettingScreen = false;
-        private bool selectStageScreen = false;
-        private bool selectCharScreen = false;
-        private bool howToPlayScreen = false;
-        private bool confirmQuit = false;
+        private StateScreen screen = StateScreen.MAINSCREEN;
+        private enum StateScreen
+        {
+            MAINSCREEN,
+            SETTINGSCREEN,
+            QUITSCREEN,
+            HOWTOPLAYSCREEN,
+            SELECTSTAGESCREEN,
+            SELECTCHARSCREEN
+        }
 
         //check if press arrow at selectCharScreen
         private int charSlide = 1;
@@ -202,154 +206,140 @@ namespace Olympuzz.GameScreen
 
             Singleton.Instance.MousePrevious = Singleton.Instance.MouseCurrent;
             Singleton.Instance.MouseCurrent = Mouse.GetState();
-            if (mainScreen)
+            switch (screen)
             {
-                // Click start game
-                if (startButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    mainScreen = false;
-                    if (Singleton.Instance.firsttime)
+                case StateScreen.MAINSCREEN:
+                    // Click start game
+                    if (startButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                     {
-                        howToPlayScreen = true;
-                        Singleton.Instance.firsttime = false;
+                        if (Singleton.Instance.firsttime)
+                        {
+                            screen = StateScreen.HOWTOPLAYSCREEN;
+                            Singleton.Instance.firsttime = false;
+                        }
+                        else
+                        {
+                            screen = StateScreen.SELECTSTAGESCREEN;
+                        }
                     }
-                    else
+                    // Click setting
+                    if (settingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                     {
-                        selectStageScreen = true;
+                        screen = StateScreen.SETTINGSCREEN;
                     }
-                }
-                // Click setting
-                if (settingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    showSettingScreen = true;
-                    mainScreen = false;
-                }
-                // Click Exit
-                if (exitButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    confirmQuit = true;
-                    mainScreen = false;
-                }
-            }
-            if (selectStageScreen)
-            {
-                //select stage1
-                if (stage1Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    Singleton.Instance.levelState = LevelState.POSEIDON;
-                }
-                //select stage2
-                if (stage2Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    Singleton.Instance.levelState = LevelState.HADES;
-                }
-                //select stage3
-                if (stage3Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    Singleton.Instance.levelState = LevelState.ZEUS;
-                }
-                //select endless
-                /*if (stageEndlessButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    Singleton.Instance.levelState = LevelState.ENDLESS;
-                }*/
-                //back
-                if (backSelectLevelButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    selectStageScreen = false;
-                    mainScreen = true;
-                    Singleton.Instance.levelState = LevelState.NULL;
-                }
-                //selectStage
-                if (selectStageButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    if (Singleton.Instance.levelState != LevelState.NULL)
+                    // Click Exit
+                    if (exitButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                     {
-                        selectStageScreen = false;
-                        selectCharScreen = true;
+                        screen = StateScreen.QUITSCREEN;
                     }
-                }
-                //how to play
-                if (howToPlayButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    selectStageScreen = false;
-                    howToPlayScreen = true;
-                }
-            }
-            if (selectCharScreen)
-            {
-                //select that char
-                if (char1Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    Singleton.Instance.charState = CharState.ATHENA;
-                }
-                if (char2Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    Singleton.Instance.charState = CharState.HERMES;
-                }
-                if (char3Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    Singleton.Instance.charState = CharState.DIONYSUS;
-                }
-                if (char4Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    Singleton.Instance.charState = CharState.HEPHAESTUS;
-                }
-                //click arrow
-                if (arrowRightCharButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    charSlide = 2;
-                    Singleton.Instance.charState = CharState.NULL;
-                }
-                if (arrowLeftCharButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    charSlide = 1;
-                    Singleton.Instance.charState = CharState.NULL;
-                }
+                    break;
+                case StateScreen.SELECTSTAGESCREEN:
+                    //select stage1
+                    if (stage1Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        Singleton.Instance.levelState = LevelState.POSEIDON;
+                    }
+                    //select stage2
+                    if (stage2Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        Singleton.Instance.levelState = LevelState.HADES;
+                    }
+                    //select stage3
+                    if (stage3Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        Singleton.Instance.levelState = LevelState.ZEUS;
+                    }
+                    //select endless
+                    /*if (stageEndlessButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        Singleton.Instance.levelState = LevelState.ENDLESS;
+                    }*/
+                    //back
+                    if (backSelectLevelButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        screen = StateScreen.MAINSCREEN;
+                        Singleton.Instance.levelState = LevelState.NULL;
+                    }
+                    //selectStage
+                    if (selectStageButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        if (Singleton.Instance.levelState != LevelState.NULL)
+                        {
+                            screen = StateScreen.SELECTCHARSCREEN;
+                        }
+                    }
+                    //how to play
+                    if (howToPlayButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        screen = StateScreen.HOWTOPLAYSCREEN;
+                    }
+                    break;
+                case StateScreen.SELECTCHARSCREEN:
+                    //select that char
+                    if (char1Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        Singleton.Instance.charState = CharState.ATHENA;
+                    }
+                    if (char2Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        Singleton.Instance.charState = CharState.HERMES;
+                    }
+                    if (char3Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        Singleton.Instance.charState = CharState.DIONYSUS;
+                    }
+                    if (char4Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        Singleton.Instance.charState = CharState.HEPHAESTUS;
+                    }
+                    //click arrow
+                    if (arrowRightCharButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        Singleton.Instance.charState = CharState.NULL;
+                        charSlide = 2;
+                    }
+                    if (arrowLeftCharButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        Singleton.Instance.charState = CharState.NULL;
+                        charSlide = 1;
+                    }
 
-                //click back
-                if (backSelectCharButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    charSlide = 1;
-                    selectCharScreen = false;
-                    selectStageScreen = true;
-                    Singleton.Instance.levelState = LevelState.NULL;
-                    Singleton.Instance.charState = CharState.NULL;
-                }
-
-                //click play
-                if (selectCharButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    if ((Singleton.Instance.levelState != LevelState.NULL) && (Singleton.Instance.charState != CharState.NULL))
+                    //click back
+                    if (backSelectCharButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                     {
-                        selectCharScreen = false;
-                        ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
+                        Singleton.Instance.levelState = LevelState.NULL;
+                        Singleton.Instance.charState = CharState.NULL;
+                        charSlide = 1;
+                        screen = StateScreen.SELECTSTAGESCREEN;
                     }
-                }
-            }
-            if (howToPlayScreen)
-            {
-                //click arrow to change how to play
-                if (arrowRightHowToPlayButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    howToPlaySlide = 2;
-                }
-                if (arrowLeftHowToPlayButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    howToPlaySlide = 1;
-                }
-                //click continue
-                if (backHowToPlayButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                {
-                    howToPlayScreen = false;
-                    selectStageScreen = true;
-                    Singleton.Instance.levelState = LevelState.NULL;
-                }
-            }
-            else
-            {
-                if (showSettingScreen)
-                {
+
+                    //click play
+                    if (selectCharButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        if ((Singleton.Instance.levelState != LevelState.NULL) && (Singleton.Instance.charState != CharState.NULL))
+                        {
+                            ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
+                        }
+                    }
+                    break;
+                case StateScreen.HOWTOPLAYSCREEN:
+                    //click arrow to change how to play
+                    if (arrowRightHowToPlayButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        howToPlaySlide = 2;
+                    }
+                    if (arrowLeftHowToPlayButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        howToPlaySlide = 1;
+                    }
+                    //click continue
+                    if (backHowToPlayButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    {
+                        Singleton.Instance.levelState = LevelState.NULL;
+                        screen = StateScreen.SELECTSTAGESCREEN;
+                    }
+                    break;
+                case StateScreen.SETTINGSCREEN:
                     // Click Arrow BGM button
                     switch (Singleton.Instance.bgmState)
                     {
@@ -422,22 +412,19 @@ namespace Olympuzz.GameScreen
                     // Click back
                     if (backSettingButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                     {
-                        mainScreen = true;
-                        showSettingScreen = false;
+                        screen = StateScreen.MAINSCREEN;
                     }
-                }
-                if (confirmQuit)
-                {
+                    break;
+                case StateScreen.QUITSCREEN:
                     if (noButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                     {
-                        mainScreen = true;
-                        confirmQuit = false;
+                        screen = StateScreen.MAINSCREEN;
                     }
                     else if (yesButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                     {
                         Singleton.Instance.cmdExit = true;
                     }
-                }
+                    break;
             }
 
             // fade out
@@ -489,88 +476,76 @@ namespace Olympuzz.GameScreen
                     break;
             }
             //update
-            setStageButtonStatus();
-            setCharButtonStatus();
+            SetStageButtonStatus();
+            SetCharButtonStatus();
 
             base.Update(gameTime);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            //draw bg
-            if (mainScreen)
+            //draw in each screen
+            switch (screen)
             {
-                spriteBatch.Draw(backgroundPic, Vector2.Zero, Color.White);
-            }
-            //Draw UI in Main Menu
-            if (mainScreen)
-            {
-                spriteBatch.Draw(logoPic, new Vector2(865, 130), new Color(255, 255, 255, 255));
-                startButton.Draw(spriteBatch);
-                settingButton.Draw(spriteBatch);
-                exitButton.Draw(spriteBatch);
-            }
-            if (selectStageScreen)
-            {
-                spriteBatch.Draw(StageBGPic, Vector2.Zero, Color.White);
-                stage1Button.Draw(spriteBatch);
-                stage2Button.Draw(spriteBatch);
-                stage3Button.Draw(spriteBatch);
-                stageEndlessButton.Draw(spriteBatch);
-                howToPlayButton.Draw(spriteBatch); 
-                selectStageButton.Draw(spriteBatch);
-                backSelectLevelButton.Draw(spriteBatch);
-            }
-            if (selectCharScreen)
-            {
-                spriteBatch.Draw(CharBGPic, Vector2.Zero, Color.White);
+                case StateScreen.MAINSCREEN:
+                    spriteBatch.Draw(backgroundPic, Vector2.Zero, Color.White);//bg
+                    spriteBatch.Draw(logoPic, new Vector2(865, 130), new Color(255, 255, 255, 255));
+                    startButton.Draw(spriteBatch);
+                    settingButton.Draw(spriteBatch);
+                    exitButton.Draw(spriteBatch);
+                    break;
+                case StateScreen.SELECTSTAGESCREEN:
+                    spriteBatch.Draw(StageBGPic, Vector2.Zero, Color.White);//bg
+                    stage1Button.Draw(spriteBatch);
+                    stage2Button.Draw(spriteBatch);
+                    stage3Button.Draw(spriteBatch);
+                    stageEndlessButton.Draw(spriteBatch);
+                    howToPlayButton.Draw(spriteBatch);
+                    selectStageButton.Draw(spriteBatch);
+                    backSelectLevelButton.Draw(spriteBatch);
+                    break;
+                case StateScreen.HOWTOPLAYSCREEN:
+                    switch (howToPlaySlide)
+                    {
+                        case 1:
+                            spriteBatch.Draw(howToPlayBG1Pic, Vector2.Zero, new Color(255, 255, 255, 210));
+                            arrowRightHowToPlayButton.Draw(spriteBatch);
+                            break;
+                        case 2:
+                            spriteBatch.Draw(howToPlayBG2Pic, Vector2.Zero, new Color(255, 255, 255, 210));
+                            arrowLeftHowToPlayButton.Draw(spriteBatch);
+                            break;
+                    }
+                    backHowToPlayButton.Draw(spriteBatch);
+                    break;
+                case StateScreen.SELECTCHARSCREEN:
+                    spriteBatch.Draw(CharBGPic, Vector2.Zero, Color.White);//bg
 
-                //draw if slide 1 or 2
-                switch (charSlide)
-                {
-                    case 1:
-                        char1Button.SetPosition(new Vector2(215, 165));
-                        char2Button.SetPosition(new Vector2(502, 165));
-                        char3Button.SetPosition(new Vector2(790, 165));
-                        char1Button.Draw(spriteBatch);
-                        char2Button.Draw(spriteBatch);
-                        char3Button.Draw(spriteBatch);
-                        arrowRightCharButton.Draw(spriteBatch);
-                        break;
-                    case 2:
-                        char1Button.SetPosition(new Vector2(0, 0));
-                        char2Button.SetPosition(new Vector2(215, 165));
-                        char3Button.SetPosition(new Vector2(502, 165));
-                        arrowLeftCharButton.Draw(spriteBatch);
-                        char2Button.Draw(spriteBatch);
-                        char3Button.Draw(spriteBatch);
-                        char4Button.Draw(spriteBatch);
-                        break;
-                }
-                selectCharButton.Draw(spriteBatch);
-                backSelectCharButton.Draw(spriteBatch);
-            }
-            if (howToPlayScreen)
-            {
-                switch (howToPlaySlide)
-                {
-                    case 1:
-                        spriteBatch.Draw(howToPlayBG1Pic, Vector2.Zero, new Color(255, 255, 255, 210));
-                        arrowRightHowToPlayButton.Draw(spriteBatch);
-                        break;
-                    case 2:
-                        spriteBatch.Draw(howToPlayBG2Pic, Vector2.Zero, new Color(255, 255, 255, 210));
-                        arrowLeftHowToPlayButton.Draw(spriteBatch);
-                        break;
-                }
-                backHowToPlayButton.Draw(spriteBatch);
-
-            }
-            // Draw UI when is NOT MainMenu
-            else
-            {
-                // Draw Option Screen
-                if (showSettingScreen)
-                {
+                    //draw if slide 1 or 2
+                    switch (charSlide)
+                    {
+                        case 1:
+                            char1Button.SetPosition(new Vector2(215, 165));
+                            char2Button.SetPosition(new Vector2(502, 165));
+                            char3Button.SetPosition(new Vector2(790, 165));
+                            char1Button.Draw(spriteBatch);
+                            char2Button.Draw(spriteBatch);
+                            char3Button.Draw(spriteBatch);
+                            arrowRightCharButton.Draw(spriteBatch);
+                            break;
+                        case 2:
+                            char1Button.SetPosition(new Vector2(0, 0));
+                            char2Button.SetPosition(new Vector2(215, 165));
+                            char3Button.SetPosition(new Vector2(502, 165));
+                            arrowLeftCharButton.Draw(spriteBatch);
+                            char2Button.Draw(spriteBatch);
+                            char3Button.Draw(spriteBatch);
+                            char4Button.Draw(spriteBatch);
+                            break;
+                    }
+                    selectCharButton.Draw(spriteBatch);
+                    backSelectCharButton.Draw(spriteBatch);
+                    break;
+                case StateScreen.SETTINGSCREEN:
                     spriteBatch.Draw(settingScreenPic, Vector2.Zero, Color.White);
                     backSettingButton.Draw(spriteBatch);
                     spriteBatch.DrawString(bigfonts, "Setting", new Vector2(550, 165), Color.Gray);
@@ -613,9 +588,8 @@ namespace Olympuzz.GameScreen
                             spriteBatch.DrawString(mediumfonts, "FULL", new Vector2(580, 445), Color.Gray);
                             break;
                     }
-                }
-                else if (confirmQuit)
-                {
+                    break;
+                case StateScreen.QUITSCREEN:
                     spriteBatch.Draw(blackScreenPic, Vector2.Zero, new Color(255, 255, 255, 210));
                     spriteBatch.Draw(confirmQuitPopUpPic, new Vector2((Singleton.Instance.Dimensions.X - confirmQuitPopUpPic.Width) / 2, (Singleton.Instance.Dimensions.Y - confirmQuitPopUpPic.Height) / 2), new Color(255, 255, 255, 255));
                     fontSize = mediumfonts.MeasureString("Are you sure");
@@ -625,7 +599,7 @@ namespace Olympuzz.GameScreen
 
                     noButton.Draw(spriteBatch, noConfirmQuitPic2);
                     yesButton.Draw(spriteBatch, yesConfirmQuitPic2);
-                }
+                    break;
             }
 
             // Draw fade out
@@ -634,7 +608,7 @@ namespace Olympuzz.GameScreen
                 spriteBatch.Draw(blackScreenPic, Vector2.Zero, _Color);
             }
         }
-        public void setStageButtonStatus()
+        public void SetStageButtonStatus()
         {
             switch (Singleton.Instance.levelState)
             {
@@ -700,7 +674,7 @@ namespace Olympuzz.GameScreen
                     break;
             }
         }
-        public void setCharButtonStatus()
+        public void SetCharButtonStatus()
         {
             switch (Singleton.Instance.charState)
             {
