@@ -12,8 +12,6 @@ namespace Olympuzz
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Button b;
-        private Shooter shooter;
 
         //private Song BGM;
         //private SpriteFont Arial;

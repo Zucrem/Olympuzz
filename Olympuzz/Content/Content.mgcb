@@ -697,7 +697,7 @@
 /processorParam:Quality=Best
 /build:Sounds/PoseidonTheme.mp3
 
-#begin Stag_1/board.jpg
+#begin Stage1/Board1.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -707,9 +707,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Stag_1/board.jpg
+/build:Stage1/Board1.jpg
 
-#begin Stag_1/pause but.png
+#begin Stage1/Pause1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -719,9 +719,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Stag_1/pause but.png
+/build:Stage1/Pause1.png
 
-#begin Stag_1/Poseidon Stage.png
+#begin Stage1/PoseidonStage.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -731,15 +731,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Stag_1/Poseidon Stage.png
+/build:Stage1/PoseidonStage.png
 
-#begin Stag_1/PoseidonTheme.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:Stag_1/PoseidonTheme.mp3
-
-#begin Stag_1/score.jpg
+#begin Stage2/Board2.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -749,7 +743,31 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Stag_1/score.jpg
+/build:Stage2/Board2.jpg
+
+#begin Stage2/HadesStage.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Stage2/HadesStage.png
+
+#begin Stage2/Pause2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Stage2/Pause2.png
 
 #begin WinLoseScreen/DefeatSign.png
 /importer:TextureImporter

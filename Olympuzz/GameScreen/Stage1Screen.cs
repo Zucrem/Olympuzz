@@ -13,17 +13,25 @@ namespace Olympuzz.GameScreen
     {
         //song and sfx
         protected Song poseidonTheme;
+        public override void Initial()
+        {
+            base.Initial();
+        }
         public override void LoadContent()
         {
             base.LoadContent();
 
             //stage map
-            stageBGPic = content.Load<Texture2D>("Stag_1/Poseidon Stage");
-            boardBGPic = content.Load<Texture2D>("Stag_1/board");
+            stageBGPic = content.Load<Texture2D>("Stage1/PoseidonStage");
+            boardBGPic = content.Load<Texture2D>("Stage1/Board1");
+            //all button on playscreen
+            pauseButtonPic = content.Load<Texture2D>("Stage1/Pause1");
 
             //bg music
             poseidonTheme = content.Load<Song>("Sounds/PoseidonTheme");
             MediaPlayer.Play(poseidonTheme);
+
+            Initial();
         }
         public override void UnloadContent()
         {

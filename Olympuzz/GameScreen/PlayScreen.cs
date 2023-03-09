@@ -72,7 +72,7 @@ namespace Olympuzz.GameScreen
         protected float masterBGM = Singleton.Instance.bgMusicVolume;
         protected float masterSFX = Singleton.Instance.soundMasterVolume;
 
-        public void Initial()
+        public virtual void Initial()
         {
             color = new Color(255, 255, 255, alpha);
             for (int i = 0; i < 5; i++) // if end in 13 line i < 5 || if end in 12 line i < 4
@@ -155,9 +155,6 @@ namespace Olympuzz.GameScreen
             bubleAllTexture[4] = content.Load<Texture2D>("PlayScreen/Wind");
             
             baseTexture = content.Load<Texture2D>("PlayScreen/base");
-           
-            //all button on playscreen
-            pauseButtonPic = content.Load<Texture2D>("Stag_1/pause but");
 
             //pause screen
             pausePopUpPic = content.Load<Texture2D>("Pause/pausePopUpBG");
@@ -546,8 +543,8 @@ namespace Olympuzz.GameScreen
                 }
             }
 
-            shooter.Draw(spriteBatch);
             pauseButton.Draw(spriteBatch);
+            shooter.Draw(spriteBatch);
 
             /*spriteBatch.DrawString(Arcanista, "Score : " + Singleton.Instance.Score, new Vector2(1060, 260), color);
             spriteBatch.DrawString(Arcanista, "Time : " + Timer.ToString("F"), new Vector2(20, 260), color);
