@@ -54,8 +54,8 @@ namespace Olympuzz
         public enum CharState
         {
             NULL,
-            ATHENA,
             HERMES,
+            ATHENA,
             DIONYSUS,
             HEPHAESTUS
         }
