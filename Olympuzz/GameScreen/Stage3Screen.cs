@@ -29,7 +29,7 @@ namespace Olympuzz.GameScreen
             pauseButtonPic = content.Load<Texture2D>("Stage1/Pause1");
 
             //bg music
-            zeusTheme = content.Load<Song>("Sounds/PoseidonTheme");
+            zeusTheme = content.Load<Song>("Sounds/ZeusTheme");
             MediaPlayer.Play(zeusTheme);
 
             Initial();
