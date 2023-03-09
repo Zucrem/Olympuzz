@@ -61,7 +61,7 @@ namespace Olympuzz.GameScreen
 
         //check if go next page or fade finish
         protected bool notPlay = false;
-        protected bool isEven = true;
+        protected bool isEven = false;
         protected bool fadeFinish = false;
 
         protected bool confirmExit = false;
@@ -245,7 +245,7 @@ namespace Olympuzz.GameScreen
                     MediaPlayer.Pause();
                 }
 
-                _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond * 100;
+                _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                 if (_scrollTime >= tickPerUpdate)
                 {
                     // Check game over before scroll
