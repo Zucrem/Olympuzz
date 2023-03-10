@@ -17,7 +17,7 @@ namespace Olympuzz.GameObjects
     {
         private Random random = new Random();//ใช้สุ่มสีลูกบอล
         private static Texture2D[] bubbleTexture;//รูปลูกบอลทั้งหมด
-        private static Bubble bubble, bubbleNext;//ลูกบอลบนหน้าไม้
+        public static Bubble bubble, bubbleNext;//ลูกบอลบนหน้าไม้
         public static bool canRotate = false;
         private float angle;
         private Texture2D _base;
@@ -34,6 +34,11 @@ namespace Olympuzz.GameObjects
             startGenBubble();
         }
         
+        public Bubble GetBubble()
+        {
+            return bubble;
+        }
+
         public override void Update(GameTime gameTime, Bubble[,] bubbles)
         {
             Singleton.Instance.MousePrevious = Singleton.Instance.MouseCurrent;//เก็บสถานะmouseก่อนหน้า
@@ -41,28 +46,31 @@ namespace Olympuzz.GameObjects
 
             rotationPoint = new Vector2(583, 702);
 
-            if (Singleton.Instance.MouseCurrent.Y < 702 && Singleton.Instance.MouseCurrent.Y > 52 && Singleton.Instance.MouseCurrent.X > 363 && Singleton.Instance.MouseCurrent.X < 807)//mouseต้องสูงกว่าขนาดเท่านี้
+            if (IsActive)
             {
+                if (Singleton.Instance.MouseCurrent.Y < 702 && Singleton.Instance.MouseCurrent.Y > 52 && Singleton.Instance.MouseCurrent.X > 333 && Singleton.Instance.MouseCurrent.X < 837)//mouseต้องสูงกว่าขนาดเท่านี้
+                {
 
-                angle = (float)Math.Atan2(Singleton.Instance.MouseCurrent.Y - rotationPoint.Y, Singleton.Instance.MouseCurrent.X - rotationPoint.X);//มุม = ตำแหน่งที่ยิง - สถานะmouse x y
-                //ถ้าไม่ได้ยิง และ กดเม้าซ้าย และเม้าก่อนหน้าปล่อยอยู่
-                if (!Singleton.Instance.Shooting && Singleton.Instance.MouseCurrent.LeftButton == ButtonState.Pressed && Singleton.Instance.MousePrevious.LeftButton == ButtonState.Released)
-                {
-                    //If have GameScreen change this to set bubble Angle and speed only and Don't create bubble in this anymore because GameScreen had already generate Orb for shooting
-                    bubble.IsActive = true;
-                    bubble.Angle = angle + MathHelper.Pi;
-                    Singleton.Instance.Shooting = true;
-                }
-                if (!Singleton.Instance.Shooting && !bubble.IsActive && !canRotate)
-                {
-                    centerRotate = new Vector2(rotationPoint.X - Singleton.Instance.MouseCurrent.X, rotationPoint.Y - Singleton.Instance.MouseCurrent.Y);
-                    centerRotate.Normalize();
-                    bubble.Position = rotationPoint - (centerRotate * 50);
-                    bubble.Angle = (float)Math.Atan2(Singleton.Instance.MouseCurrent.Y - rotationPoint.Y, Singleton.Instance.MouseCurrent.X - rotationPoint.X) + MathHelper.ToRadians(90f);
-                }
-            }//ถ้าหน้าไม้อยู่ในสถานะยิง
-            if (Singleton.Instance.Shooting)
-                bubble.Update(gameTime, bubbles);
+                    angle = (float)Math.Atan2(Singleton.Instance.MouseCurrent.Y - rotationPoint.Y, Singleton.Instance.MouseCurrent.X - rotationPoint.X);//มุม = ตำแหน่งที่ยิง - สถานะmouse x y
+                                                                                                                                                        //ถ้าไม่ได้ยิง และ กดเม้าซ้าย และเม้าก่อนหน้าปล่อยอยู่
+                    if (!Singleton.Instance.Shooting && Singleton.Instance.MouseCurrent.LeftButton == ButtonState.Pressed && Singleton.Instance.MousePrevious.LeftButton == ButtonState.Released)
+                    {
+                        //If have GameScreen change this to set bubble Angle and speed only and Don't create bubble in this anymore because GameScreen had already generate Orb for shooting
+                        bubble.IsActive = true;
+                        bubble.Angle = angle + MathHelper.Pi;
+                        Singleton.Instance.Shooting = true;
+                    }
+                    if (!Singleton.Instance.Shooting && !bubble.IsActive && !canRotate)
+                    {
+                        centerRotate = new Vector2(rotationPoint.X - Singleton.Instance.MouseCurrent.X, rotationPoint.Y - Singleton.Instance.MouseCurrent.Y);
+                        centerRotate.Normalize();
+                        bubble.Position = rotationPoint - (centerRotate * 50);
+                        bubble.Angle = (float)Math.Atan2(Singleton.Instance.MouseCurrent.Y - rotationPoint.Y, Singleton.Instance.MouseCurrent.X - rotationPoint.X) + MathHelper.ToRadians(90f);
+                    }
+                }//ถ้าหน้าไม้อยู่ในสถานะยิง
+                if (Singleton.Instance.Shooting)
+                    bubble.Update(gameTime, bubbles);
+            }
         }
 
         private void startGenBubble()
