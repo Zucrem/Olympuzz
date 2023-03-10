@@ -250,9 +250,12 @@ namespace Olympuzz.GameScreen
                     MediaPlayer.Pause();
                 }
 
+
                 if (!athenaSkilled)
-                    _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond * 10;
-                if (_scrollTime >= tickPerUpdate)
+                {
+                  _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond * 10;
+                }
+               if (_scrollTime >= tickPerUpdate)
                 {
                     // Check game over before scroll
                     for (int i = 6; i < 13; i++)

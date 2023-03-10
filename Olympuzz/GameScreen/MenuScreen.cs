@@ -275,22 +275,38 @@ namespace Olympuzz.GameScreen
                     }
                     break;
                 case StateScreen.SELECTCHARSCREEN:
-                    //select that char
-                    if (char1Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                    //select that char from char slide
+                    switch (charSlide)
                     {
-                        Singleton.Instance.charState = CharState.ATHENA;
-                    }
-                    if (char2Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                    {
-                        Singleton.Instance.charState = CharState.HERMES;
-                    }
-                    if (char3Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                    {
-                        Singleton.Instance.charState = CharState.DIONYSUS;
-                    }
-                    if (char4Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
-                    {
-                        Singleton.Instance.charState = CharState.HEPHAESTUS;
+                        case 1:
+                            if (char1Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                            {
+                                Singleton.Instance.charState = CharState.ATHENA;
+                            }
+                            if (char2Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                            {
+                                Singleton.Instance.charState = CharState.HERMES;
+                            }
+                            if (char3Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                            {
+                                Singleton.Instance.charState = CharState.DIONYSUS;
+                            }
+                            break;
+                        case 2:
+                            if (char2Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                            {
+                                Singleton.Instance.charState = CharState.HERMES;
+                            }
+                            if (char3Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                            {
+                                Singleton.Instance.charState = CharState.DIONYSUS;
+                            }
+
+                            if (char4Button.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
+                            {
+                                Singleton.Instance.charState = CharState.HEPHAESTUS;
+                            }
+                            break;
                     }
                     //click arrow
                     if (arrowRightCharButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
@@ -524,7 +540,6 @@ namespace Olympuzz.GameScreen
                     switch (charSlide)
                     {
                         case 1:
-                            char1Button.SetPosition(new Vector2(215, 165));
                             char2Button.SetPosition(new Vector2(502, 165));
                             char3Button.SetPosition(new Vector2(790, 165));
                             char1Button.Draw(spriteBatch);
@@ -533,7 +548,6 @@ namespace Olympuzz.GameScreen
                             arrowRightCharButton.Draw(spriteBatch);
                             break;
                         case 2:
-                            char1Button.SetPosition(new Vector2(0, 0));
                             char2Button.SetPosition(new Vector2(215, 165));
                             char3Button.SetPosition(new Vector2(502, 165));
                             arrowLeftCharButton.Draw(spriteBatch);
