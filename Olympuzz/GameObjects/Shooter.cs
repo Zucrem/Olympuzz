@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Olympuzz.GameScreen;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -41,8 +42,6 @@ namespace Olympuzz.GameObjects
 
         public override void Update(GameTime gameTime, Bubble[,] bubbles)
         {
-            Singleton.Instance.MousePrevious = Singleton.Instance.MouseCurrent;//เก็บสถานะmouseก่อนหน้า
-            Singleton.Instance.MouseCurrent = Mouse.GetState();//เก็บสถานะmouseปัจจุบัน
 
             rotationPoint = new Vector2(583, 702);
 
@@ -122,6 +121,7 @@ namespace Olympuzz.GameObjects
             }
 
             bubble.Draw(spriteBatch);
+            
             bubbleNext.Draw(spriteBatch);
 
             if (Singleton.Instance.Shooting)//ถ้ายังไม่ได้อยู่ในสถานะยิงให้วาดรูปลูกบอล

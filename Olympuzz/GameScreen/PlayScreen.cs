@@ -110,6 +110,7 @@ namespace Olympuzz.GameScreen
                 }
                 isEven = !isEven;
             }
+
             /*Click.Volume = Singleton.Instance.bgMusicVolume;
             BubbleSFX_stick.Volume = Singleton.Instance.bgMusicVolume;
             BubbleSFX_dead.Volume = Singleton.Instance.bgMusicVolume;*/
@@ -146,20 +147,6 @@ namespace Olympuzz.GameScreen
             };
         }
 
-        //public bool CheckWin(Bubble[,] bubble)
-        //{
-        //    for (int i = 0; i < 9; i++)
-        //    {
-        //        for (int j = 0; j < 8 - (i % 2); j++)
-        //        {
-        //            if (bubble[i, j] != null)
-        //            {
-        //                return false;
-        //            }
-        //        }
-        //    }
-        //    return true;
-        //}
 
         public override void LoadContent()
         {
@@ -224,24 +211,13 @@ namespace Olympuzz.GameScreen
         public override void Update(GameTime gameTime)
         {
             MediaPlayer.Volume = Singleton.Instance.bgMusicVolume;
+            Singleton.Instance.MousePrevious = Singleton.Instance.MouseCurrent;//เก็บสถานะmouseก่อนหน้า
+            Singleton.Instance.MouseCurrent = Mouse.GetState();//เก็บสถานะmouseปัจจุบัน
+
             if (!notPlay)
             {
-                
-                shooter.Update(gameTime, bubble);
-                
                 Timer += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
-                for (int j = 0; j < 10; j++)
-                {
-                    if (bubble[12, j] != null)
-                    {
-                        notPlay = true;
-                        eventScreen = EventScreen.LOSE;
-                        Singleton.Instance.lastClickTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
-                        MediaPlayer.Stop();
-                        //Singleton.Instance.BestScore = Singleton.Instance.Score.ToString();
-                        //Singleton.Instance.BestTime = Timer.ToString("F");
-                    }
-                }
+                
                 if (pauseButton.IsClicked(Mouse.GetState(), gameTime))
                 {
                     notPlay = true;
@@ -253,28 +229,14 @@ namespace Olympuzz.GameScreen
 
                 if (!athenaSkilled)
                 {
-                  _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond * 10;
+                    _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                 }
-               if (_scrollTime >= tickPerUpdate)
+                if (_scrollTime >= tickPerUpdate)
                 {
-                    // Check game over before scroll
-                    for (int i = 6; i < 13; i++)
-                    {
-                        for (int j = 0; j < 10 - (isEven ? 0 : 1); j++)
-                        {
-                            if (bubble[12, j] != null)
-                            {
-                                notPlay = true;
-                                eventScreen = EventScreen.LOSE;
-                                MediaPlayer.Stop();
-                                //Singleton.Instance.BestScore = Singleton.Instance.Score.ToString();
-                                //Singleton.Instance.BestTime = Timer.ToString("F");
-                            }
-                        }
-                    }
+                    CheckGameOver(gameTime);
 
                     // Scroll position 
-                    for (int i = 11; i >= 0; i--)
+                    for (int i = 13; i >= 0; i--)
                     {
                         for (int j = 0; j < 10; j++)
                         {
@@ -285,7 +247,7 @@ namespace Olympuzz.GameScreen
                     }
 
                     // Draw new scroll position
-                    for (int i = 0; i < 13; i++)
+                    for (int i = 0; i < 14; i++)
                     {
                         for (int j = 0; j < 10; j++)
                         {
@@ -294,7 +256,6 @@ namespace Olympuzz.GameScreen
                                 bubble[i, j].Position = new Vector2((j * 49) + (bubble[i,j].isEven ? 363 : 388), (i * 42) + 79);
                                 if (j == (bubble[i, j].isEven ? 9 : 8)) break;
                             }
-
                         }
                     }
 
@@ -315,6 +276,8 @@ namespace Olympuzz.GameScreen
                     }
 
                     _scrollTime -= tickPerUpdate;
+
+
                 }
                 /*notPlay = true;
                 gameWin = CheckWin(bubble);*/
@@ -341,86 +304,192 @@ namespace Olympuzz.GameScreen
                 //    //Singleton.Instance.BestTime = Timer.ToString("F");
                 //}
 
-            }
+                //shooter.Update(gameTime, bubble);
 
+                int elapsedMs = (int)gameTime.TotalGameTime.TotalMilliseconds - lastPressTime;
 
-            int elapsedMs = (int)gameTime.TotalGameTime.TotalMilliseconds - lastPressTime;
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Up) && elapsedMs > 200 && !_c)
-            {
-                Debug.WriteLine("C");
-                _c = true;
-                lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
-            }
-
-            else if (Keyboard.GetState().IsKeyDown(Keys.Up) && elapsedMs > 200 && _c && !_h)
-            {
-                Debug.WriteLine("h");
-                _h = true;
-                lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
-            }
-
-            else if (Keyboard.GetState().IsKeyDown(Keys.Down) && elapsedMs > 200 && _h && !_e)
-            {
-                Debug.WriteLine("e");
-                _e = true;
-                lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
-            }
-
-            else if (Keyboard.GetState().IsKeyDown(Keys.Down) && elapsedMs > 200 && _e && !_a)
-            {
-                Debug.WriteLine("a");
-                _a = true;
-                lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
-            }
-
-            else if (Keyboard.GetState().IsKeyDown(Keys.Left) && elapsedMs > 200 && _a && !_t)
-            {
-                Debug.WriteLine("t");
-                _t = true;
-                lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
-            }
-
-            else if (Keyboard.GetState().IsKeyDown(Keys.Right) && elapsedMs > 200 && _t && !_in)
-            {
-                Debug.WriteLine("in");
-                _in = true;
-                lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
-            }
-
-            else if (Keyboard.GetState().IsKeyDown(Keys.Left) && elapsedMs > 200 && _in && !_g)
-            {
-                Debug.WriteLine("g");
-                _g = true;
-                lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
-            }
-
-            else if (Keyboard.GetState().IsKeyDown(Keys.Right) && elapsedMs > 200 && _g)
-            {
-                //foreach (Bubble b in bubble)
-                //{
-                //    if (b != null)
-                //    {
-                //        b.Cheat();
-                //    }
-
-                //}
-
-                for (int i = 0; i < 10; i++)
+                if (Keyboard.GetState().IsKeyDown(Keys.Up) && elapsedMs > 200 && !_c)
                 {
-                    for (int j = 0; j < 10; j++)
+                    Debug.WriteLine("C");
+                    _c = true;
+                    lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
+                }
+
+                else if (Keyboard.GetState().IsKeyDown(Keys.Up) && elapsedMs > 200 && _c && !_h)
+                {
+                    Debug.WriteLine("h");
+                    _h = true;
+                    lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
+                }
+
+                else if (Keyboard.GetState().IsKeyDown(Keys.Down) && elapsedMs > 200 && _h && !_e)
+                {
+                    Debug.WriteLine("e");
+                    _e = true;
+                    lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
+                }
+
+                else if (Keyboard.GetState().IsKeyDown(Keys.Down) && elapsedMs > 200 && _e && !_a)
+                {
+                    Debug.WriteLine("a");
+                    _a = true;
+                    lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
+                }
+
+                else if (Keyboard.GetState().IsKeyDown(Keys.Left) && elapsedMs > 200 && _a && !_t)
+                {
+                    Debug.WriteLine("t");
+                    _t = true;
+                    lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
+                }
+
+                else if (Keyboard.GetState().IsKeyDown(Keys.Right) && elapsedMs > 200 && _t && !_in)
+                {
+                    Debug.WriteLine("in");
+                    _in = true;
+                    lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
+                }
+
+                else if (Keyboard.GetState().IsKeyDown(Keys.Left) && elapsedMs > 200 && _in && !_g)
+                {
+                    Debug.WriteLine("g");
+                    _g = true;
+                    lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
+                }
+
+                else if (Keyboard.GetState().IsKeyDown(Keys.Right) && elapsedMs > 200 && _g)
+                {
+                    //foreach (Bubble b in bubble)
+                    //{
+                    //    if (b != null)
+                    //    {
+                    //        b.Cheat();
+                    //    }
+
+                    //}
+
+                    for (int i = 0; i < 10; i++)
                     {
-                        if (bubble[i,j] != null && i > 1)
+                        for (int j = 0; j < 10; j++)
                         {
-                            bubble[i, j].Cheat();
+                            if (bubble[i, j] != null && i > 1)
+                            {
+                                bubble[i, j].Cheat();
+                            }
                         }
                     }
+                    shooter.GetBubble().Cheat();
+                    _c = false;
+                    _h = false;
+                    _e = false;
+                    _t = false;
+                    _in = false;
+                    _g = false;
                 }
-                shooter.GetBubble().Cheat();
+
+
+                CharState c = Singleton.Instance.charState;
+
+                if (Keyboard.GetState().IsKeyDown(Keys.Space) && elapsedMs > 10000 && !skillCooldown)
+                {
+                    lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
+                skill:
+                    switch (c)
+                    {
+                        case CharState.ATHENA:
+                            athenaSkilled = true;
+
+                            break;
+                        case CharState.HERMES:
+                            Random rand = new Random();
+                            c = (CharState)(rand.Next(3) + 2);
+
+                            goto skill;
+                        case CharState.DIONYSUS:
+                            break;
+                        case CharState.HEPHAESTUS:
+
+                            Debug.WriteLine(Singleton.Instance.comboCount);
+                            Debug.WriteLine("DD");
+                            break;
+                    }
+                }
+
+
+                if (athenaSkilled)
+                {
+                    athenaTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+
+                }
+
+                if (athenaTime >= 10)
+                {
+                    athenaSkilled = false;
+                    skillCooldown = true;
+                }
+
+                if (skillCooldown)
+                {
+                    cooldownTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                }
+
+                if (cooldownTime >= 5)
+                {
+                    skillCooldown = false;
+                    athenaTime = 0;
+                    cooldownTime = 0;
+                }
+
+                if (Singleton.Instance.comboCount >= 5)
+                {
+                    switch (Singleton.Instance.charState)
+                    {
+                        case CharState.ATHENA:
+                            break;
+
+                        case CharState.HERMES:
+                            break;
+
+                        case CharState.DIONYSUS: 
+                            break;
+                            
+                        case CharState.HEPHAESTUS:
+                            for (int i = 1; i < 14; i++)
+                            {
+                                for (int j = 0; j < 10; j++)
+                                {
+                                    if (bubble[i, j] != null && bubble[i - 1, j] != null)
+                                    {
+                                        bubble[i - 1, j] = bubble[i, j];
+                                        bubble[i - 1, j].Position = new Vector2((j * 49) + (bubble[i - 1, j].isEven ? 363 : 388), ((i - 1) * 42) + 79);
+                                    }
+                                    //else if (bubble[i, j] == null && bubble[i - 1, j] != null && bubble[i - 1, j].isEven && j < 9)
+                                    //{
+                                    //    bubble[i - 1, j - 1] = null;
+                                    //}
+                                    else if (bubble[i, j] == null && bubble[i - 1, j] != null)
+                                    {
+                                        bubble[i - 1, j] = null;
+                                    }
+                                }
+                            }
+                            isEven = !isEven;
+                            Singleton.Instance.comboCount = 0;
+                            break;
+
+                    }
+                }
+
+
+
+                //all update
+                shooter.Update(gameTime, bubble);
+                CheckGameOver(gameTime);
+
             }
 
             //if in pause, gameover , gamewin
-            else if (notPlay)
+            else
             {
                 pauseButton.SetCantHover(true);
                 Singleton.Instance.Shooting = false;
@@ -632,65 +701,29 @@ namespace Olympuzz.GameScreen
                     break;
             }
 
-            CharState c = Singleton.Instance.charState;
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) && elapsedMs > 10000 && !skillCooldown)
-            {
-                lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
-                skill :
-                switch (c)
-                {
-                    case CharState.ATHENA:
-                        athenaSkilled = true;
-
-                        Random rand = new Random();
-                        c = (CharState)(rand.Next(3) + 2);
-
-                        goto skill;
-                    case CharState.HERMES:
-
-                        Debug.WriteLine("SS");
-                        break;
-                    case CharState.DIONYSUS:
-
-                        Debug.WriteLine("DD");
-                        break;
-                    case CharState.HEPHAESTUS:
-
-                        Debug.WriteLine("AA");
-                        break;
-                }
-            }
 
 
-            if (athenaSkilled)
-            {
-                athenaTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
-                
-            }
-
-            if (athenaTime >= 10)
-            {
-                athenaSkilled = false;
-                skillCooldown = true;
-            }
-
-            if (skillCooldown)
-            {
-                cooldownTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
-            }
-
-            if (cooldownTime >= 5)
-            {
-                skillCooldown = false;
-                athenaTime = 0;
-                cooldownTime = 0;
-            }
-
-            //all update
-            shooter.Update(gameTime, bubble);
 
             base.Update(gameTime);
+        }
+
+
+        public void CheckGameOver(GameTime gameTime)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                if (bubble[13, j] != null)
+                {
+                    notPlay = true;
+                    eventScreen = EventScreen.LOSE;
+                    Singleton.Instance.lastClickTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
+                    shooter.IsActive = false;
+                    MediaPlayer.Stop();
+                    //Singleton.Instance.BestScore = Singleton.Instance.Score.ToString();
+                    //Singleton.Instance.BestTime = Timer.ToString("F");
+                }
+            }
+            
         }
         public override void Draw(SpriteBatch spriteBatch)
         {

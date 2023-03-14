@@ -13,11 +13,15 @@ namespace Olympuzz
         public Vector2 Dimensions = new(1280, 720);
         public float bgMusicVolume = 1f;
         public float soundMasterVolume = 0.6f;
+        public int comboCount = 0;
+        public float comboTime = 0f;
         public int Score = 0;
         public bool Shooting = false;
         public List<Vector2> removeBubble = new();
         public bool cmdExit = false;
-        public int speed = -700; // -700
+        public bool gameOver = false;
+
+        public int speed = -1400; // -700
         public int lastClickTime = 0;
         public bool firsttime = true;//first time playing this game
 
