@@ -21,11 +21,12 @@ namespace Olympuzz.GameScreen
     class PlayScreen : _GameScreen
     {
         //all pictures
-        protected Texture2D stageBGPic, blackScreenPic, shooterTexture, baseTexture, pauseButtonPic, boardBGPic;
-        protected Texture2D arrowLeftBGPic, arrowRightBGPic, arrowLeftSFXPic, arrowRightSFXPic;//sound pic
+        protected Texture2D stageBGPic, blackScreenPic, shooterTexture, baseTexture, pauseButtonPic, boardBGPic;//all bg texture
+        protected Texture2D arrowLeftBGPic, arrowRightBGPic, arrowLeftSFXPic, arrowRightSFXPic;//sound setting pic
         protected Texture2D pausePopUpPic, continueButtonPic, restartButtonPic, exitButtonPic, continueButtonPic2, restartButtonPic2, exitButtonPic2;//for pause setting hovering
         protected Texture2D restartWLPic, nextButtonPic, backWLPic, DefeatSignPic, VictorySignPic;//win or lose
         protected Texture2D confirmExitPopUpPic, noConfirmPic1, yesConfirmPic1, noConfirmPic2, yesConfirmPic2;//for confirm
+        protected Texture2D athenaPic, hermesPic, dionysusPic, hephaestusPic;//all good god
         protected readonly Texture2D[] bubleAllTexture = new Texture2D[5];
 
         protected Color color;
@@ -115,8 +116,6 @@ namespace Olympuzz.GameScreen
             BubbleSFX_stick.Volume = Singleton.Instance.bgMusicVolume;
             BubbleSFX_dead.Volume = Singleton.Instance.bgMusicVolume;*/
 
-            //all button
-            pauseButton = new Button(pauseButtonPic, new Vector2(15, 20), new Vector2(300, 70));//create button object on playscreen
             //create button on pause
             continueButton = new Button(continueButtonPic, new Vector2((Singleton.Instance.Dimensions.X / 2) - 107, 370), new Vector2(215, 50));
             restartButton = new Button(restartButtonPic, new Vector2((Singleton.Instance.Dimensions.X / 2) - 82, 455), new Vector2(165, 50));
@@ -197,6 +196,12 @@ namespace Olympuzz.GameScreen
             smallfonts = content.Load<SpriteFont>("Alagard");
             mediumfonts = content.Load<SpriteFont>("AlagardMedium");
             bigfonts = content.Load<SpriteFont>("AlagardBig");
+
+            //all good god
+            athenaPic = content.Load<Texture2D>("PlayScreen/Wind");
+            hermesPic = content.Load<Texture2D>("PlayScreen/Wind");
+            dionysusPic = content.Load<Texture2D>("PlayScreen/Wind");
+            hephaestusPic = content.Load<Texture2D>("PlayScreen/Wind");
 
             //song and sfx
             MediaPlayer.IsRepeating = true;
@@ -744,6 +749,23 @@ namespace Olympuzz.GameScreen
             pauseButton.Draw(spriteBatch);
             shooter.Draw(spriteBatch);
 
+            //draw good god
+            switch (Singleton.Instance.charState)
+            {
+                case CharState.ATHENA:
+                    spriteBatch.Draw(athenaPic, new Vector2(336, 54), Color.White);
+                    break;
+                case CharState.HERMES:
+                    spriteBatch.Draw(hermesPic, new Vector2(336, 54), Color.White);
+                    break;
+                case CharState.DIONYSUS:
+                    spriteBatch.Draw(dionysusPic, new Vector2(336, 54), Color.White);
+                    break;
+                case CharState.HEPHAESTUS:
+                    spriteBatch.Draw(hephaestusPic, new Vector2(336, 54), Color.White);
+                    break;
+            }
+
             /*spriteBatch.DrawString(Arcanista, "Score : " + Singleton.Instance.Score, new Vector2(1060, 260), color);
             spriteBatch.DrawString(Arcanista, "Time : " + Timer.ToString("F"), new Vector2(20, 260), color);
             spriteBatch.DrawString(Arcanista, "Next Time : " + (tickPerUpdate - _scrollTime).ToString("F"), new Vector2(20, 210), color);*/
@@ -835,7 +857,7 @@ namespace Olympuzz.GameScreen
                 {
                     spriteBatch.Draw(confirmExitPopUpPic, new Vector2((Singleton.Instance.Dimensions.X - confirmExitPopUpPic.Width) / 2, (Singleton.Instance.Dimensions.Y - confirmExitPopUpPic.Height) / 2), new Color(255, 255, 255, 255));
                     fontSize = mediumfonts.MeasureString("Exit");
-                    spriteBatch.DrawString(mediumfonts, "Exit", new Vector2(((Singleton.Instance.Dimensions.X - fontSize.X) / 2), 190), new Color(33, 35, 60, 255));
+                    spriteBatch.DrawString(mediumfonts, "Exit", new Vector2(((Singleton.Instance.Dimensions.X - fontSize.X) / 2), 193), new Color(33, 35, 60, 255));
                     fontSize = mediumfonts.MeasureString("Are you sure");
                     spriteBatch.DrawString(mediumfonts, "Are you sure", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 270), Color.DarkGray);
                     fontSize = mediumfonts.MeasureString("you want to exit?");

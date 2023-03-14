@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static Olympuzz.Managers.ScreenManager;
 using System.Diagnostics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Olympuzz.GameScreen
 {
@@ -44,6 +45,10 @@ namespace Olympuzz.GameScreen
         public override void UnloadContent() { base.UnloadContent(); }
         public override void Update(GameTime gameTime)
         {
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.MenuScreen);
+            }
             // Add elapsed time to _timer
             timer += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
             if (timer >= timePerUpdate)
@@ -53,12 +58,12 @@ namespace Olympuzz.GameScreen
                     //fade in
                     alpha += 5;
                     // when fade in finish
-                    if (alpha >= 10)
+                    if (alpha >= 250)
                     {
                         Show = false;
 
                         // transition screen
-                        if (displayIndex == 3)
+                        if (displayIndex == 5)
                         {
                             ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.MenuScreen);
                         }
@@ -75,7 +80,7 @@ namespace Olympuzz.GameScreen
                         // Change display index and set next display
                         displayIndex++;
                         //change 
-                        if (displayIndex == 0)
+                        if (displayIndex == 1)
                         {
                             color = Color.Wheat;
                             timePerUpdate -= 0.015f;
@@ -86,6 +91,16 @@ namespace Olympuzz.GameScreen
                             color = Color.SaddleBrown;
                         }
                         else if (displayIndex == 3)
+                        {
+                            color = Color.Wheat;
+                            timePerUpdate -= 0.015f;
+                        }
+                        else if (displayIndex == 4)
+                        {
+                            timePerUpdate += 0.03f;
+                            color = Color.SaddleBrown;
+                        }
+                        else if (displayIndex == 5)
                         {
                             timePerUpdate -= 0.035f;
                         }
@@ -102,17 +117,21 @@ namespace Olympuzz.GameScreen
             switch (displayIndex)
             {
                 case 0:
+                    fontSize = smallfonts.MeasureString("Press spacebar to skip");
+                    spriteBatch.DrawString(smallfonts, "Press spacebar to skip", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X), (Singleton.Instance.Dimensions.Y - fontSize.Y)), color);
+                    break;
+                case 1:
                     fontSize = smallfonts.MeasureString("Teletubbie's Group Present");
                     spriteBatch.DrawString(smallfonts, "Teletubbie's Group Present", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 450), color);
                     break;
-                case 1:
+                case 3:
                     spriteBatch.Draw(LogoPic, new Vector2((Singleton.Instance.Dimensions.X - LogoPic.Width) / 2, 200), color);
                     break;
-                case 2:
+                case 4:
                     fontSize = mediumfonts.MeasureString("The Best Bubble Shooter Game Ever");
-                    spriteBatch.DrawString(mediumfonts, "The Best Bubble Shooter Game Ever", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 550), color);
+                    spriteBatch.DrawString(mediumfonts, "The Best Bubble Shooter Game Ever", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 530), color);
                     break;
-                case 3:
+                case 5:
                     spriteBatch.Draw(blackScreen, Vector2.Zero, color);
                     break;
             }

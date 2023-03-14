@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using Olympuzz.GameObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace Olympuzz.GameScreen
         protected Song zeusTheme;
         public override void Initial()
         {
+            //all button
+            pauseButton = new Button(pauseButtonPic, new Vector2(86, 60), new Vector2(148, 50));//create button object on playscreen
             base.Initial();
         }
         public override void LoadContent()
@@ -22,11 +25,11 @@ namespace Olympuzz.GameScreen
             base.LoadContent();
 
             //stage map
-            stageBGPic = content.Load<Texture2D>("Stage1/PoseidonStage");
-            boardBGPic = content.Load<Texture2D>("Stage1/Board1");
+            stageBGPic = content.Load<Texture2D>("Stage3/ZeusStage");
+            boardBGPic = content.Load<Texture2D>("Stage3/Board3");
 
             //all button on playscreen
-            pauseButtonPic = content.Load<Texture2D>("Stage1/Pause1");
+            pauseButtonPic = content.Load<Texture2D>("Stage3/Pause3");
 
             //bg music
             zeusTheme = content.Load<Song>("Sounds/ZeusTheme");
