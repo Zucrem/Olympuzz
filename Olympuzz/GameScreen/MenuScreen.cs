@@ -110,7 +110,7 @@ namespace Olympuzz.GameScreen
 
             //confirm Exit button
             yesButton = new Button(yesConfirmQuitPic1, new Vector2(495, 390), new Vector2(120, 60));
-            noButton = new Button(noConfirmQuitPic1, new Vector2(660, 390), new Vector2(120, 60));
+            noButton = new Button(noConfirmQuitPic1, new Vector2(710, 390), new Vector2(70, 60));
         }
         public override void LoadContent()
         {
