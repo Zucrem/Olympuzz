@@ -246,23 +246,11 @@ namespace Olympuzz.GameScreen
                         for (int j = 0; j < 10; j++)
                         {
                             bubble[i + 1, j] = bubble[i, j];
-                            if (bubble[i, j] != null)
-                                if (j == (bubble[i, j].isEven ? 9 : 8)) break;
                         }
                     }
 
                     // Draw new scroll position
-                    for (int i = 0; i < 14; i++)
-                    {
-                        for (int j = 0; j < 10; j++)
-                        {
-                            if (bubble[i, j] != null)
-                            {
-                                bubble[i, j].Position = new Vector2((j * 49) + (bubble[i,j].isEven ? 363 : 388), (i * 42) + 79);
-                                if (j == (bubble[i, j].isEven ? 9 : 8)) break;
-                            }
-                        }
-                    }
+                    BallUpdate(bubble);
 
                     //Random ball after scroll
                     for (int i = 0; i < 1; i++)
@@ -279,35 +267,32 @@ namespace Olympuzz.GameScreen
                         }
                         isEven = !isEven;
                     }
-
                     _scrollTime -= tickPerUpdate;
-
-
                 }
+
                 /*notPlay = true;
                 gameWin = CheckWin(bubble);*/
 
 
-                //int winCount = 0;
+                int winCount = 0;
 
-                //for (int j = 0; j < bubble.GetLength(1); j++)
-                //{
-                //    if (bubble[0, j] == null)
-                //    {
-                //        Debug.WriteLine(winCount);
-                //        winCount++;
-                //    }
-                //}
+                for (int j = 0; j < bubble.GetLength(1); j++)
+                {
+                    if (bubble[0, j] == null)
+                    {
+                        winCount++;
+                    }
+                }
 
-                //if (winCount == bubble.GetLength(1))
-                //{
-                //    notPlay = true;
-                //    gameWin = true;
-                //    pauseEvent = false;
-                //    MediaPlayer.Stop();
-                //    //Singleton.Instance.BestScore = Singleton.Instance.Score.ToString();
-                //    //Singleton.Instance.BestTime = Timer.ToString("F");
-                //}
+                if (winCount == bubble.GetLength(1))
+                {
+                    notPlay = true;
+
+                    eventScreen = EventScreen.WIN;
+                    MediaPlayer.Stop();
+                    Singleton.Instance.comboCount = 0;
+                    //Singleton.Instance.BestTime = Timer.ToString("F");
+                }
 
                 //shooter.Update(gameTime, bubble);
 
@@ -315,74 +300,67 @@ namespace Olympuzz.GameScreen
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Up) && elapsedMs > 200 && !_c)
                 {
-                    Debug.WriteLine("C");
                     _c = true;
                     lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
                 }
 
                 else if (Keyboard.GetState().IsKeyDown(Keys.Up) && elapsedMs > 200 && _c && !_h)
                 {
-                    Debug.WriteLine("h");
                     _h = true;
                     lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
                 }
 
                 else if (Keyboard.GetState().IsKeyDown(Keys.Down) && elapsedMs > 200 && _h && !_e)
                 {
-                    Debug.WriteLine("e");
                     _e = true;
                     lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
                 }
 
                 else if (Keyboard.GetState().IsKeyDown(Keys.Down) && elapsedMs > 200 && _e && !_a)
                 {
-                    Debug.WriteLine("a");
                     _a = true;
                     lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
                 }
 
                 else if (Keyboard.GetState().IsKeyDown(Keys.Left) && elapsedMs > 200 && _a && !_t)
                 {
-                    Debug.WriteLine("t");
                     _t = true;
                     lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
                 }
 
                 else if (Keyboard.GetState().IsKeyDown(Keys.Right) && elapsedMs > 200 && _t && !_in)
                 {
-                    Debug.WriteLine("in");
                     _in = true;
                     lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
                 }
 
                 else if (Keyboard.GetState().IsKeyDown(Keys.Left) && elapsedMs > 200 && _in && !_g)
                 {
-                    Debug.WriteLine("g");
                     _g = true;
                     lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
                 }
 
                 else if (Keyboard.GetState().IsKeyDown(Keys.Right) && elapsedMs > 200 && _g)
                 {
-                    //foreach (Bubble b in bubble)
-                    //{
-                    //    if (b != null)
-                    //    {
-                    //        b.Cheat();
-                    //    }
-
-                    //}
-
-                    for (int i = 0; i < 10; i++)
+                    foreach (Bubble b in bubble)
                     {
-                        for (int j = 0; j < 10; j++)
+                        if (b != null)
                         {
-                            if (bubble[i, j] != null && i > 1)
-                            {
-                                bubble[i, j].Cheat();
-                            }
+                            b.Cheat();
                         }
                     }
+
+                    //for (int i = 0; i < 10; i++)
+                    //{
+                    //    for (int j = 0; j < 10; j++)
+                    //    {
+                    //        if (bubble[i, j] != null && i > 1)
+                    //        {
+                    //            bubble[i, j].Cheat();
+                    //        }
+                    //    }
+                    //}
+
                     shooter.GetBubble().Cheat();
                     _c = false;
                     _h = false;
@@ -392,30 +370,71 @@ namespace Olympuzz.GameScreen
                     _g = false;
                 }
 
+                if (Singleton.Instance.comboCount > 0 && Singleton.Instance.comboTime > 0)
+                {
+                    Singleton.Instance.comboTime -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                }
+                else if (Singleton.Instance.comboTime <= 0)
+                {
+                    Singleton.Instance.comboCount = 0;
+                    Singleton.Instance.comboTime = 60;
+                }
 
-                CharState c = Singleton.Instance.charState;
-
-                if (Keyboard.GetState().IsKeyDown(Keys.Space) && elapsedMs > 10000 && !skillCooldown)
+                if (Keyboard.GetState().IsKeyDown(Keys.Space) && elapsedMs > 200 && !skillCooldown)
                 {
                     lastPressTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
-                skill:
-                    switch (c)
+                    
+                    switch (Singleton.Instance.charState)
                     {
                         case CharState.ATHENA:
                             athenaSkilled = true;
 
                             break;
                         case CharState.HERMES:
-                            Random rand = new Random();
-                            c = (CharState)(rand.Next(3) + 2);
+                            int i;
 
-                            goto skill;
+                            for (i = 1; i < 14; i++)
+                            {
+                                for (int j = 0; j < 10; j++)
+                                {
+                                   bubble[i - 1, j] = bubble[i, j];
+                                }
+                            }
+
+                            for (i = 13; i >= 0; i--)
+                            {
+                                for (int j = 0; j < 10; j++)
+                                {
+                                    if (bubble[i, j] == null && bubble[i - 1, j] != null)
+                                    {
+                                        i--;
+                                        goto _out;
+                                    }
+                                }
+                            }
+
+                        _out:
+                            if (i >= 0)
+                            {
+                                for (int j = 0; j < 10; j++)
+                                {
+                                    Debug.Write(i);
+                                    bubble[i, j] = null;
+                                }
+                                isEven = !isEven;
+                            }
+
+                            BallUpdate(bubble);
+                            skillCooldown = true;
+                            cooldownTime = -5;
+                            break;
                         case CharState.DIONYSUS:
+
+                            Debug.WriteLine(Singleton.Instance.comboCount);
+
                             break;
                         case CharState.HEPHAESTUS:
 
-                            Debug.WriteLine(Singleton.Instance.comboCount);
-                            Debug.WriteLine("DD");
                             break;
                     }
                 }
@@ -438,7 +457,7 @@ namespace Olympuzz.GameScreen
                     cooldownTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                 }
 
-                if (cooldownTime >= 5)
+                if (cooldownTime >= 10)
                 {
                     skillCooldown = false;
                     athenaTime = 0;
@@ -459,33 +478,24 @@ namespace Olympuzz.GameScreen
                             break;
                             
                         case CharState.HEPHAESTUS:
-                            for (int i = 1; i < 14; i++)
+                            int i;
+
+                            for (i = 1; i < 14; i++)
                             {
                                 for (int j = 0; j < 10; j++)
                                 {
-                                    if (bubble[i, j] != null && bubble[i - 1, j] != null)
-                                    {
-                                        bubble[i - 1, j] = bubble[i, j];
-                                        bubble[i - 1, j].Position = new Vector2((j * 49) + (bubble[i - 1, j].isEven ? 363 : 388), ((i - 1) * 42) + 79);
-                                    }
-                                    //else if (bubble[i, j] == null && bubble[i - 1, j] != null && bubble[i - 1, j].isEven && j < 9)
-                                    //{
-                                    //    bubble[i - 1, j - 1] = null;
-                                    //}
-                                    else if (bubble[i, j] == null && bubble[i - 1, j] != null)
-                                    {
-                                        bubble[i - 1, j] = null;
-                                    }
+                                    bubble[i - 1, j] = bubble[i, j];
                                 }
                             }
+
+                            BallUpdate(bubble);
+
                             isEven = !isEven;
                             Singleton.Instance.comboCount = 0;
                             break;
 
                     }
                 }
-
-
 
                 //all update
                 shooter.Update(gameTime, bubble);
@@ -517,7 +527,7 @@ namespace Olympuzz.GameScreen
                             //if click restart
                             if (restartButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                             {
-                                Singleton.Instance.Score = 0;
+                                Singleton.Instance.comboCount = 0;
                                 ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
                             }
 
@@ -712,7 +722,20 @@ namespace Olympuzz.GameScreen
             base.Update(gameTime);
         }
 
-
+        public void BallUpdate(Bubble[,] bubble)
+        {
+            for (int i = 0; i < 14; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    if (bubble[i, j] != null)
+                    {
+                        bubble[i, j].Position = new Vector2((j * 49) + (bubble[i, j].isEven ? 363 : 388), (i * 42) + 79);
+                        if (j == (bubble[i, j].isEven ? 9 : 8)) break;
+                    }
+                }
+            }
+        }
         public void CheckGameOver(GameTime gameTime)
         {
             for (int j = 0; j < 10; j++)
@@ -730,41 +753,24 @@ namespace Olympuzz.GameScreen
             }
             
         }
+
+
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(boardBGPic, new Vector2(336, 54), Color.White);
-            spriteBatch.Draw(stageBGPic, Vector2.Zero, Color.White);
+            
 
             for (int i = 0; i < 15; i++) // Line of bubble
             {
                 for (int j = 0; j < 10; j++) //Bubble in line
                 {
                     if (bubble[i, j] != null)
-                    { 
+                    {
                         bubble[i, j].Draw(spriteBatch);
                     }
                 }
             }
 
             pauseButton.Draw(spriteBatch);
-            shooter.Draw(spriteBatch);
-
-            //draw good god
-            switch (Singleton.Instance.charState)
-            {
-                case CharState.ATHENA:
-                    spriteBatch.Draw(athenaPic, new Vector2(336, 54), Color.White);
-                    break;
-                case CharState.HERMES:
-                    spriteBatch.Draw(hermesPic, new Vector2(336, 54), Color.White);
-                    break;
-                case CharState.DIONYSUS:
-                    spriteBatch.Draw(dionysusPic, new Vector2(336, 54), Color.White);
-                    break;
-                case CharState.HEPHAESTUS:
-                    spriteBatch.Draw(hephaestusPic, new Vector2(336, 54), Color.White);
-                    break;
-            }
 
             /*spriteBatch.DrawString(Arcanista, "Score : " + Singleton.Instance.Score, new Vector2(1060, 260), color);
             spriteBatch.DrawString(Arcanista, "Time : " + Timer.ToString("F"), new Vector2(20, 260), color);
