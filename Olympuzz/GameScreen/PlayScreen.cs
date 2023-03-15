@@ -39,6 +39,7 @@ namespace Olympuzz.GameScreen
         protected Bubble[,] bubble = new Bubble[15, 10];
 
         protected Shooter shooter;
+        protected Animation god;//all good god animation
         protected Button pauseButton;
         //button at pause screen
         protected Button continueButton, restartButton, exitButton;
@@ -112,8 +113,7 @@ namespace Olympuzz.GameScreen
                 isEven = !isEven;
             }
 
-            /*Click.Volume = Singleton.Instance.bgMusicVolume;
-            BubbleSFX_stick.Volume = Singleton.Instance.bgMusicVolume;
+            /*BubbleSFX_stick.Volume = Singleton.Instance.bgMusicVolume;
             BubbleSFX_dead.Volume = Singleton.Instance.bgMusicVolume;*/
 
             //create button on pause
@@ -134,7 +134,7 @@ namespace Olympuzz.GameScreen
 
             //confirm exit button
             yesConfirmButton = new Button(yesConfirmPic1, new Vector2(495, 390), new Vector2(120, 60));
-            noConfirmButton = new Button(noConfirmPic1, new Vector2(660, 390), new Vector2(120, 60));
+            noConfirmButton = new Button(noConfirmPic1, new Vector2(710, 390), new Vector2(70, 60));
 
             shooter = new Shooter(shooterTexture, bubleAllTexture, baseTexture)
             {
@@ -144,6 +144,46 @@ namespace Olympuzz.GameScreen
                 //_stickSFX = BubbleSFX_stick,
                 IsActive = true,
             };
+
+            switch (Singleton.Instance.charState)
+            {
+                case CharState.ATHENA:
+                    god = new Animation(athenaPic, 117, 180, 130, 200, 4)
+                    {
+                        Name = "Athena",
+                        Position = new Vector2(100, 252),
+                        IsActive = true,
+                    };
+                    break;
+
+                case CharState.HERMES:
+                    god = new Animation(hermesPic, 117, 180, 130, 200, 4)
+                    {
+                        Name = "Hermes",
+                        Position = new Vector2(100, 268),
+                        IsActive = true,
+                    };
+                    break;
+
+                case CharState.DIONYSUS:
+                    god = new Animation(dionysusPic, 117, 180, 130, 200, 4)
+                    {
+                        Name = "Dionysus",
+                        Position = new Vector2(120, 273),
+                        IsActive = true,
+                    };
+                    break;
+
+                case CharState.HEPHAESTUS:
+                    god = new Animation(hephaestusPic, 117, 180, 144, 200, 5)
+                    {
+                        Name = "Hephaestus",
+                        Position = new Vector2(110, 237),
+                        IsActive = true,
+                    };
+                    break;
+            }
+            god.Initialize();
         }
 
 
@@ -198,10 +238,14 @@ namespace Olympuzz.GameScreen
             bigfonts = content.Load<SpriteFont>("AlagardBig");
 
             //all good god
-            athenaPic = content.Load<Texture2D>("PlayScreen/Wind");
-            hermesPic = content.Load<Texture2D>("PlayScreen/Wind");
-            dionysusPic = content.Load<Texture2D>("PlayScreen/Wind");
-            hephaestusPic = content.Load<Texture2D>("PlayScreen/Wind");
+            athenaPic = content.Load<Texture2D>("GoodGodAnimate/Athenaanim");
+            hermesPic = content.Load<Texture2D>("GoodGodAnimate/Hermesanim");
+            dionysusPic = content.Load<Texture2D>("GoodGodAnimate/Dionysusanim");
+            hephaestusPic = content.Load<Texture2D>("GoodGodAnimate/Hephaestusanim");
+            /*athenaPic = content.Load<Texture2D>("GoodGodAnimate/AthenaAnimate");
+            hermesPic = content.Load<Texture2D>("GoodGodAnimate/HermesAnimate");
+            dionysusPic = content.Load<Texture2D>("GoodGodAnimate/DionysusAnimate");
+            hephaestusPic = content.Load<Texture2D>("GoodGodAnimate/HephaestusAnimate");*/
 
             //song and sfx
             MediaPlayer.IsRepeating = true;
@@ -228,6 +272,7 @@ namespace Olympuzz.GameScreen
                     notPlay = true;
                     eventScreen = EventScreen.PAUSE;
                     shooter.IsActive = false;
+                    god.IsActive = false;
                     MediaPlayer.Pause();
                 }
 
@@ -519,6 +564,7 @@ namespace Olympuzz.GameScreen
                             {
                                 pauseButton.SetCantHover(false);
                                 shooter.IsActive = true;
+                                god.IsActive = true;
                                 eventScreen = EventScreen.NULL;
                                 MediaPlayer.Resume();
                                 notPlay = false;
@@ -718,6 +764,7 @@ namespace Olympuzz.GameScreen
 
 
 
+            god.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -771,6 +818,7 @@ namespace Olympuzz.GameScreen
             }
 
             pauseButton.Draw(spriteBatch);
+            god.Draw(spriteBatch);
 
             /*spriteBatch.DrawString(Arcanista, "Score : " + Singleton.Instance.Score, new Vector2(1060, 260), color);
             spriteBatch.DrawString(Arcanista, "Time : " + Timer.ToString("F"), new Vector2(20, 260), color);

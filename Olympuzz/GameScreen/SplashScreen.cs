@@ -45,7 +45,8 @@ namespace Olympuzz.GameScreen
         public override void UnloadContent() { base.UnloadContent(); }
         public override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            Singleton.Instance.MouseCurrent = Mouse.GetState();
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) || Singleton.Instance.MouseCurrent.LeftButton == ButtonState.Pressed)
             {
                 ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.MenuScreen);
             }
@@ -63,7 +64,7 @@ namespace Olympuzz.GameScreen
                         Show = false;
 
                         // transition screen
-                        if (displayIndex == 5)
+                        if (displayIndex == 4)
                         {
                             ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.MenuScreen);
                         }
@@ -80,27 +81,27 @@ namespace Olympuzz.GameScreen
                         // Change display index and set next display
                         displayIndex++;
                         //change 
-                        if (displayIndex == 1)
+                        if (displayIndex == 0)
                         {
                             color = Color.Wheat;
                             timePerUpdate -= 0.015f;
+                        }
+                        else if (displayIndex == 1)
+                        {
+                            timePerUpdate += 0.03f;
+                            color = Color.SaddleBrown;
                         }
                         else if (displayIndex == 2)
                         {
-                            timePerUpdate += 0.03f;
-                            color = Color.SaddleBrown;
-                        }
-                        else if (displayIndex == 3)
-                        {
                             color = Color.Wheat;
                             timePerUpdate -= 0.015f;
                         }
-                        else if (displayIndex == 4)
+                        else if (displayIndex == 3)
                         {
                             timePerUpdate += 0.03f;
                             color = Color.SaddleBrown;
                         }
-                        else if (displayIndex == 5)
+                        else if (displayIndex == 4)
                         {
                             timePerUpdate -= 0.035f;
                         }
@@ -124,14 +125,14 @@ namespace Olympuzz.GameScreen
                     fontSize = smallfonts.MeasureString("Teletubbie's Group Present");
                     spriteBatch.DrawString(smallfonts, "Teletubbie's Group Present", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 450), color);
                     break;
-                case 3:
+                case 2:
                     spriteBatch.Draw(LogoPic, new Vector2((Singleton.Instance.Dimensions.X - LogoPic.Width) / 2, 200), color);
                     break;
-                case 4:
+                case 3:
                     fontSize = mediumfonts.MeasureString("The Best Bubble Shooter Game Ever");
                     spriteBatch.DrawString(mediumfonts, "The Best Bubble Shooter Game Ever", new Vector2((Singleton.Instance.Dimensions.X - fontSize.X) / 2, 530), color);
                     break;
-                case 5:
+                case 4:
                     spriteBatch.Draw(blackScreen, Vector2.Zero, color);
                     break;
             }

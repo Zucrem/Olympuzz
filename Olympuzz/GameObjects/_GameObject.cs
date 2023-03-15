@@ -52,5 +52,7 @@ namespace Olympuzz.GameObjects
         public virtual void Draw(SpriteBatch spriteBatch) {}
 
         public virtual void Update(GameTime gameTime, Bubble[,] bubbles) { }
+
+        public virtual void Update(GameTime gameTime) { }
     }
 }
