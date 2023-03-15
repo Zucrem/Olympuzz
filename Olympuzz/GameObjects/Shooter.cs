@@ -97,7 +97,7 @@ namespace Olympuzz.GameObjects
             bubbleNext = new Bubble(bubbleTexture)
             {
                 Name = "Bubble",
-                Position = new Vector2(483, 645),
+                Position = new Vector2(480, 678),
                 //deadSFX = _deadSFX,
                 //stickSFX = _stickSFX,
                 IsActive = false,
