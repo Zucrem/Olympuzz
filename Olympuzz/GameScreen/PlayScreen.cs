@@ -470,7 +470,11 @@ namespace Olympuzz.GameScreen
                             {
                                 for (int j = 0; j < 10; j++)
                                 {
-                                    if (bubble[i, j] == null && bubble[i - 1, j] != null)
+                                    if (bubble[i, j] == null && i == 0)
+                                    {
+                                        goto _out;
+                                    }
+                                    else if (bubble[i, j] == null && bubble[i - 1, j] != null)
                                     {
                                         i--;
                                         goto _out;
@@ -483,7 +487,6 @@ namespace Olympuzz.GameScreen
                             {
                                 for (int j = 0; j < 10; j++)
                                 {
-                                    Debug.Write(i);
                                     bubble[i, j] = null;
                                 }
                                 isEven = !isEven;
@@ -594,6 +597,7 @@ namespace Olympuzz.GameScreen
                             //if click restart
                             if (restartButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                             {
+                                Singleton.Instance.speed = -1400;
                                 Singleton.Instance.comboCount = 0;
                                 ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
                             }
@@ -678,6 +682,7 @@ namespace Olympuzz.GameScreen
                             if (nextButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                             {
                                 MediaPlayer.Stop();
+                                Singleton.Instance.speed = -1400;
                                 switch (Singleton.Instance.levelState)
                                 {
                                     case LevelState.POSEIDON:
@@ -821,10 +826,6 @@ namespace Olympuzz.GameScreen
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            
-            //spriteBatch.Draw(HolderAlivePic, new Vector2(410, 606), Color.White);
-            spriteBatch.Draw(HolderDeathPic, new Vector2(410, 606), Color.White);
-
             for (int i = 0; i < 15; i++) // Line of bubble
             {
                 for (int j = 0; j < 10; j++) //Bubble in line

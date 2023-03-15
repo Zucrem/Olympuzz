@@ -32,7 +32,7 @@ namespace Olympuzz.GameScreen
 
         private Random rand = new Random();
 
-        private Color color;
+        private Color waveColor;
 
         private Texture2D waveSkill;
 
@@ -41,7 +41,7 @@ namespace Olympuzz.GameScreen
         {
             //all button
             pauseButton = new Button(pauseButtonPic, new Vector2(98, 50), new Vector2(148, 60));//create button object on playscreen
-            color = new Color(58, 172, 212);
+            waveColor = new Color(58, 172, 212);
             base.Initial();
         }
         public override void LoadContent()
@@ -112,7 +112,6 @@ namespace Olympuzz.GameScreen
 
                 if (skillActive) // skill was Active now this is not skillCool
                 {
-                    Debug.WriteLine(skillActive);
                     switch (switchSkill)
                     {
                         case 0:
@@ -128,7 +127,7 @@ namespace Olympuzz.GameScreen
                 if (skillTime1 < 0 || skillTime2 < 0) //if 
                 {
                     Singleton.Instance.speed = -1400;
-                    //isBallHolderDie = false;
+                    isBallHolderDie = false;
                     skillActive = false;
                     hasSwitched = false;
                     isWave = false;
@@ -144,9 +143,21 @@ namespace Olympuzz.GameScreen
             spriteBatch.Draw(boardBGPic, new Vector2(336, 54), Color.White);
             spriteBatch.Draw(stageBGPic, Vector2.Zero, Color.White);
 
+            if (!isBallHolderDie)
+            {
+                spriteBatch.Draw(HolderAlivePic, new Vector2(410, 606), Color.White);
+            }
+            else
+            {
+                spriteBatch.Draw(HolderDeathPic, new Vector2(410, 606), Color.White);
+            }
+
             shooter.Draw(spriteBatch, isBallHolderDie);
             base.Draw(spriteBatch);
-            spriteBatch.Draw(waveSkill, Vector2.Zero, color * 0.2f);
+            if (isWave)
+            {
+                spriteBatch.Draw(waveSkill, Vector2.Zero, waveColor * 0.2f);
+            }
         }
     }
 }
