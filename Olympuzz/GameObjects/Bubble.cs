@@ -25,8 +25,6 @@ namespace Olympuzz.GameObjects
         {
             this.allTexture = allTexture;
             bubbleTexture = RandomBubble();
-            //ranRotate = random.Next(2);
-
         }
 
         public void Cheat()
@@ -46,7 +44,7 @@ namespace Olympuzz.GameObjects
                 Velocity.X = (float)Math.Cos(Angle) * Singleton.Instance.speed; //direction of bubble to go in axis x
                 Velocity.Y = (float)Math.Sin(Angle) * Singleton.Instance.speed; // direction of bubble to go in axis y
                 Position += Velocity * gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond; // position of bubble that will increase to direction that canon point to
-                
+
                 bubbleCollision(gameTime,bubbles);
                 
                 //for (int j = 0; j < bubbles.GetLength(1); j++)
@@ -58,19 +56,9 @@ namespace Olympuzz.GameObjects
                 //    }
                 //}
 
-                //if (ranRotate == 0)
-                //{
-                //    rotateBubble += ((float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond) * 5;
-                //}
-                //else
-                //{
-                //    rotateBubble -= ((float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond) * 5;
-                //}
-
-
                 for (int j = 0;j < (((bubbles[1, j] != null) && (bubbles[1, j].isEven))? 9 : 8); j++)
                 {
-                    if (Position.Y <= 79 && bubbles[1, j] != null && bubbles[1, j].isEven)
+                    if (Position.Y <= 79 && bubbles[1, j] != null && !bubbles[1, j].isEven)
                     {
                         if (Position.X < 373)
                         {
@@ -181,7 +169,7 @@ namespace Olympuzz.GameObjects
                         //stickSFX.Volume = Singleton.Instance.SFX_MasterVolume;
                         //stickSFX.Play();
                     }
-                    else if (Position.Y <= 79 && bubbles[1, j] != null && !bubbles[1, j].isEven)
+                    else if (Position.Y <= 79 && bubbles[1, j] != null && bubbles[1, j].isEven)
                     {
                         if (Position.X < 398)
                         {
@@ -463,6 +451,7 @@ namespace Olympuzz.GameObjects
                                     {
                                         bubbles[(int)vectorRemoved.Y, (int)vectorRemoved.X] = null;
                                     }
+
                                     //removeCluster.AddRange(clusterBubble);
 
                                     if (bubbles[(int)vectorRemove.Y, (int)vectorRemove.X] != null && bubbles[(int)vectorRemove.Y, (int)vectorRemove.X].isEven)
@@ -524,18 +513,7 @@ namespace Olympuzz.GameObjects
                                 }
 
                                 Singleton.Instance.comboCount++;
-                                Singleton.Instance.comboTime = 60;
-                            }
-
-
-                            if (Singleton.Instance.comboCount > 1 && Singleton.Instance.comboTime > 0)
-                            {
-                                Singleton.Instance.comboTime -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
-                            }
-                            else if (Singleton.Instance.comboTime <= 0)
-                            {
-                                Singleton.Instance.comboCount = 0;
-                                Singleton.Instance.comboTime = 60;
+                                Singleton.Instance.comboTime = 5;
                             }
 
                             Singleton.Instance.removeBubble.Clear();

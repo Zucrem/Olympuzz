@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Media;
 using Olympuzz.GameObjects;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,24 @@ namespace Olympuzz.GameScreen
     {
         //song and sfx
         protected Song zeusTheme;
+
+        private bool isBallHolderDie = false;
+        private bool skillActive = false;
+        private bool hasSwitched = false;
+        private bool isflash = false;
+
+        private float skillTime1 = 2f; // Time of skill is in Active
+        private float bossSkillChance1 = 10f; // Chance of skill that will Active
+
+        private float skillTime2 = 5f;
+        private float bossSkillChance2 = 10f;
+
+        private int switchSkill;
+
+        private Random rand = new Random();
+        private Texture2D flashSkill;
+
+
         public override void Initial()
         {
             //all button
@@ -31,6 +50,8 @@ namespace Olympuzz.GameScreen
             //all button on playscreen
             pauseButtonPic = content.Load<Texture2D>("Stage3/Pause3");
 
+            flashSkill = content.Load<Texture2D>("Stage3/skill");
+
             //bg music
             zeusTheme = content.Load<Song>("Sounds/ZeusTheme");
             MediaPlayer.Play(zeusTheme);
@@ -44,10 +65,88 @@ namespace Olympuzz.GameScreen
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            if (!notPlay)
+            {
+
+                if (!hasSwitched)
+                {
+                    switchSkill = rand.Next(2);
+                    hasSwitched = true;
+                }
+
+                switch (switchSkill)
+                {
+                    case 0:
+                        bossSkillChance1 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                        if (bossSkillChance1 < 0 && !skillActive)
+                        {
+                            int chance = rand.Next(3);
+                            if (chance == 1)
+                            {
+                                Debug.WriteLine("Flash bang");
+                                isflash = true;
+                                skillActive = true;
+                            }
+                        }
+                        break;
+
+                    case 1:
+                        bossSkillChance2 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                        if (bossSkillChance2 < 0 && !skillActive)
+                        {
+                            int chance = rand.Next(2);
+                            if (chance == 1)
+                            {
+                                isBallHolderDie = true;
+                                skillActive = true;
+                            }
+                        }
+                        break;
+                }
+
+
+                if (skillActive) // skill was Active now this is not skillCool
+                {
+                    switch (switchSkill)
+                    {
+                        case 0:
+                            skillTime1 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                            break;
+
+                        case 1:
+                            skillTime2 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                            break;
+                    }
+                }
+
+                if (skillTime1 < 0 || skillTime2 < 0) //if 
+                {
+                    Singleton.Instance.speed = -1400;
+                    //isBallHolderDie = false;
+                    skillActive = false;
+                    hasSwitched = false;
+                    isflash = false;
+                    skillTime1 = 2f;
+                    skillTime2 = 5f;
+                    bossSkillChance1 = 10;
+                    bossSkillChance2 = 10;
+                }
+            }
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Draw(boardBGPic, new Vector2(336, 54), Color.White);
+            spriteBatch.Draw(stageBGPic, Vector2.Zero, Color.White);
+
+            shooter.Draw(spriteBatch, false);
             base.Draw(spriteBatch);
+
+            if (isflash)
+            {
+                spriteBatch.Draw(flashSkill, Vector2.Zero, Color.White);
+            }
+
         }
     }
 }

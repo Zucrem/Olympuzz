@@ -77,7 +77,7 @@ namespace Olympuzz.GameObjects
             bubbleNext = new Bubble(bubbleTexture)
             {
                 Name = "Bubble",
-                Position = new Vector2(583, 645) - new Vector2(100, 0),
+                Position = new Vector2(483, 645),
                 //deadSFX = _deadSFX,
                 //stickSFX = _stickSFX,
                 IsActive = false,
@@ -97,7 +97,7 @@ namespace Olympuzz.GameObjects
             bubbleNext = new Bubble(bubbleTexture)
             {
                 Name = "Bubble",
-                Position = new Vector2(583, 645) - new Vector2(100,0),
+                Position = new Vector2(483, 645),
                 //deadSFX = _deadSFX,
                 //stickSFX = _stickSFX,
                 IsActive = false,
@@ -105,9 +105,10 @@ namespace Olympuzz.GameObjects
         }
         
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch , bool isBallHolderDie)
         {
-            spriteBatch.Draw(_base, Position,null, Color.White, 0, new Vector2(_texture.Width / 2, _texture.Height), 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_base, Position, null, Color.White, 0, new Vector2(_texture.Width / 2, _texture.Height), 1f, SpriteEffects.None, 0f);
+
 
             if (angle == 0)
             {
@@ -120,7 +121,10 @@ namespace Olympuzz.GameObjects
 
             bubble.Draw(spriteBatch);
             
-            bubbleNext.Draw(spriteBatch);
+            if (!isBallHolderDie)
+            {
+                bubbleNext.Draw(spriteBatch);
+            }
 
             if (Singleton.Instance.Shooting)//ถ้ายังไม่ได้อยู่ในสถานะยิงให้วาดรูปลูกบอล
                 bubble.IsActive = true;

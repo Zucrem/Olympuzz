@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Media;
 using Olympuzz.GameObjects;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,20 @@ namespace Olympuzz.GameScreen
     {
         //song and sfx
         protected Song hadesTheme;
+
+        private bool isBallHolderDie = false;
+        private bool skillActive = false;
+        private bool hasSwitched = false;
+
+        private float skillTime1 = 10f; // Time of skill is in Active
+        private float bossSkillChance1 = 5f; // Chance of skill that will Active
+
+        private float skillTime2 = 5f;
+        private float bossSkillChance2 = 10f;
+
+        private int switchSkill;
+
+        private Random rand = new Random();
 
         public override void Initial()
         {
@@ -44,9 +59,79 @@ namespace Olympuzz.GameScreen
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            if (!notPlay)
+            {
+
+                if (!hasSwitched)
+                {
+                    switchSkill = rand.Next(2);
+                    hasSwitched = true;
+                }
+
+                switch (switchSkill)
+                {
+                    case 0:
+                        bossSkillChance1 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                        if (bossSkillChance1 < 0 && !skillActive)
+                        {
+                            int chance = rand.Next(3);
+                            if (chance == 1)
+                            {
+
+                                skillActive = true;
+                            }
+                        }
+                        break;
+
+                    case 1:
+                        bossSkillChance2 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                        if (bossSkillChance2 < 0 && !skillActive)
+                        {
+                            int chance = rand.Next(2);
+                            if (chance == 1)
+                            {
+                                isBallHolderDie = true;
+                                skillActive = true;
+                            }
+                        }
+                        break;
+                }
+
+
+                if (skillActive) // skill was Active now this is not skillCool
+                {
+                    Debug.WriteLine(skillActive);
+                    switch (switchSkill)
+                    {
+                        case 0:
+                            skillTime1 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                            break;
+
+                        case 1:
+                            skillTime2 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                            break;
+                    }
+                }
+
+                if (skillTime1 < 0 || skillTime2 < 0) //if 
+                {
+                    Singleton.Instance.speed = -1400;
+                    //isBallHolderDie = false;
+                    skillActive = false;
+                    hasSwitched = false;
+                    skillTime1 = 10f;
+                    skillTime2 = 5f;
+                    bossSkillChance1 = 5;
+                    bossSkillChance2 = 10;
+                }
+            }
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Draw(boardBGPic, new Vector2(336, 54), Color.White);
+            spriteBatch.Draw(stageBGPic, Vector2.Zero, Color.White);
+
+            shooter.Draw(spriteBatch, false); 
             base.Draw(spriteBatch);
         }
     }
