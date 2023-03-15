@@ -109,6 +109,10 @@ namespace Olympuzz.GameObjects
         {
             spriteBatch.Draw(_base, Position, null, Color.White, 0, new Vector2(_texture.Width / 2, _texture.Height), 1f, SpriteEffects.None, 0f);
 
+            if (!isBallHolderDie)
+            {
+                bubbleNext.Draw(spriteBatch);
+            }
 
             if (angle == 0)
             {
@@ -121,10 +125,7 @@ namespace Olympuzz.GameObjects
 
             bubble.Draw(spriteBatch);
             
-            if (!isBallHolderDie)
-            {
-                bubbleNext.Draw(spriteBatch);
-            }
+            
 
             if (Singleton.Instance.Shooting)//ถ้ายังไม่ได้อยู่ในสถานะยิงให้วาดรูปลูกบอล
                 bubble.IsActive = true;
