@@ -109,8 +109,6 @@ namespace Olympuzz.GameObjects
         {
             spriteBatch.Draw(_base, Position,null, Color.White, 0, new Vector2(_texture.Width / 2, _texture.Height), 1f, SpriteEffects.None, 0f);
 
-           
-
             if (angle == 0)
             {
                 spriteBatch.Draw(_texture, Position, null, Color.White, angle, new Vector2(_texture.Width / 2, _texture.Height), 1f, SpriteEffects.None, 0f);
