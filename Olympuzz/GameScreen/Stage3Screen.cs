@@ -34,6 +34,7 @@ namespace Olympuzz.GameScreen
         private int switchSkill;
 
         private Random rand = new Random();
+
         private Texture2D flashSkill;
 
         //sound
@@ -43,6 +44,9 @@ namespace Olympuzz.GameScreen
         {
             //all button
             pauseButton = new Button(pauseButtonPic, new Vector2(86, 55), new Vector2(148, 58));//create button object on playscreen
+            timeAttack = 240f;
+            _scrollSpd = 5f;
+
             base.Initial();
         }
         public override void LoadContent()
@@ -75,6 +79,7 @@ namespace Olympuzz.GameScreen
 
             if (!notPlay)
             {
+                timeAttack -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
 
                 if (!hasSwitched)
                 {
@@ -130,7 +135,7 @@ namespace Olympuzz.GameScreen
                 if (skillTime1 < 0 || skillTime2 < 0) //if 
                 {
                     Singleton.Instance.speed = -1400;
-                    //isBallHolderDie = false;
+                    isBallHolderDie = false;
                     skillActive = false;
                     hasSwitched = false;
                     isflash = false;
@@ -188,10 +193,10 @@ namespace Olympuzz.GameScreen
                 }
             }
 
-            shooter.Draw(spriteBatch, isBallHolderDie);
 
             if (!isBallHolderDie)
             {
+                shooter.GetBubbleNext().Draw(spriteBatch);
                 spriteBatch.Draw(holderAlivePic, new Vector2(410, 606), Color.White);
             }
             else
@@ -199,11 +204,12 @@ namespace Olympuzz.GameScreen
                 spriteBatch.Draw(holderDeathPic, new Vector2(410, 606), Color.White);
             }
 
+            shooter.Draw(spriteBatch);
             base.Draw(spriteBatch);
 
-            if (isflash)
+            if (isflash && eventScreen != EventScreen.PAUSE && eventScreen != EventScreen.WIN && eventScreen != EventScreen.LOSE)
             {
-                spriteBatch.Draw(bossSkillPic, Vector2.Zero, Color.White);
+                spriteBatch.Draw(bossSkill, Vector2.Zero, new Color(255,255,255) * 0.95f);
             }
 
         }

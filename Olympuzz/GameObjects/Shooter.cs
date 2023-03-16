@@ -35,12 +35,12 @@ namespace Olympuzz.GameObjects
             startGenBubble();
         }
         
-        public Bubble GetBubble()
+        public Bubble GetBubbleNext()
         {
-            return bubble;
+            return bubbleNext;
         }
 
-        public override void Update(GameTime gameTime, Bubble[,] bubbles)
+        public override void Update(GameTime gameTime, Bubble[,] bubbles , bool isHell)
         {
 
             rotationPoint = new Vector2(583, 702);
@@ -70,7 +70,7 @@ namespace Olympuzz.GameObjects
                 if (Singleton.Instance.Shooting)
                 {
                     //bubble.Angle = angle + MathHelper.Pi;
-                    bubble.Update(gameTime, bubbles);
+                    bubble.Update(gameTime, bubbles , isHell);
                 }
                     
             }
@@ -109,14 +109,9 @@ namespace Olympuzz.GameObjects
         }
         
 
-        public void Draw(SpriteBatch spriteBatch , bool isBallHolderDie)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_base, Position, null, Color.White, 0, new Vector2(_texture.Width / 2, _texture.Height), 1f, SpriteEffects.None, 0f);
-
-            if (!isBallHolderDie)
-            {
-                bubbleNext.Draw(spriteBatch);
-            }
 
             if (angle == 0)
             {
@@ -134,6 +129,7 @@ namespace Olympuzz.GameObjects
             if (Singleton.Instance.Shooting)//ถ้ายังไม่ได้อยู่ในสถานะยิงให้วาดรูปลูกบอล
                 bubble.IsActive = true;
         }
+
 
     }
 }
