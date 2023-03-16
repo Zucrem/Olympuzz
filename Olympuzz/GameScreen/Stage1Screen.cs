@@ -135,7 +135,7 @@ namespace Olympuzz.GameScreen
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(bossSkill, Vector2.Zero, Color.Black);
+            spriteBatch.Draw(bossSkillPic, Vector2.Zero, Color.Black);
             spriteBatch.Draw(boardBGPic, new Vector2(336, 54), Color.White);
             spriteBatch.Draw(stageBGPic, Vector2.Zero, Color.White);
 
@@ -152,7 +152,7 @@ namespace Olympuzz.GameScreen
             base.Draw(spriteBatch);
             if (isWave && eventScreen != EventScreen.PAUSE)
             {
-                spriteBatch.Draw(bossSkill, Vector2.Zero, waveColor * 0.2f);
+                spriteBatch.Draw(bossSkillPic, Vector2.Zero, waveColor * 0.2f);
             }
         }
     }

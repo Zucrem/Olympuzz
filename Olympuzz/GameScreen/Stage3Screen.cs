@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using Olympuzz.GameObjects;
@@ -32,6 +33,8 @@ namespace Olympuzz.GameScreen
         private Random rand = new Random();
         private Texture2D flashSkill;
 
+        //sound
+        private SoundEffect thunderSound;
 
         public override void Initial()
         {
@@ -42,6 +45,8 @@ namespace Olympuzz.GameScreen
         public override void LoadContent()
         {
             base.LoadContent();
+            //sound
+            thunderSound = content.Load<SoundEffect>("Sounds/ThunderSound");
 
             //stage map
             stageBGPic = content.Load<Texture2D>("Stage3/ZeusStage");
@@ -95,6 +100,7 @@ namespace Olympuzz.GameScreen
                             int chance = rand.Next(2);
                             if (chance == 1)
                             {
+                                thunderSound.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
                                 isBallHolderDie = true;
                                 skillActive = true;
                             }
@@ -133,7 +139,7 @@ namespace Olympuzz.GameScreen
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(bossSkill, Vector2.Zero, Color.Black);
+            spriteBatch.Draw(bossSkillPic, Vector2.Zero, Color.Black);
             spriteBatch.Draw(boardBGPic, new Vector2(332, 54), Color.White);
             spriteBatch.Draw(stageBGPic, Vector2.Zero, Color.White);
 
@@ -151,7 +157,7 @@ namespace Olympuzz.GameScreen
 
             if (isflash)
             {
-                spriteBatch.Draw(bossSkill, Vector2.Zero, Color.White);
+                spriteBatch.Draw(bossSkillPic, Vector2.Zero, Color.White);
             }
 
         }

@@ -28,6 +28,9 @@ namespace Olympuzz.GameObjects
         private int frames = 0;
         private int allframes;
 
+        //choose method to do
+        private int method;
+
         public Animation(Texture2D texture, int sizeX, int sizeY) : base(texture)
         {
             this.texture = texture;
@@ -36,6 +39,18 @@ namespace Olympuzz.GameObjects
             this.sizeX = sizeX;
             this.sizeY = sizeY;
 
+            this.method = 1;
+        }
+
+        public Animation(Texture2D texture, int sizeX, int sizeY , String number) : base(texture)
+        {
+            this.texture = texture;
+
+            //get size of picture
+            this.sizeX = sizeX;
+            this.sizeY = sizeY;
+
+            this.method = 2;
         }
 
         public void Initialize()
@@ -47,27 +62,73 @@ namespace Olympuzz.GameObjects
         }
         public override void Update(GameTime gameTime)
         {
-            elapsed += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            
-            if(elapsed >= delay)
+            switch (method)
             {
-                if (frames >= allframes - 1)
-                {
-                    frames = 0;
-                }
-                else
-                {
-                    frames++;
-                }
-                elapsed = 0;
-            }
+                case 1:
+                    elapsed += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            sourceRect = new Rectangle((int)sourceRectVector[frames].X, (int)sourceRectVector[frames].Y, sizeX, sizeY);
+                    if (elapsed >= delay)
+                    {
+                        if (frames >= allframes - 1)
+                        {
+                            frames = 0;
+                        }
+                        else
+                        {
+                            frames++;
+                        }
+                        elapsed = 0;
+                    }
+
+                    sourceRect = new Rectangle((int)sourceRectVector[frames].X, (int)sourceRectVector[frames].Y, sizeX, sizeY);
+                    break;
+                case 2:
+                    elapsed += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+                    Debug.WriteLine("1");
+                    int loop = 0;
+                    if (elapsed >= delay)
+                    {
+                        if (frames >= allframes - 1)
+                        {
+                            Debug.WriteLine("2");
+                            loop = 1;
+                        }
+                        else if (frames < 0)
+                        {
+                            Debug.WriteLine("3");
+                            break;
+                        }
+                        else
+                        {
+                            if (loop == 0)
+                            {
+                                Debug.WriteLine("4");
+                                frames++;
+                            }
+                            else if (loop == 1)
+                            {
+                                Debug.WriteLine("5");
+                                frames--;
+                            }
+                        }
+                        elapsed = 0;
+                    }
+
+                    sourceRect = new Rectangle((int)sourceRectVector[frames].X, (int)sourceRectVector[frames].Y, sizeX, sizeY);
+                    break;
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, destRect, sourceRect, Color.White);
+            if (method == 1)
+            {
+                spriteBatch.Draw(texture, destRect, sourceRect, Color.White);
+            }
+            else if (method == 2)
+            {
+                spriteBatch.Draw(texture, destRect, new Rectangle((int)sourceRectVector[1].X, (int)sourceRectVector[1].Y, sizeX, sizeY), Color.White);
+            }
             //spriteBatch.Draw(texture, new Rectangle(posX, posY, sizeX, sizeY), sourceRect, Color.White);
             //spriteBatch.Draw(texture, new Rectangle(100,100,128,360), Color.White);
             //spriteBatch.Draw(texture, destRect, new Rectangle((int)sourceRectVector[1].X, (int)sourceRectVector[1].Y, sizeX, sizeY), Color.White);

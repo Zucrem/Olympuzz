@@ -127,7 +127,7 @@ namespace Olympuzz.GameScreen
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(bossSkill, Vector2.Zero, Color.Black);
+            spriteBatch.Draw(bossSkillPic, Vector2.Zero, Color.Black);
             spriteBatch.Draw(boardBGPic, new Vector2(332, 54), Color.White);
             spriteBatch.Draw(stageBGPic, Vector2.Zero, Color.White);
 
