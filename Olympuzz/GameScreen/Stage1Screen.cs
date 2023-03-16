@@ -39,6 +39,10 @@ namespace Olympuzz.GameScreen
             //all button
             pauseButton = new Button(pauseButtonPic, new Vector2(98, 50), new Vector2(148, 60));//create button object on playscreen
             waveColor = new Color(58, 172, 212);
+            _scrollSpd = 3f;
+
+            timeAttack = 180f;
+
             base.Initial();
         }
         public override void LoadContent()
@@ -67,6 +71,7 @@ namespace Olympuzz.GameScreen
             base.Update(gameTime);
             if (!notPlay)
             {
+                timeAttack -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
 
                 if (!hasSwitched)
                 {
@@ -141,6 +146,7 @@ namespace Olympuzz.GameScreen
 
             if (!isBallHolderDie)
             {
+                shooter.GetBubbleNext().Draw(spriteBatch);
                 spriteBatch.Draw(holderAlivePic, new Vector2(410, 606), Color.White);
             }
             else
@@ -148,9 +154,9 @@ namespace Olympuzz.GameScreen
                 spriteBatch.Draw(holderDeathPic, new Vector2(410, 606), Color.White);
             }
 
-            shooter.Draw(spriteBatch, isBallHolderDie);
+            shooter.Draw(spriteBatch);
             base.Draw(spriteBatch);
-            if (isWave && eventScreen != EventScreen.PAUSE)
+            if (isWave && eventScreen != EventScreen.PAUSE && eventScreen != EventScreen.WIN && eventScreen != EventScreen.LOSE)
             {
                 spriteBatch.Draw(bossSkill, Vector2.Zero, waveColor * 0.2f);
             }

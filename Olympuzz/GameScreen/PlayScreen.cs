@@ -61,6 +61,8 @@ namespace Olympuzz.GameScreen
         protected float bubbleAngle = 0f;
         protected float athenaTime = 0f;
         protected float cooldownTime = 0f;
+        protected float timeAttack;
+        protected float _scrollSpd = 1f;
 
         protected int startOddPosition;
         protected int startEvenPosition;
@@ -80,6 +82,8 @@ namespace Olympuzz.GameScreen
         protected bool confirmExit = false;
         protected bool athenaSkilled = false;
         protected bool skillCooldown = false;
+
+        protected bool isHell = false;
 
         //ตัวแปรของ sound
         protected float masterBGM = Singleton.Instance.bgMusicVolume;
@@ -294,10 +298,12 @@ namespace Olympuzz.GameScreen
             Initial();
             
         }
+
         public override void UnloadContent()
         {
             base.UnloadContent();
         }
+
         public override void Update(GameTime gameTime)
         {
             MediaPlayer.Volume = Singleton.Instance.bgMusicVolume;
@@ -320,7 +326,7 @@ namespace Olympuzz.GameScreen
 
                 if (!athenaSkilled)
                 {
-                    _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                    _scrollTime += ((float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond) * _scrollSpd;
                 }
                 if (_scrollTime >= tickPerUpdate)
                 {
@@ -359,7 +365,7 @@ namespace Olympuzz.GameScreen
                 /*notPlay = true;
                 gameWin = CheckWin(bubble);*/
 
-
+                /*
                 int winCount = 0;
 
                 for (int j = 0; j < bubble.GetLength(1); j++)
@@ -368,9 +374,9 @@ namespace Olympuzz.GameScreen
                     {
                         winCount++;
                     }
-                }
+                }*/
 
-                if (winCount == bubble.GetLength(1))
+                if (timeAttack < 0)
                 {
                     notPlay = true;
 
@@ -428,6 +434,7 @@ namespace Olympuzz.GameScreen
 
                 else if (Keyboard.GetState().IsKeyDown(Keys.Right) && elapsedMs > 200 && _g)
                 {
+                    /*
                     //foreach (Bubble b in bubble)
                     //{
                     //    if (b != null)
@@ -447,7 +454,9 @@ namespace Olympuzz.GameScreen
                         }
                     }
 
-                    shooter.GetBubble().Cheat();
+                    shooter.GetBubble().Cheat();*/
+
+                    timeAttack = 0;
                     _c = false;
                     _h = false;
                     _e = false;
@@ -586,7 +595,7 @@ namespace Olympuzz.GameScreen
 
                 //all update
                 god.Update(gameTime);
-                shooter.Update(gameTime, bubble);
+                shooter.Update(gameTime, bubble , isHell);
                 CheckGameOver(gameTime);
 
             }
@@ -866,7 +875,7 @@ namespace Olympuzz.GameScreen
             spriteBatch.DrawString(Arcanista, "Time : " + Timer.ToString("F"), new Vector2(20, 260), color);
             spriteBatch.DrawString(Arcanista, "Next Time : " + (tickPerUpdate - _scrollTime).ToString("F"), new Vector2(20, 210), color);*/
 
-            if (skillCooldown)
+            if (skillCooldown || athenaSkilled)
             {
                 switch (Singleton.Instance.charState)
                 {

@@ -16,17 +16,10 @@ namespace Olympuzz.GameScreen
         //song and sfx
         protected Song hadesTheme;
 
-        private bool isBallHolderDie = false;
         private bool skillActive = false;
-        private bool hasSwitched = false;
 
-        private float skillTime1 = 10f; // Time of skill is in Active
-        private float bossSkillChance1 = 5f; // Chance of skill that will Active
-
-        private float skillTime2 = 5f;
-        private float bossSkillChance2 = 10f;
-
-        private int switchSkill;
+        private float skillTime1 = 1f; // Time of skill is in Active
+        private float bossSkillChance1 = 10f; // Chance of skill that will Active
 
         private Random rand = new Random();
 
@@ -34,6 +27,10 @@ namespace Olympuzz.GameScreen
         {
             //all button
             pauseButton = new Button(pauseButtonPic, new Vector2(89, 50), new Vector2(148, 60));//create button object on playscreen
+
+            _scrollSpd = 4f;
+            
+            timeAttack = 180f;
             base.Initial();
         }
         public override void LoadContent()
@@ -61,67 +58,31 @@ namespace Olympuzz.GameScreen
             base.Update(gameTime);
             if (!notPlay)
             {
+                timeAttack -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
 
-                if (!hasSwitched)
+                bossSkillChance1 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                if (bossSkillChance1 < 0 && !skillActive)
                 {
-                    switchSkill = rand.Next(2);
-                    hasSwitched = true;
-                }
-
-                switch (switchSkill)
-                {
-                    case 0:
-                        bossSkillChance1 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
-                        if (bossSkillChance1 < 0 && !skillActive)
-                        {
-                            int chance = rand.Next(3);
-                            if (chance == 1)
-                            {
-
-                                skillActive = true;
-                            }
-                        }
-                        break;
-
-                    case 1:
-                        bossSkillChance2 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
-                        if (bossSkillChance2 < 0 && !skillActive)
-                        {
-                            int chance = rand.Next(2);
-                            if (chance == 1)
-                            {
-                                isBallHolderDie = true;
-                                skillActive = true;
-                            }
-                        }
-                        break;
-                }
-
-
-                if (skillActive) // skill was Active now this is not skillCool
-                {
-                    switch (switchSkill)
+                    int chance = rand.Next(3);
+                    if (chance == 1)
                     {
-                        case 0:
-                            skillTime1 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
-                            break;
-
-                        case 1:
-                            skillTime2 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
-                            break;
+                        isHell = true;
+                        skillActive = true;
                     }
                 }
 
-                if (skillTime1 < 0 || skillTime2 < 0) //if 
+                if (skillActive) // skill was Active now this is not skillCool
+                {
+                    skillTime1 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                }
+
+                if (skillTime1 < 0 ) //if 
                 {
                     Singleton.Instance.speed = -1400;
-                    //isBallHolderDie = false;
+                    isHell = false;
                     skillActive = false;
-                    hasSwitched = false;
-                    skillTime1 = 10f;
-                    skillTime2 = 5f;
-                    bossSkillChance1 = 5;
-                    bossSkillChance2 = 10;
+                    skillTime1 = 1;
+                    bossSkillChance1 = 10;
                 }
             }
         }
@@ -131,17 +92,15 @@ namespace Olympuzz.GameScreen
             spriteBatch.Draw(boardBGPic, new Vector2(332, 54), Color.White);
             spriteBatch.Draw(stageBGPic, Vector2.Zero, Color.White);
 
-            if (!isBallHolderDie)
-            {
-                spriteBatch.Draw(holderAlivePic, new Vector2(410, 606), Color.White);
-            }
-            else
-            {
-                spriteBatch.Draw(holderDeathPic, new Vector2(410, 606), Color.White);
-            }
+            spriteBatch.Draw(holderDeathPic, new Vector2(410, 606), Color.White);
 
-            shooter.Draw(spriteBatch, isBallHolderDie); 
+            shooter.Draw(spriteBatch); 
             base.Draw(spriteBatch);
+
+            if (isHell && eventScreen != EventScreen.PAUSE && eventScreen != EventScreen.WIN && eventScreen != EventScreen.LOSE)
+            {
+                spriteBatch.Draw(bossSkill, Vector2.Zero, Color.Red * 0.2f);
+            }
         }
     }
 }
