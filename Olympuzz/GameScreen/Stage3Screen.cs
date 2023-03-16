@@ -50,8 +50,6 @@ namespace Olympuzz.GameScreen
             //all button on playscreen
             pauseButtonPic = content.Load<Texture2D>("Stage3/Pause3");
 
-            flashSkill = content.Load<Texture2D>("Stage3/skill");
-
             //bg music
             zeusTheme = content.Load<Song>("Sounds/ZeusTheme");
             MediaPlayer.Play(zeusTheme);
@@ -135,16 +133,17 @@ namespace Olympuzz.GameScreen
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Draw(bossSkill, Vector2.Zero, Color.Black);
             spriteBatch.Draw(boardBGPic, new Vector2(332, 54), Color.White);
             spriteBatch.Draw(stageBGPic, Vector2.Zero, Color.White);
 
             if (!isBallHolderDie)
             {
-                spriteBatch.Draw(HolderAlivePic, new Vector2(410, 606), Color.White);
+                spriteBatch.Draw(holderAlivePic, new Vector2(410, 606), Color.White);
             }
             else
             {
-                spriteBatch.Draw(HolderDeathPic, new Vector2(410, 606), Color.White);
+                spriteBatch.Draw(holderDeathPic, new Vector2(410, 606), Color.White);
             }
 
             shooter.Draw(spriteBatch, isBallHolderDie);
@@ -152,7 +151,7 @@ namespace Olympuzz.GameScreen
 
             if (isflash)
             {
-                spriteBatch.Draw(flashSkill, Vector2.Zero, Color.White);
+                spriteBatch.Draw(bossSkill, Vector2.Zero, Color.White);
             }
 
         }

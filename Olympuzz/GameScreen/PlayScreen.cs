@@ -28,7 +28,7 @@ namespace Olympuzz.GameScreen
         protected Texture2D confirmExitPopUpPic, noConfirmPic1, yesConfirmPic1, noConfirmPic2, yesConfirmPic2;//for confirm
         protected Texture2D athenaPic, hermesPic, dionysusPic, hephaestusPic;//all good god
         protected Texture2D holderAlivePic, holderDeathPic;//holder texture
-        protected Texture2D athenaSkillPic, athenaReadyPic, hermesSkillPic, hermesReadyPic, dionysusSkillPic, dionysusReadyPic, hephaestusSkillPic, hephaestusReadyPic;//all god skill texture
+        protected Texture2D athenaSkillPic, athenaReadyPic, hermesSkillPic, hermesReadyPic, dionysusSkillPic, dionysusReadyPic, hephaestusSkillPic, hephaestusReadyPic , bossSkill;//all god skill texture
         protected readonly Texture2D[] bubleAllTexture = new Texture2D[5];
 
         protected Color color;
@@ -286,6 +286,7 @@ namespace Olympuzz.GameScreen
             dionysusReadyPic = content.Load<Texture2D>("GodSkill/DionysusReady");
             hephaestusSkillPic = content.Load<Texture2D>("GodSkill/HephaestusSkill");
             hephaestusReadyPic = content.Load<Texture2D>("GodSkill/HephaestusReady");
+            bossSkill = content.Load<Texture2D>("Stage3/skill");
 
             //song and sfx
             MediaPlayer.IsRepeating = true;

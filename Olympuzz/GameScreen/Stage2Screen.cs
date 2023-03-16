@@ -127,16 +127,17 @@ namespace Olympuzz.GameScreen
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Draw(bossSkill, Vector2.Zero, Color.Black);
             spriteBatch.Draw(boardBGPic, new Vector2(332, 54), Color.White);
             spriteBatch.Draw(stageBGPic, Vector2.Zero, Color.White);
 
             if (!isBallHolderDie)
             {
-                spriteBatch.Draw(HolderAlivePic, new Vector2(410, 606), Color.White);
+                spriteBatch.Draw(holderAlivePic, new Vector2(410, 606), Color.White);
             }
             else
             {
-                spriteBatch.Draw(HolderDeathPic, new Vector2(410, 606), Color.White);
+                spriteBatch.Draw(holderDeathPic, new Vector2(410, 606), Color.White);
             }
 
             shooter.Draw(spriteBatch, isBallHolderDie); 

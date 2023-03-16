@@ -34,9 +34,6 @@ namespace Olympuzz.GameScreen
 
         private Color waveColor;
 
-        private Texture2D waveSkill;
-
-
         public override void Initial()
         {
             //all button
@@ -53,8 +50,6 @@ namespace Olympuzz.GameScreen
             boardBGPic = content.Load<Texture2D>("Stage1/Board1");
             //all button on playscreen
             pauseButtonPic = content.Load<Texture2D>("Stage1/Pause1");
-
-            waveSkill = content.Load<Texture2D>("Stage3/skill");
 
             //bg music
             poseidonTheme = content.Load<Song>("Sounds/PoseidonTheme");
@@ -140,6 +135,7 @@ namespace Olympuzz.GameScreen
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Draw(bossSkill, Vector2.Zero, Color.Black);
             spriteBatch.Draw(boardBGPic, new Vector2(336, 54), Color.White);
             spriteBatch.Draw(stageBGPic, Vector2.Zero, Color.White);
 
@@ -156,7 +152,7 @@ namespace Olympuzz.GameScreen
             base.Draw(spriteBatch);
             if (isWave && eventScreen != EventScreen.PAUSE)
             {
-                spriteBatch.Draw(waveSkill, Vector2.Zero, waveColor * 0.2f);
+                spriteBatch.Draw(bossSkill, Vector2.Zero, waveColor * 0.2f);
             }
         }
     }
