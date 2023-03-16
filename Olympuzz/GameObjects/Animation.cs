@@ -28,8 +28,12 @@ namespace Olympuzz.GameObjects
         private int frames = 0;
         private int allframes;
 
-        //choose method to do
-        private int method;
+        //update 2
+        private bool animationStop = false;
+        private bool re;
+
+        //update 3
+        private bool loop = false;
 
         public Animation(Texture2D texture, int sizeX, int sizeY) : base(texture)
         {
@@ -38,105 +42,134 @@ namespace Olympuzz.GameObjects
             //get size of picture
             this.sizeX = sizeX;
             this.sizeY = sizeY;
-
-            this.method = 1;
+            this.tsizeX = sizeX;
+            this.tsizeY = sizeY;
         }
 
-        public Animation(Texture2D texture, int sizeX, int sizeY , String number) : base(texture)
+        public Animation(Texture2D texture, int sizeX, int sizeY, int tsizeX, int tsizeY) : base(texture)
         {
             this.texture = texture;
 
             //get size of picture
             this.sizeX = sizeX;
             this.sizeY = sizeY;
+            this.tsizeX = tsizeX;
+            this.tsizeY = tsizeY;
 
-            this.method = 2;
         }
 
         public void Initialize()
         {
             this.posX = (int)Position.X;
             this.posY = (int)Position.Y;
-            destRect = new Rectangle(posX, posY, sizeX, sizeY);
-            allframes = sourceRectVector.Count; 
+            destRect = new Rectangle(posX, posY, tsizeX, tsizeY);
+            allframes = sourceRectVector.Count;
+
+            re = false;
         }
         public override void Update(GameTime gameTime)
         {
-            switch (method)
+            elapsed += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            if (elapsed >= delay)
             {
-                case 1:
-                    elapsed += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-
-                    if (elapsed >= delay)
-                    {
-                        if (frames >= allframes - 1)
-                        {
-                            frames = 0;
-                        }
-                        else
-                        {
-                            frames++;
-                        }
-                        elapsed = 0;
-                    }
-
-                    sourceRect = new Rectangle((int)sourceRectVector[frames].X, (int)sourceRectVector[frames].Y, sizeX, sizeY);
-                    break;
-                case 2:
-                    elapsed += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-                    Debug.WriteLine("1");
-                    int loop = 0;
-                    if (elapsed >= delay)
-                    {
-                        if (frames >= allframes - 1)
-                        {
-                            Debug.WriteLine("2");
-                            loop = 1;
-                        }
-                        else if (frames < 0)
-                        {
-                            Debug.WriteLine("3");
-                            break;
-                        }
-                        else
-                        {
-                            if (loop == 0)
-                            {
-                                Debug.WriteLine("4");
-                                frames++;
-                            }
-                            else if (loop == 1)
-                            {
-                                Debug.WriteLine("5");
-                                frames--;
-                            }
-                        }
-                        elapsed = 0;
-                    }
-
-                    sourceRect = new Rectangle((int)sourceRectVector[frames].X, (int)sourceRectVector[frames].Y, sizeX, sizeY);
-                    break;
+                if (frames >= allframes - 1)
+                {
+                    frames = 0;
+                }
+                else
+                {
+                    frames++;
+                }
+                elapsed = 0;
             }
+
+            sourceRect = new Rectangle((int)sourceRectVector[frames].X, (int)sourceRectVector[frames].Y, sizeX, sizeY);
+        }
+        public void Update(GameTime gameTime,float d)
+        {
+            elapsed += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            if (elapsed >= d)
+            {
+                if (frames >= allframes - 1 && !re)
+                {
+                    re = true;
+                }
+                else if (!re)
+                {
+                    frames++;
+                }
+                else if (frames == 0 && re)
+                {
+                    elapsed = 0;
+                    animationStop = true;
+                    frames = 0;
+                    re = false;
+                    return;
+                }
+                else if (re)
+                {
+                    frames--;
+                }
+                elapsed = 0;
+            }
+
+            sourceRect = new Rectangle((int)sourceRectVector[frames].X, (int)sourceRectVector[frames].Y, sizeX, sizeY);
+        }
+
+        public void Update(GameTime gameTime, float d , bool isSkill)
+        {
+            elapsed += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            if (elapsed >= d)
+            {
+                if (!isSkill)
+                {
+                    if (frames == 6)
+                    {
+                        frames = 5;
+                    }
+                    else if (frames < 6)
+                    {
+                        frames++;
+                    }
+                }
+                else if (isSkill)
+                {
+                    if (frames == 0)
+                    {
+                        frames = 0;
+                    }
+                    else if (frames > 0)
+                    {
+                        frames--;
+                    }
+                }
+                elapsed = 0;
+            }
+
+            sourceRect = new Rectangle((int)sourceRectVector[frames].X, (int)sourceRectVector[frames].Y, sizeX, sizeY);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (method == 1)
-            {
-                spriteBatch.Draw(texture, destRect, sourceRect, Color.White);
-            }
-            else if (method == 2)
-            {
-                spriteBatch.Draw(texture, destRect, new Rectangle((int)sourceRectVector[1].X, (int)sourceRectVector[1].Y, sizeX, sizeY), Color.White);
-            }
-            //spriteBatch.Draw(texture, new Rectangle(posX, posY, sizeX, sizeY), sourceRect, Color.White);
-            //spriteBatch.Draw(texture, new Rectangle(100,100,128,360), Color.White);
-            //spriteBatch.Draw(texture, destRect, new Rectangle((int)sourceRectVector[1].X, (int)sourceRectVector[1].Y, sizeX, sizeY), Color.White);
+            spriteBatch.Draw(texture, destRect, sourceRect, Color.White);
         }
 
         public void AddVector(Vector2 sourceVector2)
         {
             sourceRectVector.Add(sourceVector2);
+        }
+
+        public bool GetAnimationStop()
+        {
+            return animationStop;
+        }
+
+        public void SetAnimationStop(bool b)
+        {
+            animationStop = b;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
@@ -9,6 +10,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Olympuzz.Singleton;
 
 namespace Olympuzz.GameScreen
 {
@@ -33,6 +35,10 @@ namespace Olympuzz.GameScreen
         private Random rand = new Random();
 
         private Color waveColor;
+        //sound
+        private SoundEffect waveSound;
+        private SoundEffectInstance waveSoundInstance;
+        private bool isSFXPlay = false;
 
         public override void Initial()
         {
@@ -55,6 +61,9 @@ namespace Olympuzz.GameScreen
             poseidonTheme = content.Load<Song>("Sounds/PoseidonTheme");
             MediaPlayer.Play(poseidonTheme);
 
+            //sfx
+            waveSound = content.Load<SoundEffect>("Sounds/WaveSound");
+            waveSoundInstance = waveSound.CreateInstance();
             Initial();
         }
         public override void UnloadContent()
@@ -126,10 +135,22 @@ namespace Olympuzz.GameScreen
                     skillActive = false;
                     hasSwitched = false;
                     isWave = false;
+                    isSFXPlay = false;
                     skillTime1 = 10f;
                     skillTime2 = 5f;
                     bossSkillChance1 = 5;
                     bossSkillChance2 = 10;
+                }
+
+                //poseidon wave
+                if (isWave && !isSFXPlay)
+                {
+                    waveSoundInstance.Play();
+                    isSFXPlay = true;
+                }
+                else if (!isWave)
+                {
+                    waveSoundInstance.Stop();
                 }
             }
         }
@@ -148,12 +169,54 @@ namespace Olympuzz.GameScreen
                 spriteBatch.Draw(holderDeathPic, new Vector2(410, 606), Color.White);
             }
 
+            if (skillCooldown || athenaSkilled)
+            {
+                switch (Singleton.Instance.charState)
+                {
+                    case CharState.ATHENA:
+                        spriteBatch.Draw(athenaSkillPic, new Vector2(114, 472), Color.White);
+                        break;
+                    case CharState.HERMES:
+                        spriteBatch.Draw(hermesSkillPic, new Vector2(114, 472), Color.White);
+                        break;
+                    case CharState.DIONYSUS:
+                        spriteBatch.Draw(dionysusSkillPic, new Vector2(114, 472), Color.White);
+                        break;
+                    case CharState.HEPHAESTUS:
+                        spriteBatch.Draw(hephaestusSkillPic, new Vector2(114, 472), Color.White);
+                        break;
+                }
+                if (!godSkill.GetAnimationStop())
+                {
+                    godSkill.Draw(spriteBatch);
+                }
+            }
+            else
+            {
+                switch (Singleton.Instance.charState)
+                {
+                    case CharState.ATHENA:
+                        spriteBatch.Draw(athenaReadyPic, new Vector2(114, 472), Color.White);
+                        break;
+                    case CharState.HERMES:
+                        spriteBatch.Draw(hermesReadyPic, new Vector2(114, 472), Color.White);
+                        break;
+                    case CharState.DIONYSUS:
+                        spriteBatch.Draw(dionysusReadyPic, new Vector2(114, 472), Color.White);
+                        break;
+                    case CharState.HEPHAESTUS:
+                        spriteBatch.Draw(hephaestusReadyPic, new Vector2(114, 472), Color.White);
+                        break;
+                }
+            }
+
             shooter.Draw(spriteBatch, isBallHolderDie);
             base.Draw(spriteBatch);
             if (isWave && eventScreen != EventScreen.PAUSE)
             {
                 spriteBatch.Draw(bossSkillPic, Vector2.Zero, waveColor * 0.2f);
             }
+
         }
     }
 }

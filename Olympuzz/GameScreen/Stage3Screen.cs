@@ -1,14 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using Olympuzz.GameObjects;
+using Olympuzz.Managers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Olympuzz.Singleton;
 
 namespace Olympuzz.GameScreen
 {
@@ -39,14 +42,13 @@ namespace Olympuzz.GameScreen
         public override void Initial()
         {
             //all button
-            pauseButton = new Button(pauseButtonPic, new Vector2(86, 60), new Vector2(148, 50));//create button object on playscreen
+            pauseButton = new Button(pauseButtonPic, new Vector2(86, 55), new Vector2(148, 58));//create button object on playscreen
             base.Initial();
         }
         public override void LoadContent()
         {
+            //ContentManager content = new ContentManager(ScreenManager.Instance.Content.ServiceProvider, "Content");
             base.LoadContent();
-            //sound
-            thunderSound = content.Load<SoundEffect>("Sounds/ThunderSound");
 
             //stage map
             stageBGPic = content.Load<Texture2D>("Stage3/ZeusStage");
@@ -58,6 +60,8 @@ namespace Olympuzz.GameScreen
             //bg music
             zeusTheme = content.Load<Song>("Sounds/ZeusTheme");
             MediaPlayer.Play(zeusTheme);
+            //sfx
+            thunderSound = content.Load<SoundEffect>("Sounds/ThunderSound");
 
             Initial();
         }
@@ -143,6 +147,49 @@ namespace Olympuzz.GameScreen
             spriteBatch.Draw(boardBGPic, new Vector2(332, 54), Color.White);
             spriteBatch.Draw(stageBGPic, Vector2.Zero, Color.White);
 
+            if (skillCooldown || athenaSkilled)
+            {
+                switch (Singleton.Instance.charState)
+                {
+                    case CharState.ATHENA:
+                        spriteBatch.Draw(athenaSkillPic, new Vector2(114, 472), Color.White);
+                        break;
+                    case CharState.HERMES:
+                        spriteBatch.Draw(hermesSkillPic, new Vector2(114, 472), Color.White);
+                        break;
+                    case CharState.DIONYSUS:
+                        spriteBatch.Draw(dionysusSkillPic, new Vector2(114, 472), Color.White);
+                        break;
+                    case CharState.HEPHAESTUS:
+                        spriteBatch.Draw(hephaestusSkillPic, new Vector2(114, 472), Color.White);
+                        break;
+                }
+                if (!godSkill.GetAnimationStop())
+                {
+                    godSkill.Draw(spriteBatch);
+                }
+            }
+            else
+            {
+                switch (Singleton.Instance.charState)
+                {
+                    case CharState.ATHENA:
+                        spriteBatch.Draw(athenaReadyPic, new Vector2(114, 472), Color.White);
+                        break;
+                    case CharState.HERMES:
+                        spriteBatch.Draw(hermesReadyPic, new Vector2(114, 472), Color.White);
+                        break;
+                    case CharState.DIONYSUS:
+                        spriteBatch.Draw(dionysusReadyPic, new Vector2(114, 472), Color.White);
+                        break;
+                    case CharState.HEPHAESTUS:
+                        spriteBatch.Draw(hephaestusReadyPic, new Vector2(114, 472), Color.White);
+                        break;
+                }
+            }
+
+            shooter.Draw(spriteBatch, isBallHolderDie);
+
             if (!isBallHolderDie)
             {
                 spriteBatch.Draw(holderAlivePic, new Vector2(410, 606), Color.White);
@@ -152,7 +199,6 @@ namespace Olympuzz.GameScreen
                 spriteBatch.Draw(holderDeathPic, new Vector2(410, 606), Color.White);
             }
 
-            shooter.Draw(spriteBatch, isBallHolderDie);
             base.Draw(spriteBatch);
 
             if (isflash)

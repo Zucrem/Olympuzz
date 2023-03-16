@@ -8,11 +8,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Olympuzz.Singleton;
 
 namespace Olympuzz.GameScreen
 {
     class Stage2Screen : PlayScreen
     {
+        //hades skill texture
+        protected Texture2D athenaSkillPic2, athenaReadyPic2, hermesSkillPic2, hermesReadyPic2, dionysusSkillPic2, dionysusReadyPic2, hephaestusSkillPic2, hephaestusReadyPic2;//all god skill texture
         //song and sfx
         protected Song hadesTheme;
 
@@ -45,6 +48,16 @@ namespace Olympuzz.GameScreen
             boardBGPic = content.Load<Texture2D>("Stage2/Board2");
             //all button on playscreen
             pauseButtonPic = content.Load<Texture2D>("Stage2/Pause2");
+
+            //all good god skill
+            athenaSkillPic2 = content.Load<Texture2D>("GodSkill/AthenaSkill2");
+            athenaReadyPic2 = content.Load<Texture2D>("GodSkill/AthenaReady2");
+            hermesSkillPic2 = content.Load<Texture2D>("GodSkill/HermesSkill2");
+            hermesReadyPic2 = content.Load<Texture2D>("GodSkill/HermesReady2");
+            dionysusSkillPic2 = content.Load<Texture2D>("GodSkill/DionysusSkill2");
+            dionysusReadyPic2 = content.Load<Texture2D>("GodSkill/DionysusReady2");
+            hephaestusSkillPic2 = content.Load<Texture2D>("GodSkill/HephaestusSkill2");
+            hephaestusReadyPic2 = content.Load<Texture2D>("GodSkill/HephaestusReady2");
 
             //bg music
             hadesTheme = content.Load<Song>("Sounds/HadesTheme");
@@ -140,8 +153,50 @@ namespace Olympuzz.GameScreen
                 spriteBatch.Draw(holderDeathPic, new Vector2(410, 606), Color.White);
             }
 
+            if (skillCooldown || athenaSkilled)
+            {
+                switch (Singleton.Instance.charState)
+                {
+                    case CharState.ATHENA:
+                        spriteBatch.Draw(athenaSkillPic2, new Vector2(114, 472), Color.White);
+                        break;
+                    case CharState.HERMES:
+                        spriteBatch.Draw(hermesSkillPic2, new Vector2(114, 472), Color.White);
+                        break;
+                    case CharState.DIONYSUS:
+                        spriteBatch.Draw(dionysusSkillPic2, new Vector2(114, 472), Color.White);
+                        break;
+                    case CharState.HEPHAESTUS:
+                        spriteBatch.Draw(hephaestusSkillPic2, new Vector2(114, 472), Color.White);
+                        break;
+                }
+                if (!godSkill.GetAnimationStop())
+                {
+                    godSkill.Draw(spriteBatch);
+                }
+            }
+            else
+            {
+                switch (Singleton.Instance.charState)
+                {
+                    case CharState.ATHENA:
+                        spriteBatch.Draw(athenaReadyPic2, new Vector2(114, 472), Color.White);
+                        break;
+                    case CharState.HERMES:
+                        spriteBatch.Draw(hermesReadyPic2, new Vector2(114, 472), Color.White);
+                        break;
+                    case CharState.DIONYSUS:
+                        spriteBatch.Draw(dionysusReadyPic2, new Vector2(114, 472), Color.White);
+                        break;
+                    case CharState.HEPHAESTUS:
+                        spriteBatch.Draw(hephaestusReadyPic2, new Vector2(114, 472), Color.White);
+                        break;
+                }
+            }
+
             shooter.Draw(spriteBatch, isBallHolderDie); 
             base.Draw(spriteBatch);
+
         }
     }
 }
