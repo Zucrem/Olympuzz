@@ -28,7 +28,9 @@ namespace Olympuzz.GameScreen
         protected Texture2D confirmExitPopUpPic, noConfirmPic1, yesConfirmPic1, noConfirmPic2, yesConfirmPic2;//for confirm
         protected Texture2D athenaPic, hermesPic, dionysusPic, hephaestusPic;//all good god
         protected Texture2D holderAlivePic, holderDeathPic;//holder texture
-        protected Texture2D athenaSkillPic, athenaReadyPic, hermesSkillPic, hermesReadyPic, dionysusSkillPic, dionysusReadyPic, hephaestusSkillPic, hephaestusReadyPic , bossSkill;//all god skill texture
+        protected Texture2D athenaSkillPic, athenaReadyPic, hermesSkillPic, hermesReadyPic, dionysusSkillPic, dionysusReadyPic, hephaestusSkillPic, hephaestusReadyPic;//all god skill texture
+        protected Texture2D athenaHourGlassPic, hermesStormPic, hephaestusHammerPic;//all good god pic
+        protected Texture2D bossSkillPic, poseidonSkillPic, hadesSkillPic, zeusSkillPic;//all enemy god skill texture
         protected readonly Texture2D[] bubleAllTexture = new Texture2D[5];
 
         protected Color color;
@@ -41,7 +43,7 @@ namespace Olympuzz.GameScreen
         protected Bubble[,] bubble = new Bubble[15, 10];
 
         protected Shooter shooter;
-        protected Animation god;//all good god animation
+        protected Animation god, godSkill, hephaestusHammer;//all good god animation
         protected Button pauseButton;
         //button at pause screen
         protected Button continueButton, restartButton, exitButton;
@@ -71,8 +73,6 @@ namespace Olympuzz.GameScreen
         protected int startPositionY;
 
         protected int alpha = 255;
-        protected SoundEffectInstance BubbleSFX_stick, BubbleSFX_dead;
-        protected SoundEffectInstance Click;
 
         //check if go next page or fade finish
         protected bool notPlay = false;
@@ -106,6 +106,11 @@ namespace Olympuzz.GameScreen
             WIN,
             LOSE
         }
+
+
+        //sound
+        //good god sfx
+        private SoundEffect athenaHourGlassSFX, hermesStormSFX, dionysusMuteSFX,hephaestusHammerSFX;
 
         public virtual void Initial()
         {
@@ -177,6 +182,20 @@ namespace Olympuzz.GameScreen
                     god.AddVector(new Vector2(133, 0));
                     god.AddVector(new Vector2(0, 206));
                     god.AddVector(new Vector2(133, 206));
+
+                    godSkill = new Animation(athenaHourGlassPic, 208, 432, 52, 108)
+                    {
+                        Name = "AthenaHourGlass",
+                        Position = new Vector2(699, 590),
+                        IsActive = true,
+                    };
+                    godSkill.AddVector(new Vector2(0, 0));
+                    godSkill.AddVector(new Vector2(346, 0));
+                    godSkill.AddVector(new Vector2(692, 0));
+                    godSkill.AddVector(new Vector2(1000, 0));
+                    godSkill.AddVector(new Vector2(1346, 0));
+                    godSkill.AddVector(new Vector2(1692, 0));
+                    godSkill.AddVector(new Vector2(1992, 0));
                     break;
 
                 case CharState.HERMES:
@@ -190,6 +209,19 @@ namespace Olympuzz.GameScreen
                     god.AddVector(new Vector2(151, 0));
                     god.AddVector(new Vector2(0, 206));
                     god.AddVector(new Vector2(151, 206));
+
+                    godSkill = new Animation(hermesStormPic, 553, 522)
+                    {
+                        Name = "HermesStorm",
+                        Position = new Vector2(316, 101),
+                        IsActive = true,
+                    };
+                    godSkill.AddVector(new Vector2(0, 0));
+                    godSkill.AddVector(new Vector2(705, 0));
+                    godSkill.AddVector(new Vector2(1485, 0));
+                    godSkill.AddVector(new Vector2(2176, 0));
+                    godSkill.AddVector(new Vector2(0, 887));
+                    godSkill.AddVector(new Vector2(705, 887));
                     break;
 
                 case CharState.DIONYSUS:
@@ -203,6 +235,19 @@ namespace Olympuzz.GameScreen
                     god.AddVector(new Vector2(150, 0));
                     god.AddVector(new Vector2(0, 208));
                     god.AddVector(new Vector2(150, 208));
+
+                    godSkill = new Animation(hermesStormPic, 553, 522)
+                    {
+                        Name = "HermesStorm",
+                        Position = new Vector2(316, 101),
+                        IsActive = true,
+                    };
+                    godSkill.AddVector(new Vector2(-500, 0));
+                    /*godSkill.AddVector(new Vector2(705, 0));
+                    godSkill.AddVector(new Vector2(1485, 0));
+                    godSkill.AddVector(new Vector2(2176, 0));
+                    godSkill.AddVector(new Vector2(0, 887));
+                    godSkill.AddVector(new Vector2(705, 887));*/
                     break;
 
                 case CharState.HEPHAESTUS:
@@ -217,8 +262,23 @@ namespace Olympuzz.GameScreen
                     god.AddVector(new Vector2(0, 208));
                     god.AddVector(new Vector2(141, 208));
                     god.AddVector(new Vector2(0, 434));
+
+                    godSkill = new Animation(hephaestusHammerPic, 553, 522)
+                    {
+                        Name = "HephaestusHammer",
+                        Position = new Vector2(316, 101),
+                        IsActive = true,
+                    };
+                    godSkill.AddVector(new Vector2(-500, 0));
+                    /*godSkill.AddVector(new Vector2(705, 0));
+                    godSkill.AddVector(new Vector2(1485, 0));
+                    godSkill.AddVector(new Vector2(2176, 0));
+                    godSkill.AddVector(new Vector2(0, 887));
+                    godSkill.AddVector(new Vector2(705, 887));*/
                     break;
             }
+
+            godSkill.Initialize();
             god.Initialize();
         }
 
@@ -226,6 +286,7 @@ namespace Olympuzz.GameScreen
         public override void LoadContent()
         {
             base.LoadContent();
+
             //stageBGPic picture add
             blackScreenPic = content.Load<Texture2D>("blackScreen");
 
@@ -281,7 +342,7 @@ namespace Olympuzz.GameScreen
             holderAlivePic = content.Load<Texture2D>("PlayScreen/HolderAlive");
             holderDeathPic = content.Load<Texture2D>("PlayScreen/HolderDeath");
 
-            //al good god skill
+            //all good god skill
             athenaSkillPic = content.Load<Texture2D>("GodSkill/AthenaSkill");
             athenaReadyPic = content.Load<Texture2D>("GodSkill/AthenaReady");
             hermesSkillPic = content.Load<Texture2D>("GodSkill/HermesSkill");
@@ -290,10 +351,23 @@ namespace Olympuzz.GameScreen
             dionysusReadyPic = content.Load<Texture2D>("GodSkill/DionysusReady");
             hephaestusSkillPic = content.Load<Texture2D>("GodSkill/HephaestusSkill");
             hephaestusReadyPic = content.Load<Texture2D>("GodSkill/HephaestusReady");
-            bossSkill = content.Load<Texture2D>("Stage3/skill");
+
+            athenaHourGlassPic = content.Load<Texture2D>("GodSkill/AthenaHourGlass");
+            hermesStormPic = content.Load<Texture2D>("GodSkill/HermesStorm");
+            hephaestusHammerPic = content.Load<Texture2D>("GodSkill/HephaestusHammer");
+
+            //all bad god skill
+            bossSkillPic = content.Load<Texture2D>("EnemyGodSkill/skill");
+            poseidonSkillPic = content.Load<Texture2D>("EnemyGodSkill/PoseidonTrident");
+            hadesSkillPic = content.Load<Texture2D>("EnemyGodSkill/HadesBident");
+            zeusSkillPic = content.Load<Texture2D>("EnemyGodSkill/ZeusThunder");
+
+
 
             //song and sfx
             MediaPlayer.IsRepeating = true;
+            //sfx
+            hephaestusHammerSFX = content.Load<SoundEffect>("Sounds/HammerSFX");
 
             Initial();
             
@@ -320,6 +394,8 @@ namespace Olympuzz.GameScreen
                     eventScreen = EventScreen.PAUSE;
                     shooter.IsActive = false;
                     god.IsActive = false;
+                    godSkill.IsActive = false;
+
                     MediaPlayer.Pause();
                 }
 
@@ -530,7 +606,7 @@ namespace Olympuzz.GameScreen
 
                             break;
                         case CharState.HEPHAESTUS:
-
+                            hephaestusHammerSFX.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
                             break;
                     }
                 }
@@ -556,6 +632,7 @@ namespace Olympuzz.GameScreen
                 if (cooldownTime >= 10)
                 {
                     skillCooldown = false;
+                    godSkill.SetAnimationStop(false); 
                     athenaTime = 0;
                     cooldownTime = 0;
                 }
@@ -595,7 +672,27 @@ namespace Olympuzz.GameScreen
 
                 //all update
                 god.Update(gameTime);
+                if (!godSkill.GetAnimationStop())
+                {
+                    switch (Singleton.Instance.charState)
+                    {
+                        case CharState.ATHENA:
+                            godSkill.Update(gameTime, 100, athenaSkilled);
+                            break;
+                        case CharState.HERMES:
+                            godSkill.Update(gameTime, 150);
+                            break;
+                        case CharState.DIONYSUS:
+                            godSkill.Update(gameTime, 150);
+                            break;
+                        case CharState.HEPHAESTUS:
+                            godSkill.Update(gameTime, 150);
+                            break;
+                    }
+                }
+
                 shooter.Update(gameTime, bubble , isHell);
+
                 CheckGameOver(gameTime);
 
             }
@@ -617,6 +714,7 @@ namespace Olympuzz.GameScreen
                                 pauseButton.SetCantHover(false);
                                 shooter.IsActive = true;
                                 god.IsActive = true;
+                                godSkill.IsActive = true;
                                 eventScreen = EventScreen.NULL;
                                 MediaPlayer.Resume();
                                 notPlay = false;
@@ -870,47 +968,11 @@ namespace Olympuzz.GameScreen
 
             pauseButton.Draw(spriteBatch);
             god.Draw(spriteBatch);
+            godSkill.Draw(spriteBatch);
 
             /*spriteBatch.DrawString(Arcanista, "Score : " + Singleton.Instance.Score, new Vector2(1060, 260), color);
             spriteBatch.DrawString(Arcanista, "Time : " + Timer.ToString("F"), new Vector2(20, 260), color);
             spriteBatch.DrawString(Arcanista, "Next Time : " + (tickPerUpdate - _scrollTime).ToString("F"), new Vector2(20, 210), color);*/
-
-            if (skillCooldown || athenaSkilled)
-            {
-                switch (Singleton.Instance.charState)
-                {
-                    case CharState.ATHENA:
-                        spriteBatch.Draw(athenaSkillPic, new Vector2(114, 472), Color.White);
-                        break;
-                    case CharState.HERMES:
-                        spriteBatch.Draw(hermesSkillPic, new Vector2(114, 472), Color.White);
-                        break;
-                    case CharState.DIONYSUS:
-                        spriteBatch.Draw(dionysusSkillPic, new Vector2(114, 472), Color.White);
-                        break;
-                    case CharState.HEPHAESTUS:
-                        spriteBatch.Draw(hephaestusSkillPic, new Vector2(114, 472), Color.White);
-                        break;
-                }
-            }
-            else
-            {
-                switch (Singleton.Instance.charState)
-                {
-                    case CharState.ATHENA:
-                        spriteBatch.Draw(athenaReadyPic, new Vector2(114, 472), Color.White);
-                        break;
-                    case CharState.HERMES:
-                        spriteBatch.Draw(hermesReadyPic, new Vector2(114, 472), Color.White);
-                        break;
-                    case CharState.DIONYSUS:
-                        spriteBatch.Draw(dionysusReadyPic, new Vector2(114, 472), Color.White);
-                        break;
-                    case CharState.HEPHAESTUS:
-                        spriteBatch.Draw(hephaestusReadyPic, new Vector2(114, 472), Color.White);
-                        break;
-                }
-            }
 
             if (notPlay)
             {
@@ -986,12 +1048,12 @@ namespace Olympuzz.GameScreen
                             //draw only for Stage1 and Stage2
                             if (Singleton.Instance.levelState == LevelState.POSEIDON || Singleton.Instance.levelState == LevelState.HADES)
                             {
-                                restartWLButton.SetPosition(new Vector2(540, 510));
-                                exitWLButton.SetPosition(new Vector2(540, 591));
                                 nextButton.Draw(spriteBatch);
-                                restartWLButton.Draw(spriteBatch);
-                                exitWLButton.Draw(spriteBatch);
                             }
+                            restartWLButton.SetPosition(new Vector2(540, 510));
+                            exitWLButton.SetPosition(new Vector2(540, 591));
+                            restartWLButton.Draw(spriteBatch);
+                            exitWLButton.Draw(spriteBatch);
                             break;
                     }
                 }

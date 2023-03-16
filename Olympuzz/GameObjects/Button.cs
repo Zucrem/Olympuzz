@@ -44,7 +44,7 @@ namespace Olympuzz.GameObjects
 
         public void LoadContent()
         {
-            ContentManager content = new ContentManager(ScreenManager.Instance.Content.ServiceProvider, "Content"); ;
+            ContentManager content = new ContentManager(ScreenManager.Instance.Content.ServiceProvider, "Content");
             // Sounds
             clickSound = content.Load<SoundEffect>("Sounds/clickSound");
             whileHoveringSound = content.Load<SoundEffect>("Sounds/hoverSound");
