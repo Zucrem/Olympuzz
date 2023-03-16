@@ -205,6 +205,18 @@
 /processorParam:TextureFormat=Color
 /build:GodSkill/AthenaReady.png
 
+#begin GodSkill/AthenaReady2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GodSkill/AthenaReady2.png
+
 #begin GodSkill/AthenaSkill.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -216,6 +228,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:GodSkill/AthenaSkill.png
+
+#begin GodSkill/AthenaSkill2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GodSkill/AthenaSkill2.png
+
+#begin GodSkill/DionysusMute.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GodSkill/DionysusMute.png
 
 #begin GodSkill/DionysusReady.png
 /importer:TextureImporter
@@ -229,6 +265,18 @@
 /processorParam:TextureFormat=Color
 /build:GodSkill/DionysusReady.png
 
+#begin GodSkill/DionysusReady2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GodSkill/DionysusReady2.png
+
 #begin GodSkill/DionysusSkill.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -240,6 +288,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:GodSkill/DionysusSkill.png
+
+#begin GodSkill/DionysusSkill2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GodSkill/DionysusSkill2.png
 
 #begin GodSkill/HephaestusHammer.png
 /importer:TextureImporter
@@ -265,6 +325,18 @@
 /processorParam:TextureFormat=Color
 /build:GodSkill/HephaestusReady.png
 
+#begin GodSkill/HephaestusReady2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GodSkill/HephaestusReady2.png
+
 #begin GodSkill/HephaestusSkill.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -276,6 +348,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:GodSkill/HephaestusSkill.png
+
+#begin GodSkill/HephaestusSkill2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GodSkill/HephaestusSkill2.png
 
 #begin GodSkill/HermesReady.png
 /importer:TextureImporter
@@ -289,6 +373,18 @@
 /processorParam:TextureFormat=Color
 /build:GodSkill/HermesReady.png
 
+#begin GodSkill/HermesReady2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GodSkill/HermesReady2.png
+
 #begin GodSkill/HermesSkill.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -300,6 +396,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:GodSkill/HermesSkill.png
+
+#begin GodSkill/HermesSkill2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GodSkill/HermesSkill2.png
 
 #begin GodSkill/HermesStorm.png
 /importer:TextureImporter
@@ -1063,11 +1171,11 @@
 /processorParam:Quality=Best
 /build:Sounds/HadesTheme.mp3
 
-#begin Sounds/HammerSound.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
+#begin Sounds/HammerSFX.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Sounds/HammerSound.mp3
+/build:Sounds/HammerSFX.wav
 
 #begin Sounds/hoverSound.wav
 /importer:WavImporter
@@ -1093,11 +1201,17 @@
 /processorParam:Quality=Best
 /build:Sounds/PoseidonTheme.mp3
 
-#begin Sounds/ThunderSound.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
+#begin Sounds/ThunderSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Sounds/ThunderSound.mp3
+/build:Sounds/ThunderSound.wav
+
+#begin Sounds/WaveSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/WaveSound.wav
 
 #begin Sounds/ZeusTheme.mp3
 /importer:Mp3Importer
