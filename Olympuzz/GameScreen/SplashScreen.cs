@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using static Olympuzz.Managers.ScreenManager;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace Olympuzz.GameScreen
 {
@@ -24,6 +25,9 @@ namespace Olympuzz.GameScreen
         private float timer; // Elapsed time in game 
         private float timePerUpdate; // Will do update function when _timer > _timePerUpdate
         private bool Show; // true will fade in and false will fade out
+
+        //bg and sfx sound
+        private Song openningTheme;
 
         public SplashScreen()
         {
@@ -41,6 +45,10 @@ namespace Olympuzz.GameScreen
             mediumfonts = content.Load<SpriteFont>("AlagardMedium");
             LogoPic = content.Load<Texture2D>("GameLogo");
             blackScreen = content.Load<Texture2D>("blackScreen");
+
+            //song and sfx
+            openningTheme = content.Load<Song>("SplashScreen/OpenningTheme");
+            MediaPlayer.Play(openningTheme);
         }
         public override void UnloadContent() { base.UnloadContent(); }
         public override void Update(GameTime gameTime)

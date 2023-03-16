@@ -145,11 +145,11 @@ namespace Olympuzz.GameScreen
 
             if (!isBallHolderDie)
             {
-                spriteBatch.Draw(HolderAlivePic, new Vector2(410, 606), Color.White);
+                spriteBatch.Draw(holderAlivePic, new Vector2(410, 606), Color.White);
             }
             else
             {
-                spriteBatch.Draw(HolderDeathPic, new Vector2(410, 606), Color.White);
+                spriteBatch.Draw(holderDeathPic, new Vector2(410, 606), Color.White);
             }
 
             shooter.Draw(spriteBatch, isBallHolderDie);
