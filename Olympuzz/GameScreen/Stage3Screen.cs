@@ -50,8 +50,6 @@ namespace Olympuzz.GameScreen
             //all button on playscreen
             pauseButtonPic = content.Load<Texture2D>("Stage3/Pause3");
 
-            flashSkill = content.Load<Texture2D>("Stage3/skill");
-
             //bg music
             zeusTheme = content.Load<Song>("Sounds/ZeusTheme");
             MediaPlayer.Play(zeusTheme);
@@ -84,7 +82,6 @@ namespace Olympuzz.GameScreen
                             int chance = rand.Next(3);
                             if (chance == 1)
                             {
-                                Debug.WriteLine("Flash bang");
                                 isflash = true;
                                 skillActive = true;
                             }
@@ -136,15 +133,25 @@ namespace Olympuzz.GameScreen
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(boardBGPic, new Vector2(336, 54), Color.White);
+            spriteBatch.Draw(bossSkill, Vector2.Zero, Color.Black);
+            spriteBatch.Draw(boardBGPic, new Vector2(332, 54), Color.White);
             spriteBatch.Draw(stageBGPic, Vector2.Zero, Color.White);
 
-            shooter.Draw(spriteBatch, false);
+            if (!isBallHolderDie)
+            {
+                spriteBatch.Draw(holderAlivePic, new Vector2(410, 606), Color.White);
+            }
+            else
+            {
+                spriteBatch.Draw(holderDeathPic, new Vector2(410, 606), Color.White);
+            }
+
+            shooter.Draw(spriteBatch, isBallHolderDie);
             base.Draw(spriteBatch);
 
             if (isflash)
             {
-                spriteBatch.Draw(flashSkill, Vector2.Zero, Color.White);
+                spriteBatch.Draw(bossSkill, Vector2.Zero, Color.White);
             }
 
         }

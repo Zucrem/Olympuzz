@@ -68,7 +68,11 @@ namespace Olympuzz.GameObjects
                     }
                 }//ถ้าหน้าไม้อยู่ในสถานะยิง
                 if (Singleton.Instance.Shooting)
+                {
+                    //bubble.Angle = angle + MathHelper.Pi;
                     bubble.Update(gameTime, bubbles);
+                }
+                    
             }
         }
 
