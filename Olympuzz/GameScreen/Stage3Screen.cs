@@ -84,7 +84,6 @@ namespace Olympuzz.GameScreen
                             int chance = rand.Next(3);
                             if (chance == 1)
                             {
-                                Debug.WriteLine("Flash bang");
                                 isflash = true;
                                 skillActive = true;
                             }
@@ -136,10 +135,19 @@ namespace Olympuzz.GameScreen
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(boardBGPic, new Vector2(336, 54), Color.White);
+            spriteBatch.Draw(boardBGPic, new Vector2(332, 54), Color.White);
             spriteBatch.Draw(stageBGPic, Vector2.Zero, Color.White);
 
-            shooter.Draw(spriteBatch, false);
+            if (!isBallHolderDie)
+            {
+                spriteBatch.Draw(HolderAlivePic, new Vector2(410, 606), Color.White);
+            }
+            else
+            {
+                spriteBatch.Draw(HolderDeathPic, new Vector2(410, 606), Color.White);
+            }
+
+            shooter.Draw(spriteBatch, isBallHolderDie);
             base.Draw(spriteBatch);
 
             if (isflash)

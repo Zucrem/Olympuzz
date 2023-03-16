@@ -154,7 +154,7 @@ namespace Olympuzz.GameScreen
 
             shooter.Draw(spriteBatch, isBallHolderDie);
             base.Draw(spriteBatch);
-            if (isWave)
+            if (isWave && eventScreen != EventScreen.PAUSE)
             {
                 spriteBatch.Draw(waveSkill, Vector2.Zero, waveColor * 0.2f);
             }

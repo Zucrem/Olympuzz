@@ -61,6 +61,12 @@ namespace Olympuzz.GameScreen
         protected float athenaTime = 0f;
         protected float cooldownTime = 0f;
 
+        protected int startOddPosition;
+        protected int startEvenPosition;
+        protected int distancePositionX;
+        protected int distancePositionY;
+        protected int startPositionY;
+
         protected int alpha = 255;
         protected SoundEffectInstance BubbleSFX_stick, BubbleSFX_dead;
         protected SoundEffectInstance Click;
@@ -98,6 +104,12 @@ namespace Olympuzz.GameScreen
 
         public virtual void Initial()
         {
+            startEvenPosition = 363;
+            startOddPosition = 388;
+            distancePositionX = 49;
+            distancePositionY = 42;
+            startPositionY = 79;
+
             color = new Color(255, 255, 255, alpha);
             for (int i = 0; i < 5; i++) // if end in 13 line i < 5 || if end in 12 line i < 4
             {
@@ -106,7 +118,7 @@ namespace Olympuzz.GameScreen
                     bubble[i, j] = new Bubble(bubleAllTexture)
                     {
                         Name = "Bubble",
-                        Position = new Vector2((j * 49) + (isEven ? 363 : 388), (i * 42) + 79), // what x cordition is the best 414 or 415
+                        Position = new Vector2((j * distancePositionX) + (isEven ? startEvenPosition : startOddPosition), (i * distancePositionY) + startPositionY), // what x cordition is the best 414 or 415
                         isEven = isEven,
                         IsActive = false,
                     };
@@ -325,7 +337,7 @@ namespace Olympuzz.GameScreen
                             bubble[i, j] = new Bubble(bubleAllTexture)
                             {
                                 Name = "Bubble",
-                                Position = new Vector2((j * 49) + (isEven ? 363 : 388), (i * 42) + 79),
+                                Position = new Vector2((j * distancePositionX) + (isEven ? startEvenPosition : startOddPosition), (i * distancePositionY) + startPositionY),
                                 isEven = isEven,
                                 IsActive = false,
                             };
@@ -407,24 +419,24 @@ namespace Olympuzz.GameScreen
 
                 else if (Keyboard.GetState().IsKeyDown(Keys.Right) && elapsedMs > 200 && _g)
                 {
-                    foreach (Bubble b in bubble)
-                    {
-                        if (b != null)
-                        {
-                            b.Cheat();
-                        }
-                    }
-
-                    //for (int i = 0; i < 10; i++)
+                    //foreach (Bubble b in bubble)
                     //{
-                    //    for (int j = 0; j < 10; j++)
+                    //    if (b != null)
                     //    {
-                    //        if (bubble[i, j] != null && i > 1)
-                    //        {
-                    //            bubble[i, j].Cheat();
-                    //        }
+                    //        b.Cheat();
                     //    }
                     //}
+
+                    for (int i = 0; i < 10; i++)
+                    {
+                        for (int j = 0; j < 10; j++)
+                        {
+                            if (bubble[i, j] != null && i > 1)
+                            {
+                                bubble[i, j].Cheat();
+                            }
+                        }
+                    }
 
                     shooter.GetBubble().Cheat();
                     _c = false;
@@ -497,8 +509,6 @@ namespace Olympuzz.GameScreen
                             cooldownTime = -5;
                             break;
                         case CharState.DIONYSUS:
-
-                            Debug.WriteLine(Singleton.Instance.comboCount);
 
                             break;
                         case CharState.HEPHAESTUS:
@@ -698,6 +708,7 @@ namespace Olympuzz.GameScreen
                             if (restartWLButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                             {
                                 Singleton.Instance.Score = 0;
+                                Singleton.Instance.speed = -1400;
                                 ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
                             }
 
@@ -712,6 +723,7 @@ namespace Olympuzz.GameScreen
                             //if click restart
                             if (restartWLButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                             {
+                                Singleton.Instance.speed = -1400;
                                 Singleton.Instance.Score = 0;
                                 ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
                             }
@@ -730,6 +742,7 @@ namespace Olympuzz.GameScreen
                 {
                     if (yesConfirmButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                     {
+                        Singleton.Instance.speed = -1400;
                         Singleton.Instance.Score = 0;
                         ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.MenuScreen);
                     }
@@ -799,7 +812,7 @@ namespace Olympuzz.GameScreen
                 {
                     if (bubble[i, j] != null)
                     {
-                        bubble[i, j].Position = new Vector2((j * 49) + (bubble[i, j].isEven ? 363 : 388), (i * 42) + 79);
+                        bubble[i, j].Position = new Vector2((j * distancePositionX) + (bubble[i, j].isEven ? startEvenPosition : startOddPosition), (i * distancePositionY) + startPositionY);
                         if (j == (bubble[i, j].isEven ? 9 : 8)) break;
                     }
                 }
