@@ -47,7 +47,7 @@ namespace Olympuzz.GameScreen
             blackScreen = content.Load<Texture2D>("blackScreen");
 
             //song and sfx
-            openningTheme = content.Load<Song>("SplashScreen/OpenningTheme");
+            openningTheme = content.Load<Song>("Sounds/OpenningTheme");
             MediaPlayer.Play(openningTheme);
         }
         public override void UnloadContent() { base.UnloadContent(); }
@@ -81,7 +81,7 @@ namespace Olympuzz.GameScreen
                 else
                 {
                     // fade out
-                    alpha -= 5;
+                    alpha -= 20;
                     // whene fade out finish
                     if (alpha <= 0)
                     {
