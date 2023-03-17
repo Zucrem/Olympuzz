@@ -91,23 +91,19 @@ namespace Olympuzz.GameObjects
             {
                 if (frames >= allframes - 1 && !re)
                 {
-                    Debug.WriteLine("Reset" + frames);
                     re = true;
                 }
                 else if (!re)
                 {
-                    Debug.WriteLine("Frame Next : " + frames);
                     frames++;
                 }
                 else if (frames == 0 && re)
                 {
-                    Debug.WriteLine("Frame End" + frames);
                     animationStop = true;
                     return;
                 }
                 else if (re)
                 {
-                    Debug.WriteLine("Frame Revesre : " + frames);
                     frames--;
                 }
                 elapsed = 0;

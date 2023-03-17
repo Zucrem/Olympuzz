@@ -366,8 +366,6 @@ namespace Olympuzz.GameScreen
             hadesSkillPic = content.Load<Texture2D>("EnemyGodSkill/HadesBident");
             zeusSkillPic = content.Load<Texture2D>("EnemyGodSkill/ZeusThunder");
 
-
-
             //song and sfx
             MediaPlayer.IsRepeating = true;
             //poseidon sfx
@@ -400,7 +398,6 @@ namespace Olympuzz.GameScreen
                 {
                     notPlay = true;
                     eventScreen = EventScreen.PAUSE;
-                    //shooter.IsActive = false;
                     god.IsActive = false;
 
                     if (Singleton.Instance.charState != CharState.DIONYSUS)
@@ -450,20 +447,6 @@ namespace Olympuzz.GameScreen
                     _scrollTime -= tickPerUpdate;
                 }
 
-                /*notPlay = true;
-                gameWin = CheckWin(bubble);*/
-
-                /*
-                int winCount = 0;
-
-                for (int j = 0; j < bubble.GetLength(1); j++)
-                {
-                    if (bubble[0, j] == null)
-                    {
-                        winCount++;
-                    }
-                }*/
-
                 if (timeAttack < 0)
                 {
                     notPlay = true;
@@ -471,10 +454,7 @@ namespace Olympuzz.GameScreen
                     eventScreen = EventScreen.WIN;
                     MediaPlayer.Stop();
                     Singleton.Instance.comboCount = 0;
-                    //Singleton.Instance.BestTime = Timer.ToString("F");
                 }
-
-                //shooter.Update(gameTime, bubble);
 
                 int elapsedMs = (int)gameTime.TotalGameTime.TotalMilliseconds - lastPressTime;
 
@@ -560,7 +540,7 @@ namespace Olympuzz.GameScreen
                 else if (Singleton.Instance.comboTime <= 0)
                 {
                     Singleton.Instance.comboCount = 0;
-                    Singleton.Instance.comboTime = 5;
+                    Singleton.Instance.comboTime = 10;
                 }
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Space) && elapsedMs > 200 && !skillCooldown)
@@ -661,7 +641,7 @@ namespace Olympuzz.GameScreen
                         case CharState.DIONYSUS:
                             dionysusSkilled = true;
                             Singleton.Instance.comboCount = 0;
-
+                            muteTime = 10f;
                             break;
 
                         case CharState.HEPHAESTUS:
@@ -686,8 +666,6 @@ namespace Olympuzz.GameScreen
 
                     }
                 }
-
-                godSkill.UpdateHephaestusSkill(gameTime);
                 if (godSkill.GetFrames() == godSkill.GetAllFrame() - 1)
                 {
                     hammerSkill = false;
@@ -710,10 +688,9 @@ namespace Olympuzz.GameScreen
                 switch (Singleton.Instance.charState)
                 {
                     case CharState.ATHENA:
-                        if (!godSkill.GetAnimationStop())
-                        {
-                            godSkill.UpdateAthenaSkill(gameTime, 100, athenaSkilled);
-                        }
+                        
+                            godSkill.UpdateAthenaSkill(gameTime, 200, athenaSkilled);
+                        
                         break;
                     case CharState.HERMES:
                         if (!godSkill.GetAnimationStop())
@@ -722,13 +699,11 @@ namespace Olympuzz.GameScreen
                         }
                         break;
                     case CharState.HEPHAESTUS:
-                        if (!godSkill.GetAnimationStop())
-                        {
-                            //godSkill.UpdateHephaestusSkill(gameTime);
-                        }
+                        
+                            godSkill.UpdateHephaestusSkill(gameTime);
+                        
                         break;
                 }
-
 
                 shooter.Update(gameTime, bubble, isHell);
                 CheckGameOver(gameTime);
@@ -740,8 +715,6 @@ namespace Olympuzz.GameScreen
             {
 
                 pauseButton.SetCantHover(true);
-                //Singleton.Instance.Shooting = false;
-                //Stage1Screen.getWaveSoundInstance().Pause();
                 if (!confirmExit)
                 {
                     switch (eventScreen)
@@ -993,8 +966,6 @@ namespace Olympuzz.GameScreen
                     Singleton.Instance.lastClickTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
                     shooter.IsActive = false;
                     MediaPlayer.Stop();
-                    //Singleton.Instance.BestScore = Singleton.Instance.Score.ToString();
-                    //Singleton.Instance.BestTime = Timer.ToString("F");
                 }
             }
         }
@@ -1011,46 +982,13 @@ namespace Olympuzz.GameScreen
                 }
             }
 
-            pauseButton.Draw(spriteBatch);
-            god.Draw(spriteBatch);
-
-            //draw god skill
-            switch (Singleton.Instance.charState)
+            if (Singleton.Instance.charState == CharState.HERMES && skillCooldown && !godSkill.GetAnimationStop())
             {
-                case CharState.ATHENA:
-                    godSkill.Draw(spriteBatch);
-                    break;
-                case CharState.HERMES:
-                    if (skillCooldown && !godSkill.GetAnimationStop())
-                    {
-                        godSkill.Draw(spriteBatch);
-                    }
-                    break;
-                case CharState.DIONYSUS:
-                    switch (Singleton.Instance.levelState)
-                    {
-                        case LevelState.POSEIDON:
-                            spriteBatch.Draw(dionysusMutePic, new Vector2(1029,398), Color.White);
-                            break;
-                        case LevelState.HADES:
-                            spriteBatch.Draw(dionysusMutePic, new Vector2(994, 394), Color.White);
-                            break;
-                        case LevelState.ZEUS:
-                            spriteBatch.Draw(dionysusMutePic, new Vector2(1075, 290), Color.White);
-                            break;
-                    }
-                    break;
-                case CharState.HEPHAESTUS:
-                    if (hammerSkill)
-                    {
-                        godSkill.Draw(spriteBatch);
-                    }
-                    break;
+                godSkill.Draw(spriteBatch);
             }
 
-            /*spriteBatch.DrawString(Arcanista, "Score : " + Singleton.Instance.Score, new Vector2(1060, 260), color);
-            spriteBatch.DrawString(Arcanista, "Time : " + Timer.ToString("F"), new Vector2(20, 260), color);
-            spriteBatch.DrawString(Arcanista, "Next Time : " + (tickPerUpdate - _scrollTime).ToString("F"), new Vector2(20, 210), color);*/
+            pauseButton.Draw(spriteBatch);
+            god.Draw(spriteBatch);
 
             if (notPlay)
             {

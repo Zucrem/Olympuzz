@@ -76,7 +76,7 @@ namespace Olympuzz.GameObjects
 
                 for (int j = 0; j < (((bubbles[1, j] != null) && (bubbles[1, j].isEven)) ? 9 : 8); j++)
                 {
-                    if ((Position.Y <= startPositionY - 20) && firstEven)
+                    if (Position.Y <= startPositionY && firstEven)
                     {
                         if (Position.X < 373)
                         {
@@ -187,7 +187,7 @@ namespace Olympuzz.GameObjects
                         //stickSFX.Volume = Singleton.Instance.SFX_MasterVolume;
                         //stickSFX.Play();
                     }
-                    else if ((Position.Y <= startPositionY - 20) && !firstEven)
+                    else if (Position.Y <= startPositionY && !firstEven)
                     {
                         if (Position.X < 398)
                         {
@@ -279,9 +279,15 @@ namespace Olympuzz.GameObjects
                             bubbles[0, 8].Angle = 0;
                             RemoveBubble(bubbles, new Vector2(8, 0), bubbles[0, 8].bubbleTexture);
                         }
-                    }
+
                         IsActive = false;
                         Singleton.Instance.Shooting = false;
+
+                        break;
+
+                        //stickSFX.Volume = Singleton.Instance.SFX_MasterVolume;
+                        //stickSFX.Play();
+                    }
                 }
 
                 if (Position.X < 355 && !ricochetLeft) 
@@ -425,8 +431,6 @@ namespace Olympuzz.GameObjects
                                 {
                                     CheckFloating(bubbles, new Vector2(vectorRemove.X - 1,vectorRemove.Y));
 
-                                    //Debug.WriteLine(isRemovable + " Left" + " X : " + (vectorRemove.X - 1) + " Y : " + (vectorRemove.Y));
-
                                     if (!isRemovable)
                                     {
                                         clusterBubble.Clear();
@@ -440,9 +444,7 @@ namespace Olympuzz.GameObjects
 
                                     //removeCluster = clusterBubble
                                     CheckFloating(bubbles, new Vector2(vectorRemove.X + 1, vectorRemove.Y));
-                                    
-                                    //Debug.WriteLine(isRemovable + " right\n");
-                                    
+                                                                       
                                     if (!isRemovable)
                                     {
                                         clusterBubble.Clear();
@@ -456,8 +458,6 @@ namespace Olympuzz.GameObjects
 
                                     CheckFloating(bubbles, new Vector2(vectorRemove.X, vectorRemove.Y - 1));
                                     
-                                    //Debug.WriteLine(isRemovable + " top\n");
-
                                     if (!isRemovable)
                                     {
                                         clusterBubble.Clear();
@@ -470,8 +470,6 @@ namespace Olympuzz.GameObjects
                                     }
 
                                     CheckFloating(bubbles, new Vector2(vectorRemove.X, vectorRemove.Y + 1));
-
-                                    //Debug.WriteLine(isRemovable + " down\n");
 
                                     if (!isRemovable)
                                     {
@@ -512,8 +510,6 @@ namespace Olympuzz.GameObjects
                                     {
                                         CheckFloating(bubbles, new Vector2(vectorXM, vectorYP));
 
-                                        //Debug.WriteLine(isRemovable + " x - 1 , y + 1 in Odd" +  " X : " + (vectorXM) + " Y : " + (vectorYP));
-
                                         if (!isRemovable)
                                         {
                                             clusterBubble.Clear();
@@ -528,8 +524,6 @@ namespace Olympuzz.GameObjects
                                     else if (bubbles[vectorYM, vectorXM] != null && !(bubbles[vectorYM, vectorXM].isEven))
                                     {
                                         CheckFloating(bubbles, new Vector2(vectorXM, vectorYM));
-
-                                        //Debug.WriteLine(isRemovable + " x - 1 , y - 1 in Odd" + " X : " + (vectorXM) + " Y : " + (vectorYM));
 
                                         if (!isRemovable)
                                         {
@@ -546,8 +540,6 @@ namespace Olympuzz.GameObjects
                                     {
                                         CheckFloating(bubbles, new Vector2(vectorXP, vectorYP));
 
-                                        //Debug.WriteLine(isRemovable + " x + 1, y + 1 in Even" + " X : " + (vectorXP) + " Y : " + (vectorYP));
-
                                         if (!isRemovable)
                                         {
                                             clusterBubble.Clear();
@@ -563,8 +555,6 @@ namespace Olympuzz.GameObjects
                                     {
                                         CheckFloating(bubbles, new Vector2(vectorXP, vectorYM));
 
-                                        //Debug.WriteLine(isRemovable + " x + 1 , y - 1 in Even" + " X : " + (vectorXP) + " Y : " + (vectorYM));
-
                                         if (!isRemovable)
                                         {
                                             clusterBubble.Clear();
@@ -577,10 +567,8 @@ namespace Olympuzz.GameObjects
                                         }
                                     }
                                 }
-                                //Debug.WriteLine("\n\n");
-
                                 Singleton.Instance.comboCount++;
-                                Singleton.Instance.comboTime = 5;
+                                Singleton.Instance.comboTime = 10;
                             }
                             Singleton.Instance.removeBubble.Clear();
 
@@ -664,8 +652,6 @@ namespace Olympuzz.GameObjects
             {
                 isRemovable = false;
             }
-
-            //Debug.WriteLine(isRemovable);
 
         }
 
