@@ -29,11 +29,8 @@ namespace Olympuzz.GameObjects
         private int allframes;
 
         //update 2
-        private bool animationStop = false;
+        private bool animationStop = true;
         private bool re;
-
-        //update 3
-        private bool loop = false;
 
         public Animation(Texture2D texture, int sizeX, int sizeY) : base(texture)
         {
@@ -86,7 +83,7 @@ namespace Olympuzz.GameObjects
 
             sourceRect = new Rectangle((int)sourceRectVector[frames].X, (int)sourceRectVector[frames].Y, sizeX, sizeY);
         }
-        public void Update(GameTime gameTime,float d)
+        public void UpdateHermesSkill(GameTime gameTime,float d)
         {
             elapsed += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
@@ -94,22 +91,23 @@ namespace Olympuzz.GameObjects
             {
                 if (frames >= allframes - 1 && !re)
                 {
+                    Debug.WriteLine("Reset" + frames);
                     re = true;
                 }
                 else if (!re)
                 {
+                    Debug.WriteLine("Frame Next : " + frames);
                     frames++;
                 }
                 else if (frames == 0 && re)
                 {
-                    elapsed = 0;
+                    Debug.WriteLine("Frame End" + frames);
                     animationStop = true;
-                    frames = 0;
-                    re = false;
                     return;
                 }
                 else if (re)
                 {
+                    Debug.WriteLine("Frame Revesre : " + frames);
                     frames--;
                 }
                 elapsed = 0;
@@ -118,7 +116,7 @@ namespace Olympuzz.GameObjects
             sourceRect = new Rectangle((int)sourceRectVector[frames].X, (int)sourceRectVector[frames].Y, sizeX, sizeY);
         }
 
-        public void Update(GameTime gameTime, float d , bool isSkill)
+        public void UpdateAthenaSkill(GameTime gameTime, float d , bool isSkill)
         {
             elapsed += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
@@ -152,6 +150,27 @@ namespace Olympuzz.GameObjects
             sourceRect = new Rectangle((int)sourceRectVector[frames].X, (int)sourceRectVector[frames].Y, sizeX, sizeY);
         }
 
+        public void UpdateHephaestusSkill(GameTime gameTime)
+        {
+            elapsed += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            if (elapsed >= 300)
+            {
+                if (frames >= allframes - 1)
+                {
+                    return;
+                }
+                else
+                {
+                    frames++;
+                }
+                elapsed = 0;
+            }
+
+            sourceRect = new Rectangle((int)sourceRectVector[frames].X, (int)sourceRectVector[frames].Y, sizeX, sizeY);
+            
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, destRect, sourceRect, Color.White);
@@ -170,6 +189,29 @@ namespace Olympuzz.GameObjects
         public void SetAnimationStop(bool b)
         {
             animationStop = b;
+        }
+        
+        public int GetAllFrame()
+        { 
+            return allframes;
+        }
+        
+        public int GetFrames()
+        {
+            return frames;
+        }
+
+        public void ResetFrame()
+        {
+            frames = 0;
+        }
+
+        public void ResetAnimation()
+        {
+            frames = 0;
+            animationStop = true;
+            elapsed = 0;
+            re = false;
         }
     }
 }
