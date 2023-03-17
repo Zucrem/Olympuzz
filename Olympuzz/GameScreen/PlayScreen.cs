@@ -190,7 +190,7 @@ namespace Olympuzz.GameScreen
                     god.AddVector(new Vector2(133, 0));
                     god.AddVector(new Vector2(0, 206));
                     god.AddVector(new Vector2(133, 206));
-                    cooldownTime = 0;
+                    cooldownTime = -3;
 
                     godSkill = new Animation(athenaHourGlassPic, 208, 432, 52, 108)
                     {
@@ -838,6 +838,7 @@ namespace Olympuzz.GameScreen
                             {
                                 MediaPlayer.Stop();
                                 Singleton.Instance.speed = -1400;
+                                Singleton.Instance.comboCount = 0;
                                 switch (Singleton.Instance.levelState)
                                 {
                                     case LevelState.POSEIDON:
@@ -854,6 +855,7 @@ namespace Olympuzz.GameScreen
                             {
                                 Singleton.Instance.Score = 0;
                                 Singleton.Instance.speed = -1400;
+                                Singleton.Instance.comboCount = 0;
                                 ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
                             }
 
@@ -870,6 +872,7 @@ namespace Olympuzz.GameScreen
                             {
                                 Singleton.Instance.speed = -1400;
                                 Singleton.Instance.Score = 0;
+                                Singleton.Instance.comboCount = 0;
                                 ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.PlayScreen);
                             }
 
@@ -877,6 +880,7 @@ namespace Olympuzz.GameScreen
                             if (exitWLButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                             {
                                 confirmExit = true;
+                                Singleton.Instance.comboCount = 0;
                                 MediaPlayer.Pause();
                             }
                             break;
@@ -890,6 +894,7 @@ namespace Olympuzz.GameScreen
                         Singleton.Instance.speed = -1400;
                         Singleton.Instance.Score = 0;
                         ScreenManager.Instance.LoadScreen(ScreenManager.GameScreenName.MenuScreen);
+                        Singleton.Instance.comboCount = 0;
                     }
                     if (noConfirmButton.IsClicked(Singleton.Instance.MouseCurrent, gameTime))
                     {
