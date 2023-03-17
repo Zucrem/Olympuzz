@@ -41,7 +41,7 @@ namespace Olympuzz.GameScreen
         public override void Initial()
         {
             //all button
-            pauseButton = new Button(pauseButtonPic, new Vector2(98, 50), new Vector2(148, 60));//create button object on playscreen
+            pauseButton = new Button(pauseButtonPic, new Vector2(68, 50), new Vector2(148, 60));//create button object on playscreen
             //sound
             waveColor = new Color(58, 172, 212);
             _scrollSpd = 3f;
@@ -59,10 +59,14 @@ namespace Olympuzz.GameScreen
             boardBGPic = content.Load<Texture2D>("Stage1/Board1");
             //all button on playscreen
             pauseButtonPic = content.Load<Texture2D>("Stage1/Pause1");
+            //poseidon trident pic
+            poseidonTridentPic = content.Load<Texture2D>("Stage1/PoseidonTrident");
 
-            //bg music
+            //bg music and sfx
             poseidonTheme = content.Load<Song>("Sounds/PoseidonTheme");
             MediaPlayer.Play(poseidonTheme);
+
+            tridentSound = content.Load<SoundEffect>("Sounds/PoseidonTridentSound");
 
             Initial();
         }
@@ -172,14 +176,25 @@ namespace Olympuzz.GameScreen
             spriteBatch.Draw(boardBGPic, new Vector2(336, 54), Color.White);
             spriteBatch.Draw(stageBGPic, Vector2.Zero, Color.White);
 
+            //time
+            fontSize = smallfonts.MeasureString(((int)timeAttack).ToString());
+            spriteBatch.DrawString(smallfonts, ((int)timeAttack).ToString(), new Vector2(1048, 128), new Color(33, 35, 60, 255));
+
             if (!isBallHolderDie)
             {
                 shooter.GetBubbleNext().Draw(spriteBatch);
                 spriteBatch.Draw(holderAlivePic, new Vector2(410, 606), Color.White);
+                isSFXPlay = false;
             }
             else
             {
                 spriteBatch.Draw(holderDeathPic, new Vector2(410, 606), Color.White);
+                if (!isSFXPlay)
+                {
+                    isSFXPlay = true;
+                    tridentSound.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
+                }
+                spriteBatch.Draw(poseidonTridentPic, new Vector2(390, 520), Color.White);
             }
 
             if (skillCooldown || athenaSkilled)

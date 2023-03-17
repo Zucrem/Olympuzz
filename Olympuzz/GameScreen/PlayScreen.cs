@@ -29,7 +29,8 @@ namespace Olympuzz.GameScreen
         protected Texture2D athenaPic, hermesPic, dionysusPic, hephaestusPic;//all good god
         protected Texture2D holderAlivePic, holderDeathPic;//holder texture
         protected Texture2D athenaSkillPic, athenaReadyPic, hermesSkillPic, hermesReadyPic, dionysusSkillPic, dionysusReadyPic, hephaestusSkillPic, hephaestusReadyPic;//all god skill texture
-        protected Texture2D athenaHourGlassPic, hermesStormPic, dionysusMutePic, hephaestusHammerPic;//all good god pic
+        protected Texture2D athenaHourGlassPic, hermesStormPic, dionysusMutePic, hephaestusHammerPic, greenstormPic;//all good god pic
+        protected Texture2D poseidonTridentPic, hadesBidentPic, zeusLightingPic;//all enemy god weapon
         protected Texture2D bossSkillPic, poseidonSkillPic, hadesSkillPic, zeusSkillPic;//all enemy god skill texture
         protected readonly Texture2D[] bubleAllTexture = new Texture2D[5];
 
@@ -92,7 +93,7 @@ namespace Olympuzz.GameScreen
         protected float masterSFX = Singleton.Instance.soundMasterVolume;
         protected int lastPressTime = 0;
         //poseidon SFX
-        protected SoundEffect waveSound;
+        protected SoundEffect waveSound, tridentSound, bidentSound, flashSound ,thunderSound;
         protected SoundEffectInstance waveSoundInstance;
 
         protected bool _c = false;
@@ -220,7 +221,8 @@ namespace Olympuzz.GameScreen
 
                     cooldownTime = -5f;
 
-                    godSkill = new Animation(hermesStormPic, 553, 522)
+                    //godSkill = new Animation(hermesStormPic, 553, 522)
+                    godSkill = new Animation(greenstormPic, 553, 522)
                     {
                         Name = "HermesStorm",
                         Position = new Vector2(316, 101),
@@ -359,6 +361,7 @@ namespace Olympuzz.GameScreen
             hermesStormPic = content.Load<Texture2D>("GodSkill/HermesStorm");
             hephaestusHammerPic = content.Load<Texture2D>("GodSkill/HephaestusHammer");
             dionysusMutePic = content.Load<Texture2D>("GodSkill/DionysusMute");
+            greenstormPic = content.Load<Texture2D>("GodSkill/GreenStorm");
 
             //all bad god skill
             bossSkillPic = content.Load<Texture2D>("EnemyGodSkill/skill");
@@ -371,7 +374,11 @@ namespace Olympuzz.GameScreen
             //poseidon sfx
             waveSound = content.Load<SoundEffect>("Sounds/WaveSound");
             waveSoundInstance = waveSound.CreateInstance();
-            //sfx
+
+            //sfx for good god
+            athenaHourGlassSFX = content.Load<SoundEffect>("Sounds/AthenaHourGlassSFX");
+            hermesStormSFX = content.Load<SoundEffect>("Sounds/HermesStormSFX");
+            dionysusMuteSFX = content.Load<SoundEffect>("Sounds/DionysusMuteSFX");
             hephaestusHammerSFX = content.Load<SoundEffect>("Sounds/HammerSFX");
 
             Initial();
@@ -551,7 +558,7 @@ namespace Olympuzz.GameScreen
                     {
                         case CharState.ATHENA:
                             athenaSkilled = true;
-
+                            athenaHourGlassSFX.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
                             break;
                         case CharState.HERMES:
                             int i;
@@ -587,6 +594,7 @@ namespace Olympuzz.GameScreen
                             }
 
                             BallUpdate(bubble);
+                            hermesStormSFX.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
                             godSkill.SetAnimationStop(false);
                             skillCooldown = true;
                             cooldownTime = -5;
@@ -640,6 +648,7 @@ namespace Olympuzz.GameScreen
 
                         case CharState.DIONYSUS:
                             dionysusSkilled = true;
+                            dionysusMuteSFX.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
                             Singleton.Instance.comboCount = 0;
                             muteTime = 10f;
                             break;
@@ -658,7 +667,6 @@ namespace Olympuzz.GameScreen
 
                             BallUpdate(bubble);
                             godSkill.ResetFrame();
-                            hephaestusHammerSFX.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
                             isEven = !isEven;
                             hammerSkill = true;
                             Singleton.Instance.comboCount = 0;

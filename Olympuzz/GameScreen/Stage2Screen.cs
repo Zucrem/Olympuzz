@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using Olympuzz.GameObjects;
@@ -26,6 +27,9 @@ namespace Olympuzz.GameScreen
 
         private Random rand = new Random();
 
+        //sound
+        private bool isSFXPlay = false;
+
         public override void Initial()
         {
             //all button
@@ -45,6 +49,8 @@ namespace Olympuzz.GameScreen
             boardBGPic = content.Load<Texture2D>("Stage2/Board2");
             //all button on playscreen
             pauseButtonPic = content.Load<Texture2D>("Stage2/Pause2");
+            //hades bident pic
+            hadesBidentPic = content.Load<Texture2D>("Stage2/HadesBident");
 
             //all good god skill
             athenaSkillPic2 = content.Load<Texture2D>("GodSkill/AthenaSkill2");
@@ -56,9 +62,11 @@ namespace Olympuzz.GameScreen
             hephaestusSkillPic2 = content.Load<Texture2D>("GodSkill/HephaestusSkill2");
             hephaestusReadyPic2 = content.Load<Texture2D>("GodSkill/HephaestusReady2");
 
-            //bg music
+            //bg music and sfx
             hadesTheme = content.Load<Song>("Sounds/HadesTheme");
             MediaPlayer.Play(hadesTheme);
+
+            bidentSound = content.Load<SoundEffect>("Sounds/HadesBidentSound");
 
             Initial();
         }
@@ -109,15 +117,26 @@ namespace Olympuzz.GameScreen
             spriteBatch.Draw(boardBGPic, new Vector2(332, 54), Color.White);
             spriteBatch.Draw(stageBGPic, Vector2.Zero, Color.White);
 
+            //time
+            fontSize = smallfonts.MeasureString(((int)timeAttack).ToString());
+            spriteBatch.DrawString(smallfonts, ((int)timeAttack).ToString(), new Vector2(1048, 128), new Color(136, 11, 7, 255));
 
             if (dionysusSkilled)
             {
                 shooter.GetBubbleNext().Draw(spriteBatch);
                 spriteBatch.Draw(holderAlivePic, new Vector2(410, 606), Color.White);
+
+                isSFXPlay = false; ;
             }
             else
             {
                 spriteBatch.Draw(holderDeathPic, new Vector2(410, 606), Color.White);
+                if (!isSFXPlay)
+                {
+                    isSFXPlay = true;
+                    bidentSound.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
+                }
+                spriteBatch.Draw(hadesBidentPic, new Vector2(390, 520), Color.White);
             }
 
             if (skillCooldown || athenaSkilled)

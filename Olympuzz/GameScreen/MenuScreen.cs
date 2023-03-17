@@ -24,7 +24,7 @@ namespace Olympuzz.GameScreen
         private Texture2D arrowLeftBGPic, arrowRightBGPic, arrowLeftSFXPic, arrowRightSFXPic, backSettingPic, selectStagePic;//setting pic
         private Texture2D stage1Pic1, stage2Pic1, stage3Pic1, stageEndlessPic1, stage1Pic2, stage2Pic2, stage3Pic2, stageEndlessPic2, howToPlayPic, backSelectLevelPic;//select level pic
         private Texture2D char1Pic1, char1Pic2, char2Pic1, char3Pic1, char4Pic1, char2Pic2, char3Pic2, char4Pic2, selectCharPic, backSelectCharPic, arrowLeftCharPic, arrowRightCharPic;//select character pic
-        private Texture2D arrowLeftHowToPlayPic, arrowRightHowToPlayPic, backHowToPlayPic;//how to play pic
+        private Texture2D arrowLeftHowToPlayPic, arrowRightHowToPlayPic, backHowToPlayPic, how1Pic, how2Pic, how3Pic, how4Pic, how5Pic;//how to play pic
         private Texture2D confirmQuitPopUpPic, yesConfirmQuitPic1, noConfirmQuitPic1, yesConfirmQuitPic2, noConfirmQuitPic2;//exit confirmed pic
 
         //all button
@@ -170,6 +170,11 @@ namespace Olympuzz.GameScreen
             arrowLeftHowToPlayPic = content.Load<Texture2D>("HowToPlayScreen/ArrowLeft");
             arrowRightHowToPlayPic = content.Load<Texture2D>("HowToPlayScreen/ArrowRight");
             backHowToPlayPic = content.Load<Texture2D>("HowToPlayScreen/ContinueButton");
+            how1Pic = content.Load<Texture2D>("HowToPlayScreen/How1");
+            how2Pic = content.Load<Texture2D>("HowToPlayScreen/How2");
+            how3Pic = content.Load<Texture2D>("HowToPlayScreen/How3");
+            how4Pic = content.Load<Texture2D>("HowToPlayScreen/How4");
+            how5Pic = content.Load<Texture2D>("HowToPlayScreen/How5");
 
             //confirmQuit pic
             confirmQuitPopUpPic = content.Load<Texture2D>("ConfirmExit/ConfirmQuitPopUp");
@@ -519,14 +524,18 @@ namespace Olympuzz.GameScreen
                     backSelectLevelButton.Draw(spriteBatch);
                     break;
                 case StateScreen.HOWTOPLAYSCREEN:
+                    spriteBatch.Draw(howToPlayBG1Pic, Vector2.Zero, Color.White);
                     if (howToPlaySlide == 1)
                     {
-                        spriteBatch.Draw(howToPlayBG1Pic, Vector2.Zero, new Color(255, 255, 255, 210));
+                        spriteBatch.Draw(how1Pic, new Vector2(180, 150), Color.White);
+                        spriteBatch.Draw(how2Pic, new Vector2(505, 150), Color.White);
+                        spriteBatch.Draw(how3Pic, new Vector2(835, 150), Color.White);
                         arrowRightHowToPlayButton.Draw(spriteBatch);
                     }
                     else if (howToPlaySlide == 2)
                     {
-                        spriteBatch.Draw(howToPlayBG2Pic, Vector2.Zero, new Color(255, 255, 255, 210));
+                        spriteBatch.Draw(how4Pic, new Vector2(180, 150), Color.White);
+                        spriteBatch.Draw(how5Pic, new Vector2(505, 150), Color.White);
                         arrowLeftHowToPlayButton.Draw(spriteBatch);
                     }
                     backHowToPlayButton.Draw(spriteBatch);
