@@ -301,6 +301,18 @@
 /processorParam:TextureFormat=Color
 /build:GodSkill/DionysusSkill2.png
 
+#begin GodSkill/GreenStorm.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GodSkill/GreenStorm.png
+
 #begin GodSkill/HephaestusHammer.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -552,6 +564,66 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:HowToPlayScreen/ContinueButton.png
+
+#begin HowToPlayScreen/How1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HowToPlayScreen/How1.png
+
+#begin HowToPlayScreen/How2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HowToPlayScreen/How2.png
+
+#begin HowToPlayScreen/How3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HowToPlayScreen/How3.png
+
+#begin HowToPlayScreen/How4.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HowToPlayScreen/How4.png
+
+#begin HowToPlayScreen/How5.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HowToPlayScreen/How5.png
 
 #begin HowToPlayScreen/HowToPlayBG.jpg
 /importer:TextureImporter
@@ -1153,17 +1225,41 @@
 /processorParam:TextureFormat=Color
 /build:SettingScreen/SettingBG.jpg
 
+#begin Sounds/AthenaHourGlassSFX.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/AthenaHourGlassSFX.wav
+
 #begin Sounds/clickSound.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sounds/clickSound.wav
 
+#begin Sounds/DionysusMuteSFX.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/DionysusMuteSFX.wav
+
 #begin Sounds/EndlessTheme.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:Sounds/EndlessTheme.mp3
+
+#begin Sounds/FlashSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/FlashSound.wav
+
+#begin Sounds/HadesBidentSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/HadesBidentSound.wav
 
 #begin Sounds/HadesTheme.mp3
 /importer:Mp3Importer
@@ -1176,6 +1272,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sounds/HammerSFX.wav
+
+#begin Sounds/HermesStormSFX.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/HermesStormSFX.wav
 
 #begin Sounds/hoverSound.wav
 /importer:WavImporter
@@ -1200,6 +1302,12 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:Sounds/PoseidonTheme.mp3
+
+#begin Sounds/PoseidonTridentSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/PoseidonTridentSound.wav
 
 #begin Sounds/ThunderSound.wav
 /importer:WavImporter
@@ -1255,6 +1363,18 @@
 /processorParam:TextureFormat=Color
 /build:Stage1/PoseidonStage.png
 
+#begin Stage1/PoseidonTrident.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Stage1/PoseidonTrident.png
+
 #begin Stage2/Board2.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1266,6 +1386,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Stage2/Board2.jpg
+
+#begin Stage2/HadesBident.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Stage2/HadesBident.png
 
 #begin Stage2/HadesStage.png
 /importer:TextureImporter
@@ -1326,6 +1458,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Stage3/ZeusStage.png
+
+#begin Stage3/ZeusThunder.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Stage3/ZeusThunder.png
 
 #begin WinLoseScreen/DefeatSign.png
 /importer:TextureImporter

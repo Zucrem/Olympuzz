@@ -35,17 +35,16 @@ namespace Olympuzz.GameScreen
 
         private Random rand = new Random();
 
-        private Texture2D flashSkill;
-
         //sound
-        private SoundEffect thunderSound;
+        private bool isSFXPlay = false;
+
 
         public override void Initial()
         {
             //all button
             pauseButton = new Button(pauseButtonPic, new Vector2(86, 55), new Vector2(148, 58));//create button object on playscreen
             timeAttack = 240f;
-            _scrollSpd = 5f;
+            _scrollSpd = 4.6f;
 
             base.Initial();
         }
@@ -66,6 +65,7 @@ namespace Olympuzz.GameScreen
             MediaPlayer.Play(zeusTheme);
             //sfx
             thunderSound = content.Load<SoundEffect>("Sounds/ThunderSound");
+            flashSound = content.Load<SoundEffect>("Sounds/FlashSound");
 
             Initial();
         }
@@ -99,6 +99,7 @@ namespace Olympuzz.GameScreen
                                 if (chance == 1)
                                 {
                                     isflash = true;
+                                    flashSound.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
                                     skillActive = true;
                                 }
                             }
@@ -111,7 +112,11 @@ namespace Olympuzz.GameScreen
                                 int chance = rand.Next(2);
                                 if (chance == 1)
                                 {
-                                    thunderSound.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
+                                    if (isSFXPlay == false)
+                                    {
+                                        isSFXPlay = true;
+                                        thunderSound.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
+                                    }
                                     isBallHolderDie = true;
                                     skillActive = true;
                                 }
@@ -141,6 +146,7 @@ namespace Olympuzz.GameScreen
                     skillActive = false;
                     hasSwitched = false;
                     isflash = false;
+                    isSFXPlay = false;
                     skillTime1 = 2f;
                     skillTime2 = 5f;
                     bossSkillChance1 = 10;
@@ -153,6 +159,12 @@ namespace Olympuzz.GameScreen
             spriteBatch.Draw(bossSkillPic, Vector2.Zero, Color.Black);
             spriteBatch.Draw(boardBGPic, new Vector2(332, 54), Color.White);
             spriteBatch.Draw(stageBGPic, Vector2.Zero, Color.White);
+            //zeus lightning pic
+            zeusLightingPic = content.Load<Texture2D>("Stage3/ZeusThunder");
+
+            //time
+            fontSize = smallfonts.MeasureString(((int)timeAttack).ToString());
+            spriteBatch.DrawString(smallfonts, ((int)timeAttack).ToString(), new Vector2(1048, 128), new Color(33, 35, 60, 255));
 
             if (skillCooldown || athenaSkilled)
             {
@@ -204,6 +216,7 @@ namespace Olympuzz.GameScreen
             else
             {
                 spriteBatch.Draw(holderDeathPic, new Vector2(410, 606), Color.White);
+                spriteBatch.Draw(zeusLightingPic, new Vector2(390, 520), Color.White);
             }
 
             //draw god skill
