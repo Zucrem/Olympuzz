@@ -73,16 +73,20 @@ namespace Olympuzz.GameScreen
             {
                 timeAttack -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
 
-                bossSkillChance1 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
-                if (bossSkillChance1 < 0 && !skillActive)
+                if (!dionysusSkilled)
                 {
-                    int chance = rand.Next(3);
-                    if (chance == 1)
+                    bossSkillChance1 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                    if (bossSkillChance1 < 0 && !skillActive)
                     {
-                        isHell = true;
-                        skillActive = true;
+                        int chance = rand.Next(3);
+                        if (chance == 1)
+                        {
+                            isHell = true;
+                            skillActive = true;
+                        }
                     }
                 }
+                
 
                 if (skillActive) // skill was Active now this is not skillCool
                 {
@@ -105,7 +109,16 @@ namespace Olympuzz.GameScreen
             spriteBatch.Draw(boardBGPic, new Vector2(332, 54), Color.White);
             spriteBatch.Draw(stageBGPic, Vector2.Zero, Color.White);
 
-            spriteBatch.Draw(holderDeathPic, new Vector2(410, 606), Color.White);
+
+            if (dionysusSkilled)
+            {
+                shooter.GetBubbleNext().Draw(spriteBatch);
+                spriteBatch.Draw(holderAlivePic, new Vector2(410, 606), Color.White);
+            }
+            else
+            {
+                spriteBatch.Draw(holderDeathPic, new Vector2(410, 606), Color.White);
+            }
 
             if (skillCooldown || athenaSkilled)
             {

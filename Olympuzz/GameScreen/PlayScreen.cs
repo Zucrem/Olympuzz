@@ -62,7 +62,8 @@ namespace Olympuzz.GameScreen
         protected float tickPerUpdate = 30f;
         protected float bubbleAngle = 0f;
         protected float athenaTime = 0f;
-        protected float cooldownTime = 0f;
+        protected float muteTime = 10f;
+        protected float cooldownTime;
         protected float timeAttack;
         protected float _scrollSpd = 1f;
 
@@ -78,7 +79,7 @@ namespace Olympuzz.GameScreen
         protected bool notPlay = false;
         protected bool isEven = false;
         protected bool fadeFinish = false;
-
+        protected bool dionysusSkilled = false;
         protected bool confirmExit = false;
         protected bool athenaSkilled = false;
         protected bool skillCooldown = false;
@@ -169,6 +170,8 @@ namespace Olympuzz.GameScreen
                 IsActive = true,
             };
 
+            
+
             switch (Singleton.Instance.charState)
             {
                 case CharState.ATHENA:
@@ -182,7 +185,7 @@ namespace Olympuzz.GameScreen
                     god.AddVector(new Vector2(133, 0));
                     god.AddVector(new Vector2(0, 206));
                     god.AddVector(new Vector2(133, 206));
-
+                    cooldownTime = 0;
                     godSkill = new Animation(athenaHourGlassPic, 208, 432, 52, 108)
                     {
                         Name = "AthenaHourGlass",
@@ -209,7 +212,7 @@ namespace Olympuzz.GameScreen
                     god.AddVector(new Vector2(151, 0));
                     god.AddVector(new Vector2(0, 206));
                     god.AddVector(new Vector2(151, 206));
-
+                    cooldownTime = -5f;
                     godSkill = new Animation(hermesStormPic, 553, 522)
                     {
                         Name = "HermesStorm",
@@ -549,7 +552,7 @@ namespace Olympuzz.GameScreen
                 else if (Singleton.Instance.comboTime <= 0)
                 {
                     Singleton.Instance.comboCount = 0;
-                    Singleton.Instance.comboTime = 60;
+                    Singleton.Instance.comboTime = 5;
                 }
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Space) && elapsedMs > 200 && !skillCooldown)
@@ -607,7 +610,6 @@ namespace Olympuzz.GameScreen
 
                             break;
                         case CharState.HEPHAESTUS:
-                            hephaestusHammerSFX.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
                             break;
                     }
                 }
@@ -648,13 +650,17 @@ namespace Olympuzz.GameScreen
                         case CharState.HERMES:
                             break;
 
-                        case CharState.DIONYSUS: 
+                        case CharState.DIONYSUS:
+                            dionysusSkilled = true;
+                            Singleton.Instance.comboCount = 0;
+
                             break;
                             
                         case CharState.HEPHAESTUS:
-                            int i;
+                            
+                            hephaestusHammerSFX.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
 
-                            for (i = 1; i < 14; i++)
+                            for (int i = 1; i < 14; i++)
                             {
                                 for (int j = 0; j < 10; j++)
                                 {
@@ -670,6 +676,21 @@ namespace Olympuzz.GameScreen
 
                     }
                 }
+
+                if (dionysusSkilled)
+                {
+                    muteTime -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+
+                    if (muteTime < 0)
+                    {
+                        dionysusSkilled = false;
+                        muteTime = 10f;
+                    }
+
+                }
+
+                
+
 
                 //all update
                 god.Update(gameTime);
