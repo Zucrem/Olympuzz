@@ -21,8 +21,8 @@ namespace Olympuzz.GameScreen
 
         private bool skillActive = false;
 
-        private float skillTime1 = 1f; // Time of skill is in Active
-        private float bossSkillChance1 = 10f; // Chance of skill that will Active
+        private float timeBossSkillActive = 1f; // Time of skill is in Active
+        private float timeCDBossSkillActive = 10f; // Chance of skill that will Active
 
         private Random rand = new Random();
 
@@ -75,8 +75,8 @@ namespace Olympuzz.GameScreen
 
                 if (!dionysusSkilled)
                 {
-                    bossSkillChance1 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
-                    if (bossSkillChance1 < 0 && !skillActive)
+                    timeCDBossSkillActive -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                    if (timeCDBossSkillActive < 0 && !skillActive)
                     {
                         int chance = rand.Next(3);
                         if (chance == 1)
@@ -90,16 +90,16 @@ namespace Olympuzz.GameScreen
 
                 if (skillActive) // skill was Active now this is not skillCool
                 {
-                    skillTime1 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                    timeBossSkillActive -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                 }
 
-                if (skillTime1 < 0 ) //if 
+                if (timeBossSkillActive < 0 ) //if 
                 {
                     Singleton.Instance.speed = -1400;
                     isHell = false;
                     skillActive = false;
-                    skillTime1 = 1;
-                    bossSkillChance1 = 10;
+                    timeBossSkillActive = 1;
+                    timeCDBossSkillActive = 10;
                 }
             }
         }
