@@ -87,36 +87,38 @@ namespace Olympuzz.GameScreen
                     hasSwitched = true;
                 }
 
-                switch (switchSkill)
+                if (!dionysusSkilled)
                 {
-                    case 0:
-                        bossSkillChance1 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
-                        if (bossSkillChance1 < 0 && !skillActive)
-                        {
-                            int chance = rand.Next(3);
-                            if (chance == 1)
+                    switch (switchSkill)
+                    {
+                        case 0:
+                            bossSkillChance1 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                            if (bossSkillChance1 < 0 && !skillActive)
                             {
-                                isflash = true;
-                                skillActive = true;
+                                int chance = rand.Next(3);
+                                if (chance == 1)
+                                {
+                                    isflash = true;
+                                    skillActive = true;
+                                }
                             }
-                        }
-                        break;
+                            break;
 
-                    case 1:
-                        bossSkillChance2 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
-                        if (bossSkillChance2 < 0 && !skillActive)
-                        {
-                            int chance = rand.Next(2);
-                            if (chance == 1)
+                        case 1:
+                            bossSkillChance2 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                            if (bossSkillChance2 < 0 && !skillActive)
                             {
-                                thunderSound.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
-                                isBallHolderDie = true;
-                                skillActive = true;
+                                int chance = rand.Next(2);
+                                if (chance == 1)
+                                {
+                                    thunderSound.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
+                                    isBallHolderDie = true;
+                                    skillActive = true;
+                                }
                             }
-                        }
-                        break;
+                            break;
+                    }
                 }
-
 
                 if (skillActive) // skill was Active now this is not skillCool
                 {
