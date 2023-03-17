@@ -22,14 +22,14 @@ namespace Olympuzz.GameScreen
 
         private bool isBallHolderDie = false;
         private bool skillActive = false;
-        private bool hasSwitched = false;
-        private bool isflash = false;
+        private bool hasSwitched = false;       
+        private bool isflash = false;           // flash screen to white when boss active skill 
 
-        private float skillTime1 = 2f; // Time of skill is in Active
-        private float bossSkillChance1 = 10f; // Chance of skill that will Active
+        private float timeBossSkillActive = 2f; // Time of skill is in Active           // period of active skill
+        private float timeCDBossSkillActive = 10f; // Chance of skill that will Active  // Time of next boss skill active 
 
-        private float skillTime2 = 5f;
-        private float bossSkillChance2 = 10f;
+        private float timeKillBallHolder = 5f;  // period of BallHolder die
+        private float timeCDBallHoldkill = 10f; // Time of next BallHolder kill active
 
         private int switchSkill;
 
@@ -92,8 +92,8 @@ namespace Olympuzz.GameScreen
                     switch (switchSkill)
                     {
                         case 0:
-                            bossSkillChance1 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
-                            if (bossSkillChance1 < 0 && !skillActive)
+                            timeCDBossSkillActive -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                            if (timeCDBossSkillActive < 0 && !skillActive)
                             {
                                 int chance = rand.Next(3);
                                 if (chance == 1)
@@ -106,8 +106,8 @@ namespace Olympuzz.GameScreen
                             break;
 
                         case 1:
-                            bossSkillChance2 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
-                            if (bossSkillChance2 < 0 && !skillActive)
+                            timeCDBallHoldkill -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                            if (timeCDBallHoldkill < 0 && !skillActive)
                             {
                                 int chance = rand.Next(2);
                                 if (chance == 1)
@@ -130,16 +130,16 @@ namespace Olympuzz.GameScreen
                     switch (switchSkill)
                     {
                         case 0:
-                            skillTime1 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                            timeBossSkillActive -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                             break;
 
                         case 1:
-                            skillTime2 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                            timeKillBallHolder -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                             break;
                     }
                 }
 
-                if (skillTime1 < 0 || skillTime2 < 0) //if 
+                if (timeBossSkillActive < 0 || timeKillBallHolder < 0) //if 
                 {
                     Singleton.Instance.speed = -1400;
                     isBallHolderDie = false;
@@ -147,10 +147,10 @@ namespace Olympuzz.GameScreen
                     hasSwitched = false;
                     isflash = false;
                     isSFXPlay = false;
-                    skillTime1 = 2f;
-                    skillTime2 = 5f;
-                    bossSkillChance1 = 10;
-                    bossSkillChance2 = 10;
+                    timeBossSkillActive = 2f;
+                    timeKillBallHolder = 5f;
+                    timeCDBossSkillActive = 10;
+                    timeCDBallHoldkill = 10;
                 }
             }
         }
