@@ -209,7 +209,7 @@ namespace Olympuzz.GameScreen
 
             if (isflash && eventScreen != EventScreen.PAUSE && eventScreen != EventScreen.WIN && eventScreen != EventScreen.LOSE)
             {
-                spriteBatch.Draw(bossSkill, Vector2.Zero, new Color(255,255,255) * 0.95f);
+                spriteBatch.Draw(bossSkillPic, Vector2.Zero, new Color(255,255,255) * 0.95f);
             }
 
         }

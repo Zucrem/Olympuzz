@@ -384,6 +384,7 @@ namespace Olympuzz.GameScreen
             Singleton.Instance.MousePrevious = Singleton.Instance.MouseCurrent;//เก็บสถานะmouseก่อนหน้า
             Singleton.Instance.MouseCurrent = Mouse.GetState();//เก็บสถานะmouseปัจจุบัน
 
+
             if (!notPlay)
             {
                 Timer += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
@@ -392,7 +393,7 @@ namespace Olympuzz.GameScreen
                 {
                     notPlay = true;
                     eventScreen = EventScreen.PAUSE;
-                    shooter.IsActive = false;
+                    //shooter.IsActive = false;
                     god.IsActive = false;
                     godSkill.IsActive = false;
 
@@ -691,8 +692,7 @@ namespace Olympuzz.GameScreen
                     }
                 }
 
-                shooter.Update(gameTime, bubble , isHell);
-
+                shooter.Update(gameTime, bubble, isHell);
                 CheckGameOver(gameTime);
 
             }
@@ -701,8 +701,8 @@ namespace Olympuzz.GameScreen
             else
             {
                 pauseButton.SetCantHover(true);
-                Singleton.Instance.Shooting = false;
-
+                //Singleton.Instance.Shooting = false;
+                //Stage1Screen.getWaveSoundInstance().Pause();
                 if (!confirmExit)
                 {
                     switch (eventScreen)
@@ -713,10 +713,12 @@ namespace Olympuzz.GameScreen
                             {
                                 pauseButton.SetCantHover(false);
                                 shooter.IsActive = true;
+                                //Singleton.Instance.Shooting = true;
                                 god.IsActive = true;
                                 godSkill.IsActive = true;
                                 eventScreen = EventScreen.NULL;
                                 MediaPlayer.Resume();
+                                //Stage1Screen.getWaveSoundInstance().Resume();
                                 notPlay = false;
                             }
 

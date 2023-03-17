@@ -37,7 +37,7 @@ namespace Olympuzz.GameScreen
         private Color waveColor;
         //sound
         private SoundEffect waveSound;
-        private SoundEffectInstance waveSoundInstance;
+        private static SoundEffectInstance waveSoundInstance;
         private bool isSFXPlay = false;
 
         public override void Initial()
@@ -153,11 +153,16 @@ namespace Olympuzz.GameScreen
                     waveSoundInstance.Play();
                     isSFXPlay = true;
                 }
-                else if (!isWave)
+                if (!isWave)
                 {
                     waveSoundInstance.Stop();
                 }
             }
+        }
+
+        public static SoundEffectInstance getWaveSoundInstance()
+        {
+            return waveSoundInstance;
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
