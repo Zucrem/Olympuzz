@@ -19,7 +19,7 @@ namespace Olympuzz.GameObjects
         public bool isEven;
         public bool marked = false;
         List<Vector2> clusterBubble = new List<Vector2>();
-        public bool isRemovable = false;
+        public bool isRemovable = true;
 
         protected int startOddPosition = 388;
         protected int startEvenPosition = 363;
@@ -29,6 +29,7 @@ namespace Olympuzz.GameObjects
 
         protected bool ricochetLeft = false;
         protected bool ricochetRight = false;
+        protected bool firstEven = false;
 
         private List<float> rito = new List<float>(); 
         
@@ -39,12 +40,14 @@ namespace Olympuzz.GameObjects
             bubbleTexture = RandomBubble();
         }
 
+        /*
         public void Cheat()
         {
             bubbleTexture = allTexture[2];
         }
+        */
 
-        public override void Update(GameTime gameTime, Bubble[,] bubbles)
+        public override void Update(GameTime gameTime, Bubble[,] bubbles , bool isHell)
         {
             if (IsActive)
             {
@@ -52,7 +55,7 @@ namespace Olympuzz.GameObjects
                 Velocity.Y = (float)Math.Sin(Angle) * Singleton.Instance.speed; // direction of bubble to go in axis y
                 Position += Velocity * gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond; // position of bubble that will increase to direction that canon point to
 
-                bubbleCollision(gameTime,bubbles);
+                bubbleCollision(gameTime,bubbles, isHell);
 
                 //for (int j = 0; j < bubbles.GetLength(1); j++)
                 //{
@@ -63,9 +66,17 @@ namespace Olympuzz.GameObjects
                 //    }
                 //}
 
+                for (int j = 0; j < 10; j++)
+                {
+                    if (bubbles[1, j] != null)
+                    {
+                        firstEven = true;
+                    }
+                }
+
                 for (int j = 0; j < (((bubbles[1, j] != null) && (bubbles[1, j].isEven)) ? 9 : 8); j++)
                 {
-                    if (Position.Y <= startPositionY && bubbles[1, j] != null && !bubbles[1, j].isEven)
+                    if ((Position.Y <= startPositionY - 20 )&& firstEven)
                     {
                         if (Position.X < 373)
                         {
@@ -176,7 +187,7 @@ namespace Olympuzz.GameObjects
                         //stickSFX.Volume = Singleton.Instance.SFX_MasterVolume;
                         //stickSFX.Play();
                     }
-                    else if (Position.Y <= startPositionY && bubbles[1, j] != null && bubbles[1, j].isEven)
+                    else if ((Position.Y <= startPositionY - 20) && !firstEven)
                     {
                         if (Position.X < 398)
                         {
@@ -271,7 +282,176 @@ namespace Olympuzz.GameObjects
 
                         IsActive = false;
                         Singleton.Instance.Shooting = false;
+                        if (Singleton.Instance.removeBubble.Count >= 3 && !isHell)
+                        {
+                            //isRemovable = true;
+                            foreach (Vector2 vectorRemove in Singleton.Instance.removeBubble)
+                            {
+                                bubbles[(int)vectorRemove.Y, (int)vectorRemove.X] = null;
+                            }
 
+                            foreach (Vector2 vectorRemove in Singleton.Instance.removeBubble)
+                            {
+                                CheckFloating(bubbles, new Vector2(vectorRemove.X - 1, vectorRemove.Y));
+
+                                //Debug.WriteLine(isRemovable + " Left" + " X : " + (vectorRemove.X - 1) + " Y : " + (vectorRemove.Y));
+
+                                if (!isRemovable)
+                                {
+                                    clusterBubble.Clear();
+                                    isRemovable = true;
+                                }
+
+                                foreach (Vector2 vectorRemoved in clusterBubble)
+                                {
+                                    bubbles[(int)vectorRemoved.Y, (int)vectorRemoved.X] = null;
+                                }
+
+                                //removeCluster = clusterBubble
+                                CheckFloating(bubbles, new Vector2(vectorRemove.X + 1, vectorRemove.Y));
+
+                                //Debug.WriteLine(isRemovable + " right\n");
+
+                                if (!isRemovable)
+                                {
+                                    clusterBubble.Clear();
+                                    isRemovable = true;
+                                }
+
+                                foreach (Vector2 vectorRemoved in clusterBubble)
+                                {
+                                    bubbles[(int)vectorRemoved.Y, (int)vectorRemoved.X] = null;
+                                }
+
+                                CheckFloating(bubbles, new Vector2(vectorRemove.X, vectorRemove.Y - 1));
+
+                                //Debug.WriteLine(isRemovable + " top\n");
+
+                                if (!isRemovable)
+                                {
+                                    clusterBubble.Clear();
+                                    isRemovable = true;
+                                }
+
+                                foreach (Vector2 vectorRemoved in clusterBubble)
+                                {
+                                    bubbles[(int)vectorRemoved.Y, (int)vectorRemoved.X] = null;
+                                }
+
+                                CheckFloating(bubbles, new Vector2(vectorRemove.X, vectorRemove.Y + 1));
+
+                                //Debug.WriteLine(isRemovable + " down\n");
+
+                                if (!isRemovable)
+                                {
+                                    clusterBubble.Clear();
+                                    isRemovable = true;
+                                }
+
+                                foreach (Vector2 vectorRemoved in clusterBubble)
+                                {
+                                    bubbles[(int)vectorRemoved.Y, (int)vectorRemoved.X] = null;
+                                }
+
+                                //removeCluster.AddRange(clusterBubble);
+
+                                int vectorXP = (int)vectorRemove.X + 1;
+                                int vectorXM = (int)vectorRemove.X - 1;
+                                int vectorYP = (int)vectorRemove.Y + 1;
+                                int vectorYM = (int)vectorRemove.Y - 1;
+
+                                if (vectorXP > 9)
+                                {
+                                    vectorXP = 9;
+                                }
+                                if (vectorXM < 0)
+                                {
+                                    vectorXM = 0;
+                                }
+                                if (vectorYP > 14)
+                                {
+                                    vectorYP = 14;
+                                }
+                                if (vectorYM < 0)
+                                {
+                                    vectorYM = 0;
+                                }
+
+                                if (bubbles[vectorYP, vectorXM] != null && !(bubbles[vectorYP, vectorXM].isEven))
+                                {
+                                    CheckFloating(bubbles, new Vector2(vectorXM, vectorYP));
+
+                                    //Debug.WriteLine(isRemovable + " x - 1 , y + 1 in Odd" +  " X : " + (vectorXM) + " Y : " + (vectorYP));
+
+                                    if (!isRemovable)
+                                    {
+                                        clusterBubble.Clear();
+                                        isRemovable = true;
+                                    }
+
+                                    foreach (Vector2 vectorRemoved in clusterBubble)
+                                    {
+                                        bubbles[(int)vectorRemoved.Y, (int)vectorRemoved.X] = null;
+                                    }
+                                }
+                                else if (bubbles[vectorYM, vectorXM] != null && !(bubbles[vectorYM, vectorXM].isEven))
+                                {
+                                    CheckFloating(bubbles, new Vector2(vectorXM, vectorYM));
+
+                                    //Debug.WriteLine(isRemovable + " x - 1 , y - 1 in Odd" + " X : " + (vectorXM) + " Y : " + (vectorYM));
+
+                                    if (!isRemovable)
+                                    {
+                                        clusterBubble.Clear();
+                                        isRemovable = true;
+                                    }
+
+                                    foreach (Vector2 vectorRemoved in clusterBubble)
+                                    {
+                                        bubbles[(int)vectorRemoved.Y, (int)vectorRemoved.X] = null;
+                                    }
+                                }
+                                else if (bubbles[vectorYP, vectorXP] != null && bubbles[vectorYP, vectorXP].isEven)
+                                {
+                                    CheckFloating(bubbles, new Vector2(vectorXP, vectorYP));
+
+                                    //Debug.WriteLine(isRemovable + " x + 1, y + 1 in Even" + " X : " + (vectorXP) + " Y : " + (vectorYP));
+
+                                    if (!isRemovable)
+                                    {
+                                        clusterBubble.Clear();
+                                        isRemovable = true;
+                                    }
+
+                                    foreach (Vector2 vectorRemoved in clusterBubble)
+                                    {
+                                        bubbles[(int)vectorRemoved.Y, (int)vectorRemoved.X] = null;
+                                    }
+                                }
+                                else if (bubbles[vectorYM, vectorXP] != null && bubbles[vectorYM, vectorXP].isEven)
+                                {
+                                    CheckFloating(bubbles, new Vector2(vectorXP, vectorYM));
+
+                                    //Debug.WriteLine(isRemovable + " x + 1 , y - 1 in Even" + " X : " + (vectorXP) + " Y : " + (vectorYM));
+
+                                    if (!isRemovable)
+                                    {
+                                        clusterBubble.Clear();
+                                        isRemovable = true;
+                                    }
+
+                                    foreach (Vector2 vectorRemoved in clusterBubble)
+                                    {
+                                        bubbles[(int)vectorRemoved.Y, (int)vectorRemoved.X] = null;
+                                    }
+                                }
+                            }
+                            //Debug.WriteLine("\n\n");
+
+                            Singleton.Instance.comboCount++;
+                            Singleton.Instance.comboTime = 5;
+                        }
+                        Singleton.Instance.removeBubble.Clear();
                         break;
 
                         //stickSFX.Volume = Singleton.Instance.SFX_MasterVolume;
@@ -297,9 +477,9 @@ namespace Olympuzz.GameObjects
         }
 
         
-        public void bubbleCollision(GameTime gameTime,Bubble[,] bubbles)
+        public void bubbleCollision(GameTime gameTime,Bubble[,] bubbles, bool isHell)
         {
-            for (int i = 0; i < 15; i++)
+            for (int i = 14; i > 0; i--)
             {
                 for (int j = 0; j < 10; j++)
                 {
@@ -373,7 +553,7 @@ namespace Olympuzz.GameObjects
                                     RemoveBubble(bubbles, new Vector2(j + 1, i + 1), bubbles[i + 1, j + 1].bubbleTexture);
                                 }
                             }
-                            else if (Position.Y >= bubbles[i, j].Position.Y) //set Left under ball 
+                            else if (Position.Y > bubbles[i, j].Position.Y) //set Left under ball 
                             {
                                 if (bubbles[i, j].isEven && j != 0) //if ball is Even ball will set this as Odd Line
                                 {
@@ -408,10 +588,9 @@ namespace Olympuzz.GameObjects
                             }
                             IsActive = false;
                             Singleton.Instance.Shooting = false;
-                            if (Singleton.Instance.removeBubble.Count >= 3)
+                            if (Singleton.Instance.removeBubble.Count >= 3 && !isHell)
                             {
-                                
-                                isRemovable = false;
+                                //isRemovable = true;
                                 foreach (Vector2 vectorRemove in Singleton.Instance.removeBubble)
                                 {
                                     bubbles[(int)vectorRemove.Y, (int)vectorRemove.X] = null;
@@ -420,11 +599,13 @@ namespace Olympuzz.GameObjects
                                 foreach (Vector2 vectorRemove in Singleton.Instance.removeBubble)
                                 {
                                     CheckFloating(bubbles, new Vector2(vectorRemove.X - 1,vectorRemove.Y));
-                                    
-                                    if (isRemovable)
+
+                                    //Debug.WriteLine(isRemovable + " Left" + " X : " + (vectorRemove.X - 1) + " Y : " + (vectorRemove.Y));
+
+                                    if (!isRemovable)
                                     {
                                         clusterBubble.Clear();
-                                        isRemovable = false;
+                                        isRemovable = true;
                                     }
 
                                     foreach (Vector2 vectorRemoved in clusterBubble)
@@ -435,10 +616,12 @@ namespace Olympuzz.GameObjects
                                     //removeCluster = clusterBubble
                                     CheckFloating(bubbles, new Vector2(vectorRemove.X + 1, vectorRemove.Y));
                                     
-                                    if (isRemovable)
+                                    //Debug.WriteLine(isRemovable + " right\n");
+                                    
+                                    if (!isRemovable)
                                     {
                                         clusterBubble.Clear();
-                                        isRemovable = false;
+                                        isRemovable = true;
                                     }
 
                                     foreach (Vector2 vectorRemoved in clusterBubble)
@@ -447,11 +630,13 @@ namespace Olympuzz.GameObjects
                                     }
 
                                     CheckFloating(bubbles, new Vector2(vectorRemove.X, vectorRemove.Y - 1));
+                                    
+                                    //Debug.WriteLine(isRemovable + " top\n");
 
-                                    if (isRemovable)
+                                    if (!isRemovable)
                                     {
                                         clusterBubble.Clear();
-                                        isRemovable = false;
+                                        isRemovable = true;
                                     }
 
                                     foreach (Vector2 vectorRemoved in clusterBubble)
@@ -461,10 +646,12 @@ namespace Olympuzz.GameObjects
 
                                     CheckFloating(bubbles, new Vector2(vectorRemove.X, vectorRemove.Y + 1));
 
-                                    if (isRemovable)
+                                    //Debug.WriteLine(isRemovable + " down\n");
+
+                                    if (!isRemovable)
                                     {
                                         clusterBubble.Clear();
-                                        isRemovable = false;
+                                        isRemovable = true;
                                     }
 
                                     foreach (Vector2 vectorRemoved in clusterBubble)
@@ -474,27 +661,38 @@ namespace Olympuzz.GameObjects
 
                                     //removeCluster.AddRange(clusterBubble);
 
-                                    if (bubbles[(int)vectorRemove.Y, (int)vectorRemove.X] != null && bubbles[(int)vectorRemove.Y, (int)vectorRemove.X].isEven)
+                                    int vectorXP = (int)vectorRemove.X + 1;
+                                    int vectorXM = (int)vectorRemove.X - 1;
+                                    int vectorYP = (int)vectorRemove.Y + 1;
+                                    int vectorYM = (int)vectorRemove.Y - 1;
+
+                                    if (vectorXP > 9)
                                     {
-                                        CheckFloating(bubbles, new Vector2(vectorRemove.X - 1, vectorRemove.Y - 1));
+                                        vectorXP = 9;
+                                    }
+                                    if (vectorXM < 0)
+                                    {
+                                        vectorXM = 0;
+                                    }
+                                    if (vectorYP > 14)
+                                    {
+                                        vectorYP = 14;
+                                    }
+                                    if (vectorYM < 0)
+                                    {
+                                        vectorYM = 0;
+                                    }
 
-                                        if (isRemovable)
+                                    if (bubbles[vectorYP, vectorXM] != null && !(bubbles[vectorYP, vectorXM].isEven))
+                                    {
+                                        CheckFloating(bubbles, new Vector2(vectorXM, vectorYP));
+
+                                        //Debug.WriteLine(isRemovable + " x - 1 , y + 1 in Odd" +  " X : " + (vectorXM) + " Y : " + (vectorYP));
+
+                                        if (!isRemovable)
                                         {
                                             clusterBubble.Clear();
-                                            isRemovable = false;
-                                        }
-
-                                        foreach (Vector2 vectorRemoved in clusterBubble)
-                                        {
-                                            bubbles[(int)vectorRemoved.Y, (int)vectorRemoved.X] = null;
-                                        }
-
-                                        CheckFloating(bubbles, new Vector2(vectorRemove.X - 1, vectorRemove.Y + 1));
-
-                                        if (isRemovable)
-                                        {
-                                            clusterBubble.Clear();
-                                            isRemovable = false;
+                                            isRemovable = true;
                                         }
 
                                         foreach (Vector2 vectorRemoved in clusterBubble)
@@ -502,27 +700,50 @@ namespace Olympuzz.GameObjects
                                             bubbles[(int)vectorRemoved.Y, (int)vectorRemoved.X] = null;
                                         }
                                     }
-                                    else
+                                    else if (bubbles[vectorYM, vectorXM] != null && !(bubbles[vectorYM, vectorXM].isEven))
                                     {
-                                        CheckFloating(bubbles, new Vector2(vectorRemove.X + 1, vectorRemove.Y - 1));
+                                        CheckFloating(bubbles, new Vector2(vectorXM, vectorYM));
 
-                                        if (isRemovable)
+                                        //Debug.WriteLine(isRemovable + " x - 1 , y - 1 in Odd" + " X : " + (vectorXM) + " Y : " + (vectorYM));
+
+                                        if (!isRemovable)
                                         {
                                             clusterBubble.Clear();
-                                            isRemovable = false;
+                                            isRemovable = true;
                                         }
 
                                         foreach (Vector2 vectorRemoved in clusterBubble)
                                         {
                                             bubbles[(int)vectorRemoved.Y, (int)vectorRemoved.X] = null;
                                         }
+                                    }
+                                    else if (bubbles[vectorYP, vectorXP] != null && bubbles[vectorYP, vectorXP].isEven)
+                                    {
+                                        CheckFloating(bubbles, new Vector2(vectorXP, vectorYP));
 
-                                        CheckFloating(bubbles, new Vector2(vectorRemove.X + 1, vectorRemove.Y + 1));
+                                        //Debug.WriteLine(isRemovable + " x + 1, y + 1 in Even" + " X : " + (vectorXP) + " Y : " + (vectorYP));
 
-                                        if (isRemovable)
+                                        if (!isRemovable)
                                         {
                                             clusterBubble.Clear();
-                                            isRemovable = false;
+                                            isRemovable = true;
+                                        }
+
+                                        foreach (Vector2 vectorRemoved in clusterBubble)
+                                        {
+                                            bubbles[(int)vectorRemoved.Y, (int)vectorRemoved.X] = null;
+                                        }
+                                    }
+                                    else if (bubbles[vectorYM, vectorXP] != null && bubbles[vectorYM, vectorXP].isEven)
+                                    {
+                                        CheckFloating(bubbles, new Vector2(vectorXP, vectorYM));
+
+                                        //Debug.WriteLine(isRemovable + " x + 1 , y - 1 in Even" + " X : " + (vectorXP) + " Y : " + (vectorYM));
+
+                                        if (!isRemovable)
+                                        {
+                                            clusterBubble.Clear();
+                                            isRemovable = true;
                                         }
 
                                         foreach (Vector2 vectorRemoved in clusterBubble)
@@ -531,6 +752,7 @@ namespace Olympuzz.GameObjects
                                         }
                                     }
                                 }
+                                //Debug.WriteLine("\n\n");
 
                                 Singleton.Instance.comboCount++;
                                 Singleton.Instance.comboTime = 5;
@@ -584,17 +806,17 @@ namespace Olympuzz.GameObjects
 
         public void CheckFloating(Bubble[,] bubbles, Vector2 targetCluster)
         {
-            if ((targetCluster.Y > 11 || targetCluster.Y < 0) || (targetCluster.X < 0 || targetCluster.X > 9) || bubbles[(int)targetCluster.Y, (int)targetCluster.X] == null  || clusterBubble.Contains(targetCluster))
+            if ((targetCluster.Y > 13 || targetCluster.Y < 0) || (targetCluster.X < 0 || targetCluster.X > 9) || bubbles[(int)targetCluster.Y, (int)targetCluster.X] == null  || clusterBubble.Contains(targetCluster))
             {
                 return;
             }
 
-            if (!clusterBubble.Contains(targetCluster))
+            if (!clusterBubble.Contains(targetCluster) && bubbles[(int)targetCluster.Y, (int)targetCluster.X] != null)
             {
                 clusterBubble.Add(targetCluster);
             }
 
-            if (!isRemovable)
+            if (isRemovable)
             {
                 CheckFloating(bubbles, new Vector2(targetCluster.X, targetCluster.Y - 1)); // check up bubble
                 CheckFloating(bubbles, new Vector2(targetCluster.X + 1, targetCluster.Y)); // check right bubble
@@ -613,10 +835,13 @@ namespace Olympuzz.GameObjects
                 }
             }
 
-            if (targetCluster.Y == 0)
+            if ((int)targetCluster.Y == 0 && bubbles[(int)targetCluster.Y,(int)targetCluster.X] != null)
             {
-                isRemovable = true;
+                isRemovable = false;
             }
+
+            //Debug.WriteLine(isRemovable);
+
         }
 
         public override void Draw(SpriteBatch _spriteBatch)

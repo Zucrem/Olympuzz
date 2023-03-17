@@ -62,7 +62,10 @@ namespace Olympuzz.GameScreen
         protected float tickPerUpdate = 30f;
         protected float bubbleAngle = 0f;
         protected float athenaTime = 0f;
-        protected float cooldownTime = 0f;
+        protected float muteTime = 10f;
+        protected float cooldownTime;
+        protected float timeAttack;
+        protected float _scrollSpd = 1f;
 
         protected int startOddPosition;
         protected int startEvenPosition;
@@ -76,11 +79,13 @@ namespace Olympuzz.GameScreen
         protected bool notPlay = false;
         protected bool isEven = false;
         protected bool fadeFinish = false;
-
+        protected bool dionysusSkilled = false;
         protected bool confirmExit = false;
         protected bool athenaSkilled = false;
         protected bool hammerSkill = false;
         protected bool skillCooldown = false;
+
+        protected bool isHell = false;
 
         //ตัวแปรของ sound
         protected float masterBGM = Singleton.Instance.bgMusicVolume;
@@ -169,6 +174,8 @@ namespace Olympuzz.GameScreen
                 IsActive = true,
             };
 
+            
+
             switch (Singleton.Instance.charState)
             {
                 case CharState.ATHENA:
@@ -182,7 +189,6 @@ namespace Olympuzz.GameScreen
                     god.AddVector(new Vector2(133, 0));
                     god.AddVector(new Vector2(0, 206));
                     god.AddVector(new Vector2(133, 206));
-
                     cooldownTime = 0;
 
                     godSkill = new Animation(athenaHourGlassPic, 208, 432, 52, 108)
@@ -212,7 +218,7 @@ namespace Olympuzz.GameScreen
                     god.AddVector(new Vector2(0, 206));
                     god.AddVector(new Vector2(151, 206));
 
-                    cooldownTime = 0;
+                    cooldownTime = -5f;
 
                     godSkill = new Animation(hermesStormPic, 553, 522)
                     {
@@ -373,15 +379,18 @@ namespace Olympuzz.GameScreen
             Initial();
 
         }
+
         public override void UnloadContent()
         {
             base.UnloadContent();
         }
+
         public override void Update(GameTime gameTime)
         {
             MediaPlayer.Volume = Singleton.Instance.bgMusicVolume;
             Singleton.Instance.MousePrevious = Singleton.Instance.MouseCurrent;//เก็บสถานะmouseก่อนหน้า
             Singleton.Instance.MouseCurrent = Mouse.GetState();//เก็บสถานะmouseปัจจุบัน
+
 
             if (!notPlay)
             {
@@ -391,7 +400,7 @@ namespace Olympuzz.GameScreen
                 {
                     notPlay = true;
                     eventScreen = EventScreen.PAUSE;
-                    shooter.IsActive = false;
+                    //shooter.IsActive = false;
                     god.IsActive = false;
 
                     if (Singleton.Instance.charState != CharState.DIONYSUS)
@@ -405,7 +414,7 @@ namespace Olympuzz.GameScreen
 
                 if (!athenaSkilled)
                 {
-                    _scrollTime += (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                    _scrollTime += ((float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond) * _scrollSpd;
                 }
                 if (_scrollTime >= tickPerUpdate)
                 {
@@ -444,7 +453,7 @@ namespace Olympuzz.GameScreen
                 /*notPlay = true;
                 gameWin = CheckWin(bubble);*/
 
-
+                /*
                 int winCount = 0;
 
                 for (int j = 0; j < bubble.GetLength(1); j++)
@@ -453,9 +462,9 @@ namespace Olympuzz.GameScreen
                     {
                         winCount++;
                     }
-                }
+                }*/
 
-                if (winCount == bubble.GetLength(1))
+                if (timeAttack < 0)
                 {
                     notPlay = true;
 
@@ -513,6 +522,7 @@ namespace Olympuzz.GameScreen
 
                 else if (Keyboard.GetState().IsKeyDown(Keys.Right) && elapsedMs > 200 && _g)
                 {
+                    /*
                     //foreach (Bubble b in bubble)
                     //{
                     //    if (b != null)
@@ -532,7 +542,9 @@ namespace Olympuzz.GameScreen
                         }
                     }
 
-                    shooter.GetBubble().Cheat();
+                    shooter.GetBubble().Cheat();*/
+
+                    timeAttack = 0;
                     _c = false;
                     _h = false;
                     _e = false;
@@ -597,7 +609,7 @@ namespace Olympuzz.GameScreen
                             BallUpdate(bubble);
                             godSkill.SetAnimationStop(false);
                             skillCooldown = true;
-                            cooldownTime = 0;
+                            cooldownTime = -5;
                             break;
                         case CharState.DIONYSUS:
 
@@ -647,12 +659,16 @@ namespace Olympuzz.GameScreen
                             break;
 
                         case CharState.DIONYSUS:
+                            dionysusSkilled = true;
+                            Singleton.Instance.comboCount = 0;
+
                             break;
 
                         case CharState.HEPHAESTUS:
-                            int i;
+                            
+                            hephaestusHammerSFX.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
 
-                            for (i = 1; i < 14; i++)
+                            for (int i = 1; i < 14; i++)
                             {
                                 for (int j = 0; j < 10; j++)
                                 {
@@ -675,6 +691,17 @@ namespace Olympuzz.GameScreen
                 if (godSkill.GetFrames() == godSkill.GetAllFrame() - 1)
                 {
                     hammerSkill = false;
+                }
+
+                if (dionysusSkilled)
+                {
+                    muteTime -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+
+                    if (muteTime < 0)
+                    {
+                        dionysusSkilled = false;
+                        muteTime = 10f;
+                    }
                 }
 
                 god.Update(gameTime);
@@ -703,7 +730,7 @@ namespace Olympuzz.GameScreen
                 }
 
 
-                shooter.Update(gameTime, bubble);
+                shooter.Update(gameTime, bubble, isHell);
                 CheckGameOver(gameTime);
 
             }
@@ -713,8 +740,8 @@ namespace Olympuzz.GameScreen
             {
 
                 pauseButton.SetCantHover(true);
-                Singleton.Instance.Shooting = false;
-
+                //Singleton.Instance.Shooting = false;
+                //Stage1Screen.getWaveSoundInstance().Pause();
                 if (!confirmExit)
                 {
                     switch (eventScreen)
@@ -725,6 +752,7 @@ namespace Olympuzz.GameScreen
                             {
                                 pauseButton.SetCantHover(false);
                                 shooter.IsActive = true;
+                                //Singleton.Instance.Shooting = true;
                                 god.IsActive = true;
                                 if (Singleton.Instance.charState != CharState.DIONYSUS)
                                 {
@@ -736,6 +764,7 @@ namespace Olympuzz.GameScreen
                                 }
                                 eventScreen = EventScreen.NULL;
                                 MediaPlayer.Resume();
+                                //Stage1Screen.getWaveSoundInstance().Resume();
                                 notPlay = false;
                             }
 
@@ -1022,7 +1051,6 @@ namespace Olympuzz.GameScreen
             /*spriteBatch.DrawString(Arcanista, "Score : " + Singleton.Instance.Score, new Vector2(1060, 260), color);
             spriteBatch.DrawString(Arcanista, "Time : " + Timer.ToString("F"), new Vector2(20, 260), color);
             spriteBatch.DrawString(Arcanista, "Next Time : " + (tickPerUpdate - _scrollTime).ToString("F"), new Vector2(20, 210), color);*/
-
 
             if (notPlay)
             {

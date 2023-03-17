@@ -34,6 +34,7 @@ namespace Olympuzz.GameScreen
         private int switchSkill;
 
         private Random rand = new Random();
+
         private Texture2D flashSkill;
 
         //sound
@@ -43,6 +44,9 @@ namespace Olympuzz.GameScreen
         {
             //all button
             pauseButton = new Button(pauseButtonPic, new Vector2(86, 55), new Vector2(148, 58));//create button object on playscreen
+            timeAttack = 240f;
+            _scrollSpd = 5f;
+
             base.Initial();
         }
         public override void LoadContent()
@@ -75,6 +79,7 @@ namespace Olympuzz.GameScreen
 
             if (!notPlay)
             {
+                timeAttack -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
 
                 if (!hasSwitched)
                 {
@@ -82,36 +87,38 @@ namespace Olympuzz.GameScreen
                     hasSwitched = true;
                 }
 
-                switch (switchSkill)
+                if (!dionysusSkilled)
                 {
-                    case 0:
-                        bossSkillChance1 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
-                        if (bossSkillChance1 < 0 && !skillActive)
-                        {
-                            int chance = rand.Next(3);
-                            if (chance == 1)
+                    switch (switchSkill)
+                    {
+                        case 0:
+                            bossSkillChance1 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                            if (bossSkillChance1 < 0 && !skillActive)
                             {
-                                isflash = true;
-                                skillActive = true;
+                                int chance = rand.Next(3);
+                                if (chance == 1)
+                                {
+                                    isflash = true;
+                                    skillActive = true;
+                                }
                             }
-                        }
-                        break;
+                            break;
 
-                    case 1:
-                        bossSkillChance2 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
-                        if (bossSkillChance2 < 0 && !skillActive)
-                        {
-                            int chance = rand.Next(2);
-                            if (chance == 1)
+                        case 1:
+                            bossSkillChance2 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
+                            if (bossSkillChance2 < 0 && !skillActive)
                             {
-                                thunderSound.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
-                                isBallHolderDie = true;
-                                skillActive = true;
+                                int chance = rand.Next(2);
+                                if (chance == 1)
+                                {
+                                    thunderSound.Play(volume: Singleton.Instance.soundMasterVolume, 0, 0);
+                                    isBallHolderDie = true;
+                                    skillActive = true;
+                                }
                             }
-                        }
-                        break;
+                            break;
+                    }
                 }
-
 
                 if (skillActive) // skill was Active now this is not skillCool
                 {
@@ -130,7 +137,7 @@ namespace Olympuzz.GameScreen
                 if (skillTime1 < 0 || skillTime2 < 0) //if 
                 {
                     Singleton.Instance.speed = -1400;
-                    //isBallHolderDie = false;
+                    isBallHolderDie = false;
                     skillActive = false;
                     hasSwitched = false;
                     isflash = false;
@@ -188,10 +195,10 @@ namespace Olympuzz.GameScreen
                 }
             }
 
-            shooter.Draw(spriteBatch, isBallHolderDie);
 
             if (!isBallHolderDie)
             {
+                shooter.GetBubbleNext().Draw(spriteBatch);
                 spriteBatch.Draw(holderAlivePic, new Vector2(410, 606), Color.White);
             }
             else
@@ -199,11 +206,12 @@ namespace Olympuzz.GameScreen
                 spriteBatch.Draw(holderDeathPic, new Vector2(410, 606), Color.White);
             }
 
+            shooter.Draw(spriteBatch);
             base.Draw(spriteBatch);
 
-            if (isflash)
+            if (isflash && eventScreen != EventScreen.PAUSE && eventScreen != EventScreen.WIN && eventScreen != EventScreen.LOSE)
             {
-                spriteBatch.Draw(bossSkillPic, Vector2.Zero, Color.White);
+                spriteBatch.Draw(bossSkillPic, Vector2.Zero, new Color(255,255,255) * 0.95f);
             }
 
         }
