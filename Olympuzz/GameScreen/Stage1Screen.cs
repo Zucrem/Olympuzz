@@ -166,10 +166,6 @@ namespace Olympuzz.GameScreen
             }
         }
 
-        public static SoundEffectInstance getWaveSoundInstance()
-        {
-            return waveSoundInstance;
-        }
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(bossSkillPic, Vector2.Zero, Color.Black);
