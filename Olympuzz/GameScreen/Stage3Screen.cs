@@ -159,16 +159,16 @@ namespace Olympuzz.GameScreen
                 switch (Singleton.Instance.charState)
                 {
                     case CharState.ATHENA:
-                        spriteBatch.Draw(athenaSkillPic, new Vector2(114, 472), Color.White);
+                        spriteBatch.Draw(athenaSkillPic, new Vector2(106, 466), Color.White);
                         break;
                     case CharState.HERMES:
-                        spriteBatch.Draw(hermesSkillPic, new Vector2(114, 472), Color.White);
+                        spriteBatch.Draw(hermesSkillPic, new Vector2(106, 466), Color.White);
                         break;
                     case CharState.DIONYSUS:
-                        spriteBatch.Draw(dionysusSkillPic, new Vector2(114, 472), Color.White);
+                        spriteBatch.Draw(dionysusSkillPic, new Vector2(106, 466), Color.White);
                         break;
                     case CharState.HEPHAESTUS:
-                        spriteBatch.Draw(hephaestusSkillPic, new Vector2(114, 472), Color.White);
+                        spriteBatch.Draw(hephaestusSkillPic, new Vector2(106, 466), Color.White);
                         break;
                 }
                 if (!godSkill.GetAnimationStop())
@@ -181,16 +181,16 @@ namespace Olympuzz.GameScreen
                 switch (Singleton.Instance.charState)
                 {
                     case CharState.ATHENA:
-                        spriteBatch.Draw(athenaReadyPic, new Vector2(114, 472), Color.White);
+                        spriteBatch.Draw(athenaReadyPic, new Vector2(106, 466), Color.White);
                         break;
                     case CharState.HERMES:
-                        spriteBatch.Draw(hermesReadyPic, new Vector2(114, 472), Color.White);
+                        spriteBatch.Draw(hermesReadyPic, new Vector2(106, 466), Color.White);
                         break;
                     case CharState.DIONYSUS:
-                        spriteBatch.Draw(dionysusReadyPic, new Vector2(114, 472), Color.White);
+                        spriteBatch.Draw(dionysusSkillPic, new Vector2(106, 466), Color.White);
                         break;
                     case CharState.HEPHAESTUS:
-                        spriteBatch.Draw(hephaestusReadyPic, new Vector2(114, 472), Color.White);
+                        spriteBatch.Draw(hephaestusSkillPic, new Vector2(106, 466), Color.White);
                         break;
                 }
             }

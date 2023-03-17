@@ -36,14 +36,13 @@ namespace Olympuzz.GameScreen
 
         private Color waveColor;
         //sound
-        private SoundEffect waveSound;
-        private static SoundEffectInstance waveSoundInstance;
         private bool isSFXPlay = false;
 
         public override void Initial()
         {
             //all button
             pauseButton = new Button(pauseButtonPic, new Vector2(98, 50), new Vector2(148, 60));//create button object on playscreen
+            //sound
             waveColor = new Color(58, 172, 212);
             _scrollSpd = 3f;
 
@@ -65,9 +64,6 @@ namespace Olympuzz.GameScreen
             poseidonTheme = content.Load<Song>("Sounds/PoseidonTheme");
             MediaPlayer.Play(poseidonTheme);
 
-            //sfx
-            waveSound = content.Load<SoundEffect>("Sounds/WaveSound");
-            waveSoundInstance = waveSound.CreateInstance();
             Initial();
         }
         public override void UnloadContent()
@@ -78,6 +74,7 @@ namespace Olympuzz.GameScreen
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            waveSoundInstance.Volume = masterSFX;
             if (!notPlay)
             {
                 timeAttack -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
@@ -89,6 +86,7 @@ namespace Olympuzz.GameScreen
                 }
                 
                 if (!dionysusSkilled)
+
                 {
                     switch (switchSkill)
                     {
@@ -128,7 +126,7 @@ namespace Olympuzz.GameScreen
                         case 0:
                             skillTime1 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                             break;
-                        
+
                         case 1:
                             skillTime2 -= (float)gameTime.ElapsedGameTime.Ticks / TimeSpan.TicksPerSecond;
                             break;
@@ -152,13 +150,19 @@ namespace Olympuzz.GameScreen
                 //poseidon wave
                 if (isWave && !isSFXPlay)
                 {
-                    waveSoundInstance.Play();
+                    waveSoundInstance.Play(); 
+                    waveSoundInstance.Resume();
                     isSFXPlay = true;
                 }
                 if (!isWave)
                 {
                     waveSoundInstance.Stop();
                 }
+                
+            }
+            else
+            {
+                waveSoundInstance.Pause();
             }
         }
 
@@ -187,16 +191,16 @@ namespace Olympuzz.GameScreen
                 switch (Singleton.Instance.charState)
                 {
                     case CharState.ATHENA:
-                        spriteBatch.Draw(athenaSkillPic, new Vector2(114, 472), Color.White);
+                        spriteBatch.Draw(athenaSkillPic, new Vector2(106, 466), Color.White);
                         break;
                     case CharState.HERMES:
-                        spriteBatch.Draw(hermesSkillPic, new Vector2(114, 472), Color.White);
+                        spriteBatch.Draw(hermesSkillPic, new Vector2(106, 466), Color.White);
                         break;
                     case CharState.DIONYSUS:
-                        spriteBatch.Draw(dionysusSkillPic, new Vector2(114, 472), Color.White);
+                        spriteBatch.Draw(dionysusSkillPic, new Vector2(106, 466), Color.White);
                         break;
                     case CharState.HEPHAESTUS:
-                        spriteBatch.Draw(hephaestusSkillPic, new Vector2(114, 472), Color.White);
+                        spriteBatch.Draw(hephaestusSkillPic, new Vector2(106, 466), Color.White);
                         break;
                 }
                 if (!godSkill.GetAnimationStop())
@@ -209,16 +213,16 @@ namespace Olympuzz.GameScreen
                 switch (Singleton.Instance.charState)
                 {
                     case CharState.ATHENA:
-                        spriteBatch.Draw(athenaReadyPic, new Vector2(114, 472), Color.White);
+                        spriteBatch.Draw(athenaReadyPic, new Vector2(106, 466), Color.White);
                         break;
                     case CharState.HERMES:
-                        spriteBatch.Draw(hermesReadyPic, new Vector2(114, 472), Color.White);
+                        spriteBatch.Draw(hermesReadyPic, new Vector2(106, 466), Color.White);
                         break;
                     case CharState.DIONYSUS:
-                        spriteBatch.Draw(dionysusReadyPic, new Vector2(114, 472), Color.White);
+                        spriteBatch.Draw(dionysusSkillPic, new Vector2(106, 466), Color.White);
                         break;
                     case CharState.HEPHAESTUS:
-                        spriteBatch.Draw(hephaestusReadyPic, new Vector2(114, 472), Color.White);
+                        spriteBatch.Draw(hephaestusSkillPic, new Vector2(106, 466), Color.White);
                         break;
                 }
             }
