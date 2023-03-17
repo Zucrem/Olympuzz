@@ -153,7 +153,7 @@ namespace Olympuzz.GameScreen
 
             if (isHell && eventScreen != EventScreen.PAUSE && eventScreen != EventScreen.WIN && eventScreen != EventScreen.LOSE)
             {
-                spriteBatch.Draw(bossSkill, Vector2.Zero, Color.Red * 0.2f);
+                spriteBatch.Draw(bossSkillPic, Vector2.Zero, Color.Red * 0.2f);
             }
         }
     }
