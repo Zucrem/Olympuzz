@@ -10,19 +10,65 @@ namespace Olympuzz
 {
     internal class Singleton
     {
-        public Vector2 Dimensions = new Vector2(1280, 720);
-        public int bgMusicVolume = 100;
+        public Vector2 Dimensions = new(1280, 720);
+        public float bgMusicVolume = 1f;
+        public float soundMasterVolume = 0.6f;
+        public int comboCount = 0;
+        public float comboTime = 0f;
         public int Score = 0;
-        public float soundMasterVolume = 1f;
         public bool Shooting = false;
-        public List<Vector2> removeBubble = new List<Vector2>();
-        public bool cmdExit = false, cmdFullScreen = false, cmdShowFPS = false;
-        public bool IsFullScreen;
-        public string BestTime, BestScore;
+        public List<Vector2> removeBubble = new();
+        public bool cmdExit = false;
+        public bool gameOver = false;
 
+        public int speed = -1400; // -700
+        public int lastClickTime = 0;
+        public bool firsttime = true;//first time playing this game
+
+
+        //Audio State
+        public AudioState bgmState = AudioState.FULL;
+        public AudioState sfxState = AudioState.FULL;
+
+        //Level State
+        public LevelState levelState = LevelState.NULL;
+
+        //Char State
+        public CharState charState = CharState.NULL;
+
+        //Mouse State
         public MouseState MousePrevious, MouseCurrent;
 
         private static Singleton instance;
+
+        public enum AudioState
+        {
+            MUTE,
+            MEDIUM,
+            FULL
+        }
+        public enum LevelState
+        {
+            NULL,
+            POSEIDON,
+            HADES,
+            ZEUS,
+            ENDLESS
+        }
+        public enum CharState
+        {
+            NULL,
+            ATHENA,
+            HERMES,
+            DIONYSUS,
+            HEPHAESTUS
+        }
+        /*public enum SkillState
+        {
+            MUTE,
+            MEDIUM,
+            FULL
+        }*/
         public static Singleton Instance
         {
             get
