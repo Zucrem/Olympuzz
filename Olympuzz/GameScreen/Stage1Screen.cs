@@ -223,9 +223,41 @@ namespace Olympuzz.GameScreen
                 }
             }
 
+            //draw god skill
+            switch (Singleton.Instance.charState)
+            {
+                case CharState.ATHENA:
+                    godSkill.Draw(spriteBatch);
+                    break;
+                case CharState.DIONYSUS:
+                    if (dionysusSkilled)
+                    {
+                        switch (Singleton.Instance.levelState)
+                        {
+                            case LevelState.POSEIDON:
+                                spriteBatch.Draw(dionysusMutePic, new Vector2(1029, 398), Color.White);
+                                break;
+                            case LevelState.HADES:
+                                spriteBatch.Draw(dionysusMutePic, new Vector2(994, 394), Color.White);
+                                break;
+                            case LevelState.ZEUS:
+                                spriteBatch.Draw(dionysusMutePic, new Vector2(1075, 290), Color.White);
+                                break;
+                        }
+                    }
+                    break;
+                case CharState.HEPHAESTUS:
+                    if (hammerSkill)
+                    {
+                        godSkill.Draw(spriteBatch);
+                    }
+                    break;
+            }
+
             shooter.Draw(spriteBatch);
 
             base.Draw(spriteBatch);
+
             if (isWave && eventScreen != EventScreen.PAUSE && eventScreen != EventScreen.WIN && eventScreen != EventScreen.LOSE)
             {
                 spriteBatch.Draw(bossSkillPic, Vector2.Zero, waveColor * 0.2f);
